@@ -1,20 +1,24 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-unused-vars */
 import {Button, Card, Icon, ListItem} from '@rneui/base';
-import {useEffect, useState} from 'react';
-import {useTag} from '../hooks/ApiHooks';
+import {useContext, useEffect, useState} from 'react';
+import {useMedia, useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
-import {View} from 'react-native';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {MainContext} from '../contexts/MainContext';
+import MyFilesOnly from './MyFilesOnly';
 
-const Profile = () => {
+const Profile = ({myFilesOnly = false}) => {
+  const {mediaArray} = useMedia(myFilesOnly);
   const {getFilesByTag} = useTag();
+  const {setIsLoggedIn, user, setUser} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
 
   const loadAvatar = async () => {
     try {
-      const avatarArray = await getFilesByTag('avatar_2711');
-      console.log('avatarArray ' + avatarArray.pop().title);
+      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
+      console.log('avatarArray ' + JSON.stringify(avatarArray));
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
       console.error('User avatar fetch failed', error.message);
@@ -27,10 +31,7 @@ const Profile = () => {
     <>
       <Card
         containerStyle={{
-          backgroundColor: '',
-          marginTop: 25,
-          marginLeft: 0,
-          marginRight: 0,
+          margin: 0,
         }}
       >
         <View
@@ -49,10 +50,6 @@ const Profile = () => {
         <Card.Image
           source={{uri: uploadsUrl + avatar}}
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
             width: 120,
             height: 120,
             borderRadius: 120 / 2,
@@ -82,10 +79,10 @@ const Profile = () => {
           />
         </View>
         <ListItem.Title style={{margin: 10, fontSize: 20}}>
-          UserName
+          {user.username}
         </ListItem.Title>
         <ListItem.Title style={{margin: 10, fontSize: 20}}>
-          Full Name
+          {user.full_name}
         </ListItem.Title>
         <Button
           title="Edit Profile"
@@ -119,10 +116,16 @@ const Profile = () => {
           <Icon name="favorite" onPress={() => {}} />
         </View>
       </Card>
+      <FlatList
+        data={mediaArray}
+        renderItem={({item}) => <MyFilesOnly singleMedia={item} />}
+        numColumns={3}
+      />
     </>
   );
 };
 Profile.propTypes = {
   navigation: PropTypes.object,
+  myFilesOnly: PropTypes.bool,
 };
 export default Profile;
