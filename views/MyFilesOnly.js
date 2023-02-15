@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
 import {Image} from '@rneui/base';
-import {View} from 'react-native';
+import {Dimensions, View} from 'react-native';
 
 const MyFilesOnly = ({singleMedia}) => {
   const item = singleMedia;
-  console.log(item);
 
   return (
     <View>
       <Image
         source={{uri: uploadsUrl + item.filename}}
-        style={{width: 100, height: 100, margin: 15}}
+        style={{
+          borderWidth: 1,
+          borderColor: 'green',
+          margin: 1,
+          width: Dimensions.get('screen').width / 3,
+          height: Dimensions.get('screen').width / 3,
+        }}
       />
     </View>
   );

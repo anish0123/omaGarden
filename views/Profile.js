@@ -5,11 +5,11 @@ import {useContext, useEffect, useState} from 'react';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, FlatList, View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import MyFilesOnly from './MyFilesOnly';
 
-const Profile = ({myFilesOnly = false}) => {
+const Profile = ({myFilesOnly = true}) => {
   const {mediaArray} = useMedia(myFilesOnly);
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn, user, setUser} = useContext(MainContext);
@@ -18,7 +18,6 @@ const Profile = ({myFilesOnly = false}) => {
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
-      console.log('avatarArray ' + JSON.stringify(avatarArray));
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
       console.error('User avatar fetch failed', error.message);
@@ -31,6 +30,7 @@ const Profile = ({myFilesOnly = false}) => {
     <>
       <Card
         containerStyle={{
+          backgroundColor: '',
           margin: 0,
         }}
       >
@@ -78,12 +78,8 @@ const Profile = ({myFilesOnly = false}) => {
             }}
           />
         </View>
-        <ListItem.Title style={{margin: 10, fontSize: 20}}>
-          {user.username}
-        </ListItem.Title>
-        <ListItem.Title style={{margin: 10, fontSize: 20}}>
-          {user.full_name}
-        </ListItem.Title>
+        <ListItem.Title style={{margin: 10}}>{user.username}</ListItem.Title>
+        <ListItem.Title style={{margin: 10}}>{user.full_name}</ListItem.Title>
         <Button
           title="Edit Profile"
           buttonStyle={{
@@ -92,10 +88,10 @@ const Profile = ({myFilesOnly = false}) => {
             borderRadius: 5,
           }}
           type="outline"
-          titleStyle={{color: 'black', fontSize: 20}}
+          titleStyle={{color: 'black'}}
           containerStyle={{
-            width: 160,
-            marginHorizontal: 90,
+            width: 120,
+            marginHorizontal: Dimensions.get('screen').width / 2 - 60,
           }}
         />
       </Card>
@@ -109,7 +105,6 @@ const Profile = ({myFilesOnly = false}) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginStart: 10,
           }}
         >
           <Icon name="collections" onPress={() => {}} />
@@ -118,7 +113,9 @@ const Profile = ({myFilesOnly = false}) => {
       </Card>
       <FlatList
         data={mediaArray}
-        renderItem={({item}) => <MyFilesOnly singleMedia={item} />}
+        renderItem={({item}) => (
+          <MyFilesOnly singleMedia={item} myFilesOnly={true} />
+        )}
         numColumns={3}
       />
     </>
