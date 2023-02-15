@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import {MainContext} from '../contexts/MainContext';
 import {appId, baseUrl} from '../utils/variables';
 
 const doFetch = async (url, options) => {
@@ -13,12 +14,18 @@ const doFetch = async (url, options) => {
   return json;
 };
 
-const useMedia = () => {
+const useMedia = (myFilesOnly) => {
   const [mediaArray, setMediaArray] = useState([]);
+  const {update, user} = useContext(MainContext);
 
   const loadMedia = async () => {
     try {
-      const json = await useTag().getFilesByTag(appId);
+      let json = await useTag().getFilesByTag(appId);
+
+      if (myFilesOnly) {
+        json = json.filter((file) => file.user_id === user.user_id);
+      }
+
       json.reverse();
       const media = await Promise.all(
         json.map(async (file) => {
@@ -51,7 +58,7 @@ const useMedia = () => {
 
   useEffect(() => {
     loadMedia();
-  });
+  }, [update]);
 
   return {loadMedia, mediaArray, postMedia};
 };
