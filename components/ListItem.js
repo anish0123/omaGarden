@@ -27,9 +27,7 @@ const ListItem = ({singleMedia}) => {
     try {
       setAvatar('');
       const avatarArray = await getFilesByTag('avatar_' + owner.user_id);
-      console.log(avatarArray);
       setAvatar(avatarArray.pop().filename);
-      console.log('user avatar', avatar);
     } catch (error) {
       console.log('load Avatar', error);
     }

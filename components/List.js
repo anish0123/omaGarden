@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 const List = ({navigation}) => {
   const {mediaArray} = useMedia();
-  console.log(mediaArray);
   return (
     <FlatList
       data={mediaArray}
@@ -17,6 +16,6 @@ const List = ({navigation}) => {
   );
 };
 List.propTypes = {
-  navigation: PropTypes.object.isRequired,
+  navigation: PropTypes.object,
 };
 export default List;

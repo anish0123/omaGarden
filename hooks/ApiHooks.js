@@ -25,7 +25,6 @@ const useMedia = (myFilesOnly) => {
       if (myFilesOnly) {
         json = json.filter((file) => file.user_id === user.user_id);
       }
-
       json.reverse();
       const media = await Promise.all(
         json.map(async (file) => {
