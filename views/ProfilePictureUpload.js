@@ -4,14 +4,13 @@ import {Controller, useForm} from 'react-hook-form';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
-import {appId} from '../utils/variables';
 import * as ImagePicker from 'expo-image-picker';
 import {Alert, Dimensions, View} from 'react-native';
 import {Video} from 'expo-av';
 import {MainContext} from '../contexts/MainContext';
 import {useFocusEffect} from '@react-navigation/native';
 
-const Upload = ({navigation}) => {
+const ProfilePictureUpload = ({navigation}) => {
   const {postMedia} = useMedia();
   const [mediaFile, setMediaFile] = useState({});
   const [loading, setLoading] = useState(false);
@@ -51,7 +50,7 @@ const Upload = ({navigation}) => {
 
       const appTag = {
         file_id: result.file_id,
-        tag: appId,
+        tag: 'OmaGarden_',
       };
       const tagResult = await postTag(appTag, token);
       console.log('tag result', tagResult);
@@ -62,7 +61,7 @@ const Upload = ({navigation}) => {
           onPress: () => {
             console.log('Ok Pressed');
             setUpdate(!update);
-            navigation.navigate('Home');
+            navigation.navigate('Profile');
           },
         },
       ]);
@@ -224,8 +223,8 @@ const Upload = ({navigation}) => {
     </Card>
   );
 };
-Upload.propTypes = {
+ProfilePictureUpload.propTypes = {
   navigation: PropTypes.object,
 };
 
-export default Upload;
+export default ProfilePictureUpload;

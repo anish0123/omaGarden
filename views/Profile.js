@@ -1,31 +1,63 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-unused-vars */
-import {Button, Card, Icon, ListItem} from '@rneui/base';
+import {
+  Button,
+  Card,
+  Icon,
+  Image,
+  ListItem,
+  renderNode,
+  Text,
+} from '@rneui/base';
 import {useContext, useEffect, useState} from 'react';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
-import {Dimensions, FlatList, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Modal,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import MyFilesOnly from './MyFilesOnly';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
-const Profile = ({myFilesOnly = true}) => {
+const Profile = ({navigation, myFilesOnly = true}) => {
   const {mediaArray} = useMedia(myFilesOnly);
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn, user, setUser} = useContext(MainContext);
+  const [mediaFile, setMediaFile] = useState({});
   const [avatar, setAvatar] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const loadAvatar = async () => {
     try {
-      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
-      setAvatar(avatarArray.pop().filename);
+      const avatarArray = await getFilesByTag('OmaGarden_');
+      setAvatar(avatarArray[avatarArray.length - 1].filename);
     } catch (error) {
       console.error('User avatar fetch failed', error.message);
     }
   };
+
+  const uploadProfile = async () => {
+    navigation.navigate('ProfilePictureUpload');
+  };
+
+  const showPictures = async () => {
+    try {
+      const avatarArray = await getFilesByTag('OmaGarden_');
+      navigation.navigate('MyFilesOnly', avatarArray);
+    } catch (error) {
+      console.error('User avatar fetch failed', error.message);
+    }
+  };
+
   useEffect(() => {
     loadAvatar();
   }, []);
+
   return (
     <>
       <Card
@@ -67,8 +99,87 @@ const Profile = ({myFilesOnly = true}) => {
             borderRadius: 20,
           }}
         >
+          <GestureRecognizer onSwipeDown={() => setShowModal(false)}>
+            <Modal
+              animationType={'slide'}
+              transparent={true}
+              visible={showModal}
+              onRequestClose={() => {
+                console.log('Modal has been closed.');
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  height: '46%',
+                  marginTop: 'auto',
+                  backgroundColor: '#3E3C3C',
+                  borderTopRightRadius: 30,
+                  borderTopLeftRadius: 30,
+                }}
+                activeOpacity={1}
+                onPressOut={() => {
+                  setShowModal(false);
+                }}
+              >
+                <View>
+                  <View
+                    style={{
+                      width: Dimensions.get('screen').width / 3,
+                      marginHorizontal: Dimensions.get('screen').width / 3,
+                      borderWidth: 2,
+                      borderColor: 'white',
+                    }}
+                  ></View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      padding: 15,
+                      marginTop: 15,
+                    }}
+                  >
+                    <Icon name="camera-outline" type="ionicon" color="white" />
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 20,
+                        marginLeft: 15,
+                      }}
+                      onPress={() => {
+                        uploadProfile();
+                        setShowModal(false);
+                      }}
+                    >
+                      Add Profile Picture
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      padding: 15,
+                    }}
+                  >
+                    <Icon name="images-outline" type="ionicon" color="white" />
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 20,
+                        marginLeft: 15,
+                      }}
+                      onPress={() => showPictures()}
+                    >
+                      Select Existing Pictures
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Modal>
+          </GestureRecognizer>
           <Icon
-            onPress={() => {}}
+            onPress={() => {
+              setShowModal(!showModal);
+            }}
             size={30}
             name="edit"
             style={{
@@ -90,8 +201,8 @@ const Profile = ({myFilesOnly = true}) => {
           type="outline"
           titleStyle={{color: 'black'}}
           containerStyle={{
-            width: 120,
-            marginHorizontal: Dimensions.get('screen').width / 2 - 60,
+            width: Dimensions.get('screen').width / 3,
+            marginHorizontal: Dimensions.get('screen').width / 3,
           }}
         />
       </Card>
@@ -114,9 +225,21 @@ const Profile = ({myFilesOnly = true}) => {
       <FlatList
         data={mediaArray}
         renderItem={({item}) => (
-          <MyFilesOnly singleMedia={item} myFilesOnly={true} />
+          <View>
+            <Image
+              source={{uri: uploadsUrl + item.filename}}
+              style={{
+                borderWidth: 1,
+                borderColor: 'black',
+                margin: 1,
+                width: Dimensions.get('screen').width / 3,
+                height: Dimensions.get('screen').width / 3,
+              }}
+            />
+          </View>
         )}
         numColumns={3}
+        keyExtractor={(item, index) => index.toString()}
       />
     </>
   );

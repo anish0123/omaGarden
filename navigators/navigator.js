@@ -8,6 +8,8 @@ import {MainContext} from '../contexts/MainContext';
 import {useContext} from 'react';
 import Login from '../views/Login';
 import Profile from '../views/Profile';
+import ProfilePictureUpload from '../views/ProfilePictureUpload';
+import MyFilesOnly from '../views/MyFilesOnly';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -42,6 +44,11 @@ const StackScreen = () => {
             component={TabScreen}
             options={{headerShown: false}}
           />
+          <Stack.Screen
+            name="ProfilePictureUpload"
+            component={ProfilePictureUpload}
+          />
+          <Stack.Screen name="MyFilesOnly" component={MyFilesOnly} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />

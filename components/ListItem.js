@@ -26,8 +26,8 @@ const ListItem = ({singleMedia}) => {
   const loadAvatar = async () => {
     try {
       setAvatar('');
-      const avatarArray = await getFilesByTag('avatar_' + owner.user_id);
-      setAvatar(avatarArray.pop().filename);
+      const avatarArray = await getFilesByTag('OmaGarden_');
+      setAvatar(avatarArray[avatarArray.length - 1].filename);
     } catch (error) {
       console.log('load Avatar', error);
     }
