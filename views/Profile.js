@@ -1,14 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-unused-vars */
-import {
-  Button,
-  Card,
-  Icon,
-  Image,
-  ListItem,
-  renderNode,
-  Text,
-} from '@rneui/base';
+import {Button, Card, Icon, Image, ListItem, Text} from '@rneui/base';
 import {useContext, useEffect, useState} from 'react';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
@@ -17,24 +9,24 @@ import {
   Dimensions,
   FlatList,
   Modal,
+  Platform,
+  SafeAreaView,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {MainContext} from '../contexts/MainContext';
-import MyFilesOnly from './MyFilesOnly';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
-const Profile = ({navigation, myFilesOnly = true}) => {
+const Profile = ({navigation, myFilesOnly = true, route}) => {
   const {mediaArray} = useMedia(myFilesOnly);
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn, user, setUser} = useContext(MainContext);
-  const [mediaFile, setMediaFile] = useState({});
   const [avatar, setAvatar] = useState('');
   const [showModal, setShowModal] = useState(false);
 
   const loadAvatar = async () => {
     try {
-      const avatarArray = await getFilesByTag('OmaGarden_');
+      const avatarArray = await getFilesByTag('OmaGarden_' + user.user_id);
       setAvatar(avatarArray[avatarArray.length - 1].filename);
     } catch (error) {
       console.error('User avatar fetch failed', error.message);
@@ -47,8 +39,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   const showPictures = async () => {
     try {
-      const avatarArray = await getFilesByTag('OmaGarden_');
-      navigation.navigate('MyFilesOnly', avatarArray);
+      const avatarArray = await getFilesByTag('OmaGarden_' + user.user_id);
+      navigation.navigate('ProfilePictures', avatarArray);
     } catch (error) {
       console.error('User avatar fetch failed', error.message);
     }
@@ -59,11 +51,12 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   }, []);
 
   return (
-    <>
+    <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
       <Card
         containerStyle={{
           backgroundColor: '',
           margin: 0,
+          marginTop: 10,
         }}
       >
         <View
@@ -110,7 +103,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             >
               <TouchableOpacity
                 style={{
-                  height: '46%',
+                  height: '50%',
                   marginTop: 'auto',
                   backgroundColor: '#3E3C3C',
                   borderTopRightRadius: 30,
@@ -204,6 +197,13 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             width: Dimensions.get('screen').width / 3,
             marginHorizontal: Dimensions.get('screen').width / 3,
           }}
+          onPress={() => {
+            navigation.navigate('EditProfile', {
+              userName: user.username,
+              email: user.email,
+              fileName: avatar,
+            });
+          }}
         />
       </Card>
       <Card
@@ -241,11 +241,12 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         numColumns={3}
         keyExtractor={(item, index) => index.toString()}
       />
-    </>
+    </SafeAreaView>
   );
 };
 Profile.propTypes = {
   navigation: PropTypes.object,
   myFilesOnly: PropTypes.bool,
+  route: PropTypes.object,
 };
 export default Profile;

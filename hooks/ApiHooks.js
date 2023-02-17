@@ -20,7 +20,7 @@ const useMedia = (myFilesOnly) => {
 
   const loadMedia = async () => {
     try {
-      let json = await useTag().getFilesByTag(appId);
+      let json = await useTag().getFilesByTag(appId + user.user_id);
 
       if (myFilesOnly) {
         json = json.filter((file) => file.user_id === user.user_id);
@@ -121,7 +121,33 @@ const useUser = () => {
       throw new Error('getUserById ' + error.message);
     }
   };
-  return {getUserById};
+
+  const putUser = async (data, token) => {
+    const options = {
+      method: 'put',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      console.log('Options ' + options);
+      return await doFetch(baseUrl + 'users', options);
+    } catch (error) {
+      throw new Error('put user: ' + error.message);
+    }
+  };
+
+  const checkUsername = async (username) => {
+    try {
+      const result = await doFetch(baseUrl + 'users/username/' + username);
+      return result.available;
+    } catch (error) {
+      throw new Error('Check username ' + error.message);
+    }
+  };
+  return {getUserById, putUser, checkUsername};
 };
 
 export {useMedia, useTag, useUser, useAuthentication};

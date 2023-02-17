@@ -9,7 +9,8 @@ import {useContext} from 'react';
 import Login from '../views/Login';
 import Profile from '../views/Profile';
 import ProfilePictureUpload from '../views/ProfilePictureUpload';
-import MyFilesOnly from '../views/MyFilesOnly';
+import ProfilePictures from '../views/ProfilePictures';
+import EditProfile from '../views/EditProfile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -48,7 +49,8 @@ const StackScreen = () => {
             name="ProfilePictureUpload"
             component={ProfilePictureUpload}
           />
-          <Stack.Screen name="MyFilesOnly" component={MyFilesOnly} />
+          <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />
