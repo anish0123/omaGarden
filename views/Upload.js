@@ -15,7 +15,7 @@ const Upload = ({navigation}) => {
   const {postMedia} = useMedia();
   const [mediaFile, setMediaFile] = useState({});
   const [loading, setLoading] = useState(false);
-  const {update, setUpdate} = useContext(MainContext);
+  const {update, setUpdate, user} = useContext(MainContext);
   const {postTag} = useTag();
   const {
     control,
@@ -51,7 +51,7 @@ const Upload = ({navigation}) => {
 
       const appTag = {
         file_id: result.file_id,
-        tag: appId,
+        tag: appId + user.user_id,
       };
       const tagResult = await postTag(appTag, token);
       console.log('tag result', tagResult);

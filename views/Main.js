@@ -4,18 +4,17 @@ import PropTypes from 'prop-types';
 
 const Main = () => {
   return (
-    <SafeAreaView style={styles.contanier}>
+    <SafeAreaView style={styles.container}>
       <List />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  main: {
+  container: {
     flex: 1,
-    backgroundColor: 'rgb(0,0,0)',
+    backgroundColor: '#fff',
     paddingTop: Platform.OS === 'android' ? 30 : 0,
-    marginTop: 0,
   },
 });
 Main.propTypes = {
