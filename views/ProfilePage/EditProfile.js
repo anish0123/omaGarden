@@ -3,10 +3,10 @@ import {Button, Card, Input} from '@rneui/base';
 import PropTypes from 'prop-types';
 import {Controller, useForm} from 'react-hook-form';
 import {Alert, Dimensions} from 'react-native';
-import {useUser} from '../hooks/ApiHooks';
-import {uploadsUrl} from '../utils/variables';
+import {useUser} from '../../hooks/ApiHooks';
+import {uploadsUrl} from '../../utils/variables';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {MainContext} from '../contexts/MainContext';
+import {MainContext} from '../../contexts/MainContext';
 
 const EditProfile = ({navigation, route}) => {
   const {fileName} = route.params;
@@ -151,7 +151,7 @@ const EditProfile = ({navigation, route}) => {
               borderWidth: 1,
               padding: 8,
             }}
-            placeholder="Password"
+            placeholder="Password (Optional)"
             onBlur={onBlur}
             onChangeText={onChange}
             defaultValue={value}
@@ -178,7 +178,7 @@ const EditProfile = ({navigation, route}) => {
               borderWidth: 1,
               padding: 8,
             }}
-            placeholder="Confirm Password"
+            placeholder="Confirm Password (Optional)"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}

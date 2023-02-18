@@ -1,13 +1,13 @@
 import {Button, Card, Input} from '@rneui/base';
 import {useCallback, useContext, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {useMedia, useTag} from '../hooks/ApiHooks';
+import {useMedia, useTag} from '../../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
 import * as ImagePicker from 'expo-image-picker';
 import {Alert, Dimensions, View} from 'react-native';
 import {Video} from 'expo-av';
-import {MainContext} from '../contexts/MainContext';
+import {MainContext} from '../../contexts/MainContext';
 import {useFocusEffect} from '@react-navigation/native';
 
 const ProfilePictureUpload = ({navigation}) => {

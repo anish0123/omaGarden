@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import {uploadsUrl} from '../utils/variables';
+import {uploadsUrl} from '../../utils/variables';
 import {Image} from '@rneui/base';
 import {Alert, Dimensions, FlatList, View} from 'react-native';
-import {useTag} from '../hooks/ApiHooks';
+import {useTag} from '../../hooks/ApiHooks';
 import {useContext} from 'react';
-import {MainContext} from '../contexts/MainContext';
+import {MainContext} from '../../contexts/MainContext';
 
 const ProfilePictures = ({navigation, route}) => {
   const {getFilesByTag} = useTag();
