@@ -164,6 +164,7 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
                         }}
                         onPress={() => {
                           uploadProfile();
+                          setEditClicked(false);
                           setShowModal(false);
                         }}
                       >
@@ -188,7 +189,11 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
                           fontSize: 20,
                           marginLeft: 15,
                         }}
-                        onPress={() => showPictures()}
+                        onPress={() => {
+                          showPictures();
+                          setShowModal(false);
+                          setEditClicked(false);
+                        }}
                       >
                         Select Existing Pictures
                       </Text>
