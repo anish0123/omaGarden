@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import {Button, Card, Icon, Image, ListItem, Text} from '@rneui/base';
 import {useContext, useEffect, useState} from 'react';
-import {useMedia, useTag} from '../hooks/ApiHooks';
-import {uploadsUrl} from '../utils/variables';
+import {useMedia, useTag} from '../../hooks/ApiHooks';
+import {uploadsUrl} from '../../utils/variables';
 import PropTypes from 'prop-types';
 import {
   Dimensions,
@@ -14,8 +14,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {MainContext} from '../contexts/MainContext';
+import {MainContext} from '../../contexts/MainContext';
 import GestureRecognizer from 'react-native-swipe-gestures';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation, myFilesOnly = true, route}) => {
   const {mediaArray} = useMedia(myFilesOnly);
@@ -23,6 +24,8 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
   const {setIsLoggedIn, user, setUser} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [editClicked, setEditClicked] = useState(false);
+  const [settingClicked, setSettingClicked] = useState(false);
 
   const loadAvatar = async () => {
     try {
@@ -69,7 +72,13 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
           <Card.Title style={{fontSize: 22, color: 'darkgreen'}}>
             OmaGarden
           </Card.Title>
-          <Icon name="settings" />
+          <Icon
+            name="settings"
+            onPress={() => {
+              setShowModal(!showModal);
+              setSettingClicked(!settingClicked);
+            }}
+          />
         </View>
         <Card.Divider />
         <Card.Image
@@ -92,7 +101,14 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
             borderRadius: 20,
           }}
         >
-          <GestureRecognizer onSwipeDown={() => setShowModal(false)}>
+          <GestureRecognizer
+            onSwipeDown={() => {
+              setShowModal(false);
+              setEditClicked(false);
+              setSettingClicked(false);
+              console.log('Model closed Edit ' + editClicked);
+            }}
+          >
             <Modal
               animationType={'slide'}
               transparent={true}
@@ -112,66 +128,142 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
                 activeOpacity={1}
                 onPressOut={() => {
                   setShowModal(false);
+                  setEditClicked(false);
+                  setSettingClicked(false);
+                  console.log('Model closed edit touch ' + editClicked);
                 }}
               >
-                <View>
-                  <View
-                    style={{
-                      width: Dimensions.get('screen').width / 3,
-                      marginHorizontal: Dimensions.get('screen').width / 3,
-                      borderWidth: 2,
-                      borderColor: 'white',
-                    }}
-                  ></View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      padding: 15,
-                      marginTop: 15,
-                    }}
-                  >
-                    <Icon name="camera-outline" type="ionicon" color="white" />
-                    <Text
+                {editClicked && (
+                  <View>
+                    <View
                       style={{
-                        color: 'white',
-                        fontSize: 20,
-                        marginLeft: 15,
+                        width: Dimensions.get('screen').width / 3,
+                        marginHorizontal: Dimensions.get('screen').width / 3,
+                        borderWidth: 2,
+                        borderColor: 'white',
                       }}
-                      onPress={() => {
-                        uploadProfile();
-                        setShowModal(false);
+                    ></View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        padding: 15,
+                        marginTop: 15,
                       }}
                     >
-                      Add Profile Picture
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      padding: 15,
-                    }}
-                  >
-                    <Icon name="images-outline" type="ionicon" color="white" />
-                    <Text
+                      <Icon
+                        name="camera-outline"
+                        type="ionicon"
+                        color="white"
+                      />
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          marginLeft: 15,
+                        }}
+                        onPress={() => {
+                          uploadProfile();
+                          setShowModal(false);
+                        }}
+                      >
+                        Add Profile Picture
+                      </Text>
+                    </View>
+                    <View
                       style={{
-                        color: 'white',
-                        fontSize: 20,
-                        marginLeft: 15,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        padding: 15,
                       }}
-                      onPress={() => showPictures()}
                     >
-                      Select Existing Pictures
-                    </Text>
+                      <Icon
+                        name="images-outline"
+                        type="ionicon"
+                        color="white"
+                      />
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          marginLeft: 15,
+                        }}
+                        onPress={() => showPictures()}
+                      >
+                        Select Existing Pictures
+                      </Text>
+                    </View>
                   </View>
-                </View>
+                )}
+
+                {settingClicked && (
+                  <View>
+                    <View
+                      style={{
+                        width: Dimensions.get('screen').width / 3,
+                        marginHorizontal: Dimensions.get('screen').width / 3,
+                        borderWidth: 2,
+                        borderColor: 'white',
+                      }}
+                    ></View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        padding: 15,
+                        marginTop: 15,
+                      }}
+                    >
+                      <Icon name="logout" color="white" />
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          marginLeft: 15,
+                        }}
+                        onPress={() => {
+                          setIsLoggedIn(false);
+                          try {
+                            AsyncStorage.clear();
+                          } catch (error) {
+                            console.error(
+                              'clearing asyncstorage failed ',
+                              error
+                            );
+                          }
+                        }}
+                      >
+                        Logout
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        padding: 15,
+                      }}
+                    >
+                      <Icon name="help" color="white" />
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          marginLeft: 15,
+                        }}
+                        onPress={() => showPictures()}
+                      >
+                        Help Center
+                      </Text>
+                    </View>
+                  </View>
+                )}
               </TouchableOpacity>
             </Modal>
           </GestureRecognizer>
           <Icon
             onPress={() => {
               setShowModal(!showModal);
+              setEditClicked(!editClicked);
             }}
             size={30}
             name="edit"
@@ -182,8 +274,12 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
             }}
           />
         </View>
-        <ListItem.Title style={{margin: 10}}>{user.username}</ListItem.Title>
-        <ListItem.Title style={{margin: 10}}>{user.full_name}</ListItem.Title>
+        <ListItem.Title style={{margin: 10, fontSize: 20}}>
+          {user.username}
+        </ListItem.Title>
+        <ListItem.Title style={{marginLeft: 10, fontSize: 20}}>
+          {user.full_name}
+        </ListItem.Title>
         <Button
           title="Edit Profile"
           buttonStyle={{

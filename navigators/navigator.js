@@ -7,10 +7,10 @@ import LottieIcons from '../components/LottieIcons';
 import {MainContext} from '../contexts/MainContext';
 import {useContext} from 'react';
 import Login from '../views/Login';
-import Profile from '../views/Profile';
-import ProfilePictureUpload from '../views/ProfilePictureUpload';
-import ProfilePictures from '../views/ProfilePictures';
-import EditProfile from '../views/EditProfile';
+import Profile from '../views/ProfilePage/Profile';
+import ProfilePictureUpload from '../views/ProfilePage/ProfilePictureUpload';
+import ProfilePictures from '../views/ProfilePage/ProfilePictures';
+import EditProfile from '../views/ProfilePage/EditProfile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
