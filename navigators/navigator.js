@@ -7,6 +7,7 @@ import LottieIcons from '../components/LottieIcons';
 import {MainContext} from '../contexts/MainContext';
 import {useContext} from 'react';
 import Login from '../views/Login';
+import Single from '../views/Single';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ const StackScreen = () => {
             component={TabScreen}
             options={{headerShown: false}}
           />
+          <Stack.Screen name="Single" component={Single} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />

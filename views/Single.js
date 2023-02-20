@@ -1,35 +1,24 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Avatar, Card, Icon, ListItem as RNEListItem} from '@rneui/themed';
 import {View, StyleSheet, Image} from 'react-native';
-import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
-import {useFavourite, useTag, useUser} from '../hooks/ApiHooks';
 import {useContext, useEffect, useRef, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Video} from 'expo-av';
 import {MainContext} from '../contexts/MainContext';
+import {useFavourite, useTag} from '../hooks/ApiHooks';
+import {Video} from 'expo-av';
+import {uploadsUrl} from '../utils/variables';
 
-const ListItem = ({singleMedia, navigation}) => {
+const Single = ({route}) => {
+  const item = route.params[0];
+  const owner = route.params[1];
   const video = useRef(null);
-  const [owner, setOwner] = useState({});
   const [avatar, setAvatar] = useState('');
-  const {getUserById} = useUser();
-  const {getFilesByTag} = useTag();
-  const item = singleMedia;
   const [likes, setLikes] = useState([]);
   const [userLikesIt, setUserLikesIt] = useState(false);
+  const {getFilesByTag} = useTag();
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
   const {user} = useContext(MainContext);
-
-  const getOwner = async () => {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const ownerDetails = await getUserById(item.user_id, token);
-      setOwner(ownerDetails);
-    } catch (error) {
-      console.error('getOwner', error);
-    }
-  };
 
   const loadAvatar = async () => {
     try {
@@ -45,7 +34,6 @@ const ListItem = ({singleMedia, navigation}) => {
     try {
       setUserLikesIt(false);
       const likes = await getFavouritesByFileId(item.file_id);
-      console.log('trying to get current user', user);
       console.log('likes', likes);
       setLikes(likes);
       if (likes.length > 0) {
@@ -63,7 +51,7 @@ const ListItem = ({singleMedia, navigation}) => {
     try {
       console.log('likeFile', item.file_id);
       const token = await AsyncStorage.getItem('userToken');
-      const result = await postFavourite(singleMedia.file_id, token);
+      const result = await postFavourite(item.file_id, token);
       getLikes();
       setUserLikesIt(true);
       console.log(result);
@@ -76,7 +64,7 @@ const ListItem = ({singleMedia, navigation}) => {
   const dislikeFile = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      const result = await deleteFavourite(singleMedia.file_id, token);
+      const result = await deleteFavourite(item.file_id, token);
       getLikes();
       setUserLikesIt(false);
       console.log(result);
@@ -87,13 +75,9 @@ const ListItem = ({singleMedia, navigation}) => {
   };
 
   useEffect(() => {
-    getOwner();
+    loadAvatar();
     getLikes();
   }, []);
-
-  useEffect(() => {
-    loadAvatar();
-  }, [owner]);
 
   return (
     <View styles={styles.main}>
@@ -118,9 +102,6 @@ const ListItem = ({singleMedia, navigation}) => {
           <Image
             source={{uri: uploadsUrl + item.thumbnails?.w640}}
             style={styles.image}
-            onPress={() => {
-              navigation.navigate('Home');
-            }}
           />
         ) : (
           <Video
@@ -142,12 +123,6 @@ const ListItem = ({singleMedia, navigation}) => {
           ) : (
             <Icon name="favorite-border" onPress={likeFile} />
           )}
-          <Icon
-            name="comment"
-            onPress={() => {
-              navigation.navigate('Single', [item, owner]);
-            }}
-          />
           {item.user_id === user.user_id && <Icon name="edit" />}
         </RNEListItem>
 
@@ -156,6 +131,9 @@ const ListItem = ({singleMedia, navigation}) => {
             <RNEListItem.Title>{likes.length} Likes</RNEListItem.Title>
             <RNEListItem.Title>{item.title}</RNEListItem.Title>
             <RNEListItem.Subtitle>{item.description}</RNEListItem.Subtitle>
+            <RNEListItem.Subtitle>
+              Added At: {new Date(item.time_added).toLocaleString('fi-FI')}
+            </RNEListItem.Subtitle>
           </RNEListItem.Content>
         </RNEListItem>
       </Card>
@@ -163,9 +141,8 @@ const ListItem = ({singleMedia, navigation}) => {
   );
 };
 
-ListItem.propTypes = {
-  singleMedia: PropTypes.object,
-  navigation: PropTypes.object,
+Single.propTypes = {
+  route: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
@@ -191,11 +168,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   image: {
-    flex: 1,
     width: '100%',
     height: undefined,
     aspectRatio: 1,
   },
 });
 
-export default ListItem;
+export default Single;
