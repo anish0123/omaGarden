@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Main from '../views/Main';
+import Home from '../views/Home';
 import Upload from '../views/Upload';
 import LottieIcons from '../components/LottieIcons';
 import {MainContext} from '../contexts/MainContext';
@@ -23,7 +23,7 @@ const TabScreen = () => {
         tabBarItemStyle: {padding: 4},
       })}
     >
-      <Tab.Screen name="Home" component={Main} />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Upload" component={Upload} />
     </Tab.Navigator>
   );

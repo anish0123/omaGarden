@@ -115,7 +115,72 @@ const useUser = () => {
       throw new Error('getUserById ' + error.message);
     }
   };
-  return {getUserById};
+
+  const getCurrentUser = async (token) => {
+    try {
+      return await doFetch(baseUrl + 'users/user', {
+        headers: {'x-access-token': token},
+      });
+    } catch (error) {
+      throw new Error('getCurrentUser ' + error.message);
+    }
+  };
+  return {getUserById, getCurrentUser};
 };
 
-export {useMedia, useTag, useUser, useAuthentication};
+const useFavourite = () => {
+  const postFavourite = async (fileId, token) => {
+    console.log('posting favourite', fileId);
+    const options = {
+      method: 'post',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({file_id: fileId}),
+    };
+    console.log(options);
+    try {
+      // TODO: use fetch to send request to media endpoint and return the result as json, handle errors with try/catch and response.ok
+      console.log('trying to post ');
+      const tagResult = await doFetch(baseUrl + 'favourites', options);
+      console.log(tagResult);
+      return tagResult;
+    } catch (error) {
+      throw new Error('postFavourite: ' + error.message);
+    }
+  };
+
+  const getFavouritesByUser = async (token) => {};
+
+  const getFavouritesByFileId = async (fileId, token) => {
+    try {
+      return await doFetch(baseUrl + 'favourites/file/' + fileId);
+    } catch (error) {
+      throw new Error('getFavourtiesByFileId error, ' + error.message);
+    }
+  };
+
+  const deleteFavourite = async (fileId, token) => {
+    const options = {
+      method: 'delete',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      return await doFetch(baseUrl + 'favourites/file/' + fileId, options);
+    } catch (error) {
+      throw new Error('deleteFavourties error, ' + error.message);
+    }
+  };
+
+  return {
+    postFavourite,
+    getFavouritesByUser,
+    getFavouritesByFileId,
+    deleteFavourite,
+  };
+};
+
+export {useMedia, useTag, useUser, useAuthentication, useFavourite};

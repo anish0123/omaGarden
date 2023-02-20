@@ -1,6 +1,6 @@
 import {StyleSheet, SafeAreaView, Platform} from 'react-native';
 import List from '../components/List';
-const Main = () => {
+const Home = () => {
   return (
     <SafeAreaView style={styles.contanier}>
       <List />
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Main;
+export default Home;
