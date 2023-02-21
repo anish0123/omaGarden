@@ -1,7 +1,7 @@
-import {Card} from '@rneui/base';
 import {Button, Input} from '@rneui/themed';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
+import {ScrollView, Text} from 'react-native';
 import {useUser} from '../hooks/ApiHooks';
 
 const RegisterForm = (props) => {
@@ -33,8 +33,8 @@ const RegisterForm = (props) => {
     }
   };
   return (
-    <Card>
-      <Card.Title>Login</Card.Title>
+    <ScrollView>
+      <Text>Welcome to Oma Garden</Text>
       <Controller
         control={control}
         rules={{
@@ -45,6 +45,11 @@ const RegisterForm = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 5,
+            }}
             placeholder="Username"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -65,6 +70,11 @@ const RegisterForm = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 5,
+            }}
             placeholder="Password"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -88,6 +98,11 @@ const RegisterForm = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 5,
+            }}
             placeholder="Confirm Password"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -115,6 +130,11 @@ const RegisterForm = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 5,
+            }}
             placeholder="Email"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -131,6 +151,11 @@ const RegisterForm = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 5,
+            }}
             placeholder="Full name"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -148,7 +173,7 @@ const RegisterForm = (props) => {
       >
         Register now!
       </Button>
-    </Card>
+    </ScrollView>
   );
 };
 export default RegisterForm;

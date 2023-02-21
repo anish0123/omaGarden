@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Card} from '@rneui/base';
 import {Button, Input} from '@rneui/themed';
 import React, {useContext} from 'react';
 import {Controller, useForm} from 'react-hook-form';
+import {View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useAuthentication} from '../hooks/ApiHooks';
 
@@ -34,8 +34,7 @@ const LoginForm = (props) => {
     }
   };
   return (
-    <Card>
-      <Card.Title>Login</Card.Title>
+    <View>
       <Controller
         control={control}
         rules={{
@@ -46,6 +45,11 @@ const LoginForm = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 5,
+            }}
             placeholder="Username"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -66,6 +70,11 @@ const LoginForm = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 5,
+            }}
             placeholder="Password"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -79,11 +88,12 @@ const LoginForm = (props) => {
       <Button
         onPress={handleSubmit(logIn)}
         radius={'sm'}
-        containerStyle={{width: '100%'}}
+        containerStyle={{width: '30%'}}
+        buttonStyle={{backgroundColor: 'rgba(127, 220, 103, 1)'}}
       >
         Sign in!
       </Button>
-    </Card>
+    </View>
   );
 };
 export default LoginForm;
