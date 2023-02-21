@@ -121,6 +121,20 @@ const useUser = () => {
       throw new Error('getUserById ' + error.message);
     }
   };
+  const postUser = async (userData) => {
+    const options = {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    };
+    try {
+      return await doFetch(baseUrl + 'users', options);
+    } catch (error) {
+      throw new Error('postUser: ' + error.message);
+    }
+  };
 
   const putUser = async (data, token) => {
     const options = {
@@ -147,7 +161,7 @@ const useUser = () => {
       throw new Error('Check username ' + error.message);
     }
   };
-  return {getUserById, putUser, checkUsername};
+  return {getUserById, putUser, checkUsername, postUser};
 };
 
 export {useMedia, useTag, useUser, useAuthentication};
