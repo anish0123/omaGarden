@@ -7,6 +7,10 @@ import LottieIcons from '../components/LottieIcons';
 import {MainContext} from '../contexts/MainContext';
 import {useContext} from 'react';
 import Login from '../views/Login';
+import Profile from '../views/ProfilePage/Profile';
+import ProfilePictureUpload from '../views/ProfilePage/ProfilePictureUpload';
+import ProfilePictures from '../views/ProfilePage/ProfilePictures';
+import EditProfile from '../views/ProfilePage/EditProfile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -25,6 +29,7 @@ const TabScreen = () => {
     >
       <Tab.Screen name="Home" component={Main} />
       <Tab.Screen name="Upload" component={Upload} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };
@@ -40,6 +45,12 @@ const StackScreen = () => {
             component={TabScreen}
             options={{headerShown: false}}
           />
+          <Stack.Screen
+            name="ProfilePictureUpload"
+            component={ProfilePictureUpload}
+          />
+          <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />
