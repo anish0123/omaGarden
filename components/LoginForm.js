@@ -1,14 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button, Input} from '@rneui/themed';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {View} from 'react-native';
+import {Dimensions, View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useAuthentication} from '../hooks/ApiHooks';
+import PropTypes from 'prop-types';
 
-const LoginForm = (props) => {
+const LoginForm = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useAuthentication();
+  const [loading, setLoading] = useState(false);
   const {
     control,
     handleSubmit,
@@ -21,6 +23,7 @@ const LoginForm = (props) => {
   });
 
   const logIn = async (logInData) => {
+    setLoading(true);
     console.log('Login Button pressed');
     // const data = {username: 'anishm', password: 'anishm123'};
     try {
@@ -87,13 +90,28 @@ const LoginForm = (props) => {
       />
       <Button
         onPress={handleSubmit(logIn)}
-        radius={'sm'}
-        containerStyle={{width: '30%'}}
-        buttonStyle={{backgroundColor: 'rgba(127, 220, 103, 1)'}}
+        loading={loading}
+        title="Save Changes"
+        buttonStyle={{
+          backgroundColor: '#62BD69',
+          borderColor: 'black',
+          borderWidth: 1,
+          borderRadius: 20,
+        }}
+        type="outline"
+        titleStyle={{color: 'black', fontSize: 20}}
+        containerStyle={{
+          padding: 10,
+          width: Dimensions.get('screen').width / 2,
+          marginHorizontal: Dimensions.get('screen').width / 5,
+        }}
       >
         Sign in!
       </Button>
     </View>
   );
+};
+LoginForm.propTypes = {
+  navigation: PropTypes.object,
 };
 export default LoginForm;

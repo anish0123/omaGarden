@@ -1,12 +1,14 @@
 import {Button, Input} from '@rneui/themed';
-import React from 'react';
+import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {ScrollView, Text} from 'react-native';
+import {Alert, Dimensions, ScrollView, Text} from 'react-native';
 import {useUser} from '../hooks/ApiHooks';
+import PropTypes from 'prop-types';
 
-const RegisterForm = (props) => {
+const RegisterForm = ({navigation}) => {
   // const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postUser} = useUser();
+  const [loading, setLoading] = useState(false);
   const {
     control,
     getValues,
@@ -23,13 +25,27 @@ const RegisterForm = (props) => {
   });
 
   const register = async (registerData) => {
+    delete registerData.confirmPassword;
+    setLoading(true);
     console.log('Registering: ', registerData);
     // const data = {username: 'anishm', password: 'anishm123'};
     try {
       const registerResult = await postUser(registerData);
       console.log('register', registerResult);
+      Alert.alert(
+        'Registered successfully.',
+        'You will be redirected to log in page',
+        [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ]
+      );
     } catch (error) {
       console.error('register', error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -168,12 +184,27 @@ const RegisterForm = (props) => {
       />
       <Button
         onPress={handleSubmit(register)}
-        radius={'sm'}
-        containerStyle={{width: '100%'}}
+        loading={loading}
+        title="Save Changes"
+        buttonStyle={{
+          backgroundColor: '#62BD69',
+          borderColor: 'black',
+          borderWidth: 1,
+          borderRadius: 20,
+        }}
+        type="outline"
+        titleStyle={{color: 'black', fontSize: 20}}
+        containerStyle={{
+          padding: 10,
+          width: Dimensions.get('screen').width / 2,
+          marginHorizontal: Dimensions.get('screen').width / 5,
+        }}
       >
         Register now!
       </Button>
     </ScrollView>
   );
 };
+RegisterForm.propTypes = {navigation: PropTypes.object};
+
 export default RegisterForm;
