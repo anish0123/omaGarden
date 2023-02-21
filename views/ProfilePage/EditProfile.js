@@ -88,7 +88,7 @@ const EditProfile = ({navigation, route}) => {
           marginBottom: 20,
           borderRadius: 100 / 2,
           borderWidth: 2,
-          borderColor: 'green',
+          borderColor: 'black',
         }}
       ></Card.Image>
       <Controller
@@ -101,6 +101,7 @@ const EditProfile = ({navigation, route}) => {
             style={{
               borderWidth: 1,
               padding: 8,
+              borderRadius: 1,
             }}
             placeholder="Username"
             onBlur={onBlur}
