@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import {MainContext} from '../contexts/MainContext';
 import {appId, baseUrl} from '../utils/variables';
 
 const doFetch = async (url, options) => {
@@ -13,12 +14,17 @@ const doFetch = async (url, options) => {
   return json;
 };
 
-const useMedia = () => {
+const useMedia = (myFilesOnly) => {
   const [mediaArray, setMediaArray] = useState([]);
+  const {update, user} = useContext(MainContext);
 
   const loadMedia = async () => {
     try {
-      const json = await useTag().getFilesByTag(appId);
+      let json = await useTag().getFilesByTag(appId + user.user_id);
+
+      if (myFilesOnly) {
+        json = json.filter((file) => file.user_id === user.user_id);
+      }
       json.reverse();
       const media = await Promise.all(
         json.map(async (file) => {
@@ -51,7 +57,7 @@ const useMedia = () => {
 
   useEffect(() => {
     loadMedia();
-  });
+  }, [update]);
 
   return {loadMedia, mediaArray, postMedia};
 };
@@ -125,7 +131,47 @@ const useUser = () => {
       throw new Error('getCurrentUser ' + error.message);
     }
   };
-  return {getUserById, getCurrentUser};
+  const postUser = async (userData) => {
+    const options = {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    };
+    try {
+      return await doFetch(baseUrl + 'users', options);
+    } catch (error) {
+      throw new Error('postUser: ' + error.message);
+    }
+  };
+
+  const putUser = async (data, token) => {
+    const options = {
+      method: 'put',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      console.log('Options ' + options);
+      return await doFetch(baseUrl + 'users', options);
+    } catch (error) {
+      throw new Error('put user: ' + error.message);
+    }
+  };
+
+  const checkUsername = async (username) => {
+    try {
+      const result = await doFetch(baseUrl + 'users/username/' + username);
+      return result.available;
+    } catch (error) {
+      throw new Error('Check username ' + error.message);
+    }
+  };
+  return {getUserById, getCurrentUser, putUser, checkUsername, postUser};
 };
 
 const useFavourite = () => {
