@@ -183,4 +183,54 @@ const useFavourite = () => {
   };
 };
 
-export {useMedia, useTag, useUser, useAuthentication, useFavourite};
+const useComment = () => {
+  const getCommentsByFileId = async (fileId) => {
+    console.log('get comments by file Id', fileId);
+    try {
+      return await doFetch(baseUrl + 'comments/file/' + fileId);
+    } catch (error) {
+      throw new Error('get comments error, ' + error.message);
+    }
+  };
+
+  const postComment = async (data, token) => {
+    console.log('post comment', data);
+    const options = {
+      method: 'post',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    console.log('post Comment', options);
+    try {
+      const commentResult = await doFetch(baseUrl + 'comments', options);
+      return commentResult;
+    } catch (error) {
+      throw new Error('post Comment error, ' + error.message);
+    }
+  };
+
+  const deleteComment = async (commentId, token) => {
+    const options = {
+      method: 'delete',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      const deleteResult = await doFetch(
+        baseUrl + 'comments/' + commentId,
+        options
+      );
+      return deleteResult;
+    } catch (error) {
+      throw new Error('delete comment error, ' + error.message);
+    }
+  };
+
+  return {getCommentsByFileId, postComment, deleteComment};
+};
+
+export {useMedia, useTag, useUser, useAuthentication, useFavourite, useComment};

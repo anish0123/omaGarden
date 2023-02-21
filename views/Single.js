@@ -1,12 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Avatar, Card, Icon, ListItem as RNEListItem} from '@rneui/themed';
-import {View, StyleSheet, Image} from 'react-native';
+import {
+  Avatar,
+  Button,
+  Card,
+  Icon,
+  Input,
+  ListItem as RNEListItem,
+  Text,
+} from '@rneui/themed';
+import {View, StyleSheet, Image, ScrollView, Alert} from 'react-native';
 import PropTypes from 'prop-types';
 import {useContext, useEffect, useRef, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
-import {useFavourite, useTag} from '../hooks/ApiHooks';
+import {useComment, useFavourite, useTag} from '../hooks/ApiHooks';
 import {Video} from 'expo-av';
 import {uploadsUrl} from '../utils/variables';
+import {Controller, useForm} from 'react-hook-form';
+import CommentList from '../components/CommentList';
 
 const Single = ({route}) => {
   const item = route.params[0];
@@ -19,6 +29,19 @@ const Single = ({route}) => {
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
   const {user} = useContext(MainContext);
+  const {postComment} = useComment();
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+    reset,
+  } = useForm({
+    defaultValues: {
+      comment: '',
+      file_id: item.file_id,
+    },
+  });
 
   const loadAvatar = async () => {
     try {
@@ -74,70 +97,111 @@ const Single = ({route}) => {
     }
   };
 
+  const uploadComment = async (data) => {
+    console.log('upload Comment', data);
+    const token = await AsyncStorage.getItem('userToken');
+    try {
+      const result = await postComment(data, token);
+      Alert.alert('Comment added', 'Commend Id: ' + result.comment_id);
+      reset();
+    } catch (error) {
+      throw new Error('upload comment, ' + error.message);
+    }
+  };
+
   useEffect(() => {
     loadAvatar();
     getLikes();
   }, []);
 
   return (
-    <View styles={styles.main}>
-      <Card styles={styles.post}>
-        <RNEListItem containerStyle={styles.avatar}>
-          {avatar ? (
-            <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
+    <ScrollView>
+      <View styles={styles.main}>
+        <Card styles={styles.post}>
+          <RNEListItem containerStyle={styles.avatar}>
+            {avatar ? (
+              <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
+            ) : (
+              <Avatar
+                source={{uri: 'https://placekitten.com/g/200/300'}}
+                size={40}
+                rounded
+              />
+            )}
+
+            <RNEListItem.Content>
+              <RNEListItem.Title> {owner.username}</RNEListItem.Title>
+            </RNEListItem.Content>
+          </RNEListItem>
+          <Card.Divider color="#ffff" />
+          {item.media_type === 'image' ? (
+            <Image
+              source={{uri: uploadsUrl + item.thumbnails?.w640}}
+              style={styles.image}
+            />
           ) : (
-            <Avatar
-              source={{uri: 'https://placekitten.com/g/200/300'}}
-              size={40}
-              rounded
+            <Video
+              ref={video}
+              source={{uri: uploadsUrl + item.filename}}
+              style={{width: '100%', height: 500}}
+              resizeMode="cover"
+              useNativeControls
+              onError={(error) => {
+                console.log(error);
+              }}
+              isLooping
             />
           )}
 
-          <RNEListItem.Content>
-            <RNEListItem.Title> {owner.username}</RNEListItem.Title>
-          </RNEListItem.Content>
-        </RNEListItem>
-        <Card.Divider color="#ffff" />
-        {item.media_type === 'image' ? (
-          <Image
-            source={{uri: uploadsUrl + item.thumbnails?.w640}}
-            style={styles.image}
-          />
-        ) : (
-          <Video
-            ref={video}
-            source={{uri: uploadsUrl + item.filename}}
-            style={{width: '100%', height: 500}}
-            resizeMode="cover"
-            useNativeControls
-            onError={(error) => {
-              console.log(error);
+          <RNEListItem containerStyle={styles.iconList}>
+            {userLikesIt ? (
+              <Icon name="favorite" color="red" onPress={dislikeFile} />
+            ) : (
+              <Icon name="favorite-border" onPress={likeFile} />
+            )}
+            {item.user_id === user.user_id && <Icon name="edit" />}
+          </RNEListItem>
+
+          <RNEListItem>
+            <RNEListItem.Content>
+              <RNEListItem.Title>{likes.length} Likes</RNEListItem.Title>
+              <RNEListItem.Title>{item.title}</RNEListItem.Title>
+              <RNEListItem.Subtitle>{item.description}</RNEListItem.Subtitle>
+              <RNEListItem.Subtitle>
+                Added At: {new Date(item.time_added).toLocaleString('fi-FI')}
+              </RNEListItem.Subtitle>
+            </RNEListItem.Content>
+          </RNEListItem>
+          <View>
+            <Text>Comments</Text>
+            <CommentList item={item} />
+          </View>
+        </Card>
+        <Card>
+          <Controller
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'comment is required',
+              },
             }}
-            isLooping
+            render={({field: {onChange, onBlur, value}}) => (
+              <Input
+                placeholder="Comment"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                autoCapitalize="none"
+                errorMessage={errors.title && errors.title.message}
+              />
+            )}
+            name="comment"
           />
-        )}
-
-        <RNEListItem containerStyle={styles.iconList}>
-          {userLikesIt ? (
-            <Icon name="favorite" color="red" onPress={dislikeFile} />
-          ) : (
-            <Icon name="favorite-border" onPress={likeFile} />
-          )}
-          {item.user_id === user.user_id && <Icon name="edit" />}
-        </RNEListItem>
-
-        <RNEListItem>
-          <RNEListItem.Content>
-            <RNEListItem.Title>{likes.length} Likes</RNEListItem.Title>
-            <RNEListItem.Title>{item.title}</RNEListItem.Title>
-            <RNEListItem.Subtitle>{item.description}</RNEListItem.Subtitle>
-            <RNEListItem.Subtitle>
-              Added At: {new Date(item.time_added).toLocaleString('fi-FI')}
-            </RNEListItem.Subtitle>
-          </RNEListItem.Content>
-        </RNEListItem>
-      </Card>
-    </View>
+          <Button title="Add comment" onPress={handleSubmit(uploadComment)} />
+        </Card>
+      </View>
+    </ScrollView>
   );
 };
 
