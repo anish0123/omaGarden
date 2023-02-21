@@ -8,6 +8,11 @@ import {MainContext} from '../contexts/MainContext';
 import {useContext} from 'react';
 import Login from '../views/Login';
 import Single from '../views/Single';
+import Profile from '../views/ProfilePage/Profile';
+import ProfilePictureUpload from '../views/ProfilePage/ProfilePictureUpload';
+import ProfilePictures from '../views/ProfilePage/ProfilePictures';
+import EditProfile from '../views/ProfilePage/EditProfile';
+import LoginForm from '../components/LoginForm';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -26,6 +31,7 @@ const TabScreen = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Upload" component={Upload} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };
@@ -42,6 +48,13 @@ const StackScreen = () => {
             options={{headerShown: false}}
           />
           <Stack.Screen name="Single" component={Single} />
+          <Stack.Screen
+            name="ProfilePictureUpload"
+            component={ProfilePictureUpload}
+          />
+          <Stack.Screen name="LoginForm" component={LoginForm} />
+          <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />

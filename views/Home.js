@@ -1,11 +1,9 @@
 import {StyleSheet, SafeAreaView, Platform} from 'react-native';
 import List from '../components/List';
-import PropTypes from 'prop-types';
-
-const Home = ({navigation}) => {
+const Main = () => {
   return (
     <SafeAreaView style={styles.contanier}>
-      <List navigation={navigation} />
+      <List />
     </SafeAreaView>
   );
 };
@@ -19,8 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-Home.propTypes = {
-  navigation: PropTypes.object,
-};
-
-export default Home;
+export default Main;

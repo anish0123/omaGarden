@@ -210,6 +210,9 @@ const Upload = ({navigation}) => {
     </ScrollView>
   );
 };
+Upload.propTypes = {
+  navigation: PropTypes.object,
+};
 
 Upload.propTypes = {
   navigation: PropTypes.object,
