@@ -20,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation, myFilesOnly = true, route}) => {
   const {mediaArray} = useMedia(myFilesOnly);
+  console.log('Media array length ' + mediaArray.length);
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn, user, setUser} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
@@ -92,25 +93,27 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
               borderColor: 'black',
             }}
           />
-
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: 20,
-              left: 70,
-            }}
-          >
-            Posts
-          </Text>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: 20,
-              left: 70,
-            }}
-          >
-            Posts
-          </Text>
+          <View>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                textAlign: 'center',
+                fontSize: 20,
+                left: 70,
+              }}
+            >
+              Posts
+            </Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 20,
+                left: 70,
+              }}
+            >
+              {mediaArray.length}
+            </Text>
+          </View>
         </View>
         <View
           style={{
