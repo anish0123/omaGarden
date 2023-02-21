@@ -115,7 +115,21 @@ const useUser = () => {
       throw new Error('getUserById ' + error.message);
     }
   };
-  return {getUserById};
+  const postUser = async (userData) => {
+    const options = {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    };
+    try {
+      return await doFetch(baseUrl + 'users', options);
+    } catch (error) {
+      throw new Error('postUser: ' + error.message);
+    }
+  };
+  return {getUserById, postUser};
 };
 
 export {useMedia, useTag, useUser, useAuthentication};
