@@ -81,23 +81,46 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
           />
         </View>
         <Card.Divider />
-        <Card.Image
-          source={{uri: uploadsUrl + avatar}}
-          style={{
-            width: 120,
-            height: 120,
-            borderRadius: 120 / 2,
-            borderWidth: 2,
-            borderColor: 'green',
-          }}
-        />
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Card.Image
+            source={{uri: uploadsUrl + avatar}}
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: 120 / 2,
+              borderWidth: 1,
+              borderColor: 'black',
+            }}
+          />
+
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 20,
+              left: 70,
+            }}
+          >
+            Posts
+          </Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 20,
+              left: 70,
+            }}
+          >
+            Posts
+          </Text>
+        </View>
         <View
           style={{
             position: 'absolute',
-            top: 85,
-            left: 100,
+            top: 135,
+            left: 88,
             elevation: 8,
             backgroundColor: 'white',
+            borderColor: 'black',
+            borderWidth: 0.5,
             borderRadius: 20,
           }}
         >
@@ -270,11 +293,12 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
               setShowModal(!showModal);
               setEditClicked(!editClicked);
             }}
-            size={30}
-            name="edit"
+            size={22}
+            name="camera-outline"
+            type="ionicon"
             style={{
-              width: 40,
-              height: 40,
+              width: 35,
+              height: 35,
               justifyContent: 'center',
             }}
           />
