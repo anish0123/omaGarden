@@ -1,7 +1,7 @@
 import {StatusBar} from 'expo-status-bar';
 import {SafeAreaView, StyleSheet, Platform} from 'react-native';
 import {MainProvider} from './contexts/MainContext';
-import Navigator from './navigators/navigator';
+import Navigator from './navigators/Navigator';
 
 const App = () => {
   console.log('App running');

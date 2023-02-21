@@ -119,7 +119,7 @@ const ListItem = ({singleMedia, navigation}) => {
             source={{uri: uploadsUrl + item.thumbnails?.w640}}
             style={styles.image}
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('Single');
             }}
           />
         ) : (
