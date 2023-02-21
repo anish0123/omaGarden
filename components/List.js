@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 const List = ({navigation, myFilesOnly = false}) => {
   const {mediaArray} = useMedia(myFilesOnly);
+  console.log('List', mediaArray);
   return (
     <FlatList
       data={mediaArray}
