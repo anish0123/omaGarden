@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
 
 const Login = () => {
   return (
@@ -15,6 +16,7 @@ const Login = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <LoginForm />
+          <RegisterForm />
         </KeyboardAvoidingView>
       </TouchableOpacity>
     </ScrollView>
