@@ -20,7 +20,7 @@ const useMedia = (myFilesOnly) => {
 
   const loadMedia = async () => {
     try {
-      let json = await useTag().getFilesByTag(appId + user.user_id);
+      let json = await useTag().getFilesByTag(appId);
 
       if (myFilesOnly) {
         json = json.filter((file) => file.user_id === user.user_id);
@@ -33,6 +33,7 @@ const useMedia = (myFilesOnly) => {
         })
       );
       setMediaArray(media);
+      console.log('loadMedia', mediaArray);
     } catch (error) {
       throw new Error('loadMedia', error.message);
     }
