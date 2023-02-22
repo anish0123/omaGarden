@@ -9,6 +9,7 @@ const CommentList = ({item}) => {
   const [comments, setComments] = useState({});
   const {getCommentsByFileId} = useComment();
 
+  // Getting comments by fileId from the api.
   const getComments = async () => {
     console.log('getcomments, ' + file.file_id);
     try {

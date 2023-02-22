@@ -50,7 +50,7 @@ const ProfilePictureUpload = ({navigation}) => {
 
       const appTag = {
         file_id: result.file_id,
-        tag: 'OmaGarden_' + user.user_id,
+        tag: 'avatar_' + user.user_id,
       };
       const tagResult = await postTag(appTag, token);
       console.log('tag result', tagResult);
