@@ -2,6 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
 import {appId, baseUrl} from '../utils/variables';
 
+// Method for fetching data from api
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
   const json = await response.json();
@@ -14,13 +15,15 @@ const doFetch = async (url, options) => {
   return json;
 };
 
+// Method for working on media (picture or videos).
 const useMedia = (myFilesOnly) => {
   const [mediaArray, setMediaArray] = useState([]);
   const {update, user} = useContext(MainContext);
 
+  // Method for loading the media from the api.
   const loadMedia = async () => {
     try {
-      let json = await useTag().getFilesByTag(appId + user.user_id);
+      let json = await useTag().getFilesByTag(appId);
 
       if (myFilesOnly) {
         json = json.filter((file) => file.user_id === user.user_id);
@@ -38,6 +41,7 @@ const useMedia = (myFilesOnly) => {
     }
   };
 
+  // Method for posting the media in the api
   const postMedia = async (fileData, token) => {
     const options = {
       method: 'post',
@@ -62,6 +66,7 @@ const useMedia = (myFilesOnly) => {
   return {loadMedia, mediaArray, postMedia};
 };
 
+// Method for using tag in the media
 const useTag = () => {
   const getFilesByTag = async (tag) => {
     try {
@@ -71,6 +76,7 @@ const useTag = () => {
     }
   };
 
+  // Method for posting a tag.
   const postTag = async (data, token) => {
     const options = {
       method: 'post',
@@ -91,7 +97,9 @@ const useTag = () => {
   return {getFilesByTag, postTag};
 };
 
+// Method for authenticating users.
 const useAuthentication = () => {
+  // Method for logging in users.
   const postLogin = async (userCredentials) => {
     const options = {
       method: 'post',
@@ -111,7 +119,9 @@ const useAuthentication = () => {
   return {postLogin};
 };
 
+// Method about users.
 const useUser = () => {
+  // Method for getting users according to user id
   const getUserById = async (id, token) => {
     try {
       return await doFetch(baseUrl + 'users/' + id, {
@@ -121,6 +131,19 @@ const useUser = () => {
       throw new Error('getUserById ' + error.message);
     }
   };
+
+  // Method for getting the current user
+  const getCurrentUser = async (token) => {
+    try {
+      return await doFetch(baseUrl + 'users/user', {
+        headers: {'x-access-token': token},
+      });
+    } catch (error) {
+      throw new Error('getCurrentUser ' + error.message);
+    }
+  };
+
+  // Method for adding a new user.
   const postUser = async (userData) => {
     const options = {
       method: 'post',
@@ -136,6 +159,7 @@ const useUser = () => {
     }
   };
 
+  // Method for editing current user
   const putUser = async (data, token) => {
     const options = {
       method: 'put',
@@ -153,6 +177,7 @@ const useUser = () => {
     }
   };
 
+  // Method for checking the username if it's available
   const checkUsername = async (username) => {
     try {
       const result = await doFetch(baseUrl + 'users/username/' + username);
@@ -161,7 +186,121 @@ const useUser = () => {
       throw new Error('Check username ' + error.message);
     }
   };
-  return {getUserById, putUser, checkUsername, postUser};
+  return {getUserById, getCurrentUser, putUser, checkUsername, postUser};
 };
 
-export {useMedia, useTag, useUser, useAuthentication};
+// Methods for favourites.
+const useFavourite = () => {
+  // Method for adding a favourite post for the users.
+  const postFavourite = async (fileId, token) => {
+    console.log('posting favourite', fileId);
+    const options = {
+      method: 'post',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({file_id: fileId}),
+    };
+    console.log(options);
+    try {
+      // TODO: use fetch to send request to media endpoint and return the result as json, handle errors with try/catch and response.ok
+      console.log('trying to post ');
+      const tagResult = await doFetch(baseUrl + 'favourites', options);
+      console.log(tagResult);
+      return tagResult;
+    } catch (error) {
+      throw new Error('postFavourite: ' + error.message);
+    }
+  };
+
+  // Method for getting favourites posts of the users
+  const getFavouritesByUser = async (token) => {};
+
+  // Method for getting all the favourites according to the file ID.
+  const getFavouritesByFileId = async (fileId, token) => {
+    try {
+      return await doFetch(baseUrl + 'favourites/file/' + fileId);
+    } catch (error) {
+      throw new Error('getFavourtiesByFileId error, ' + error.message);
+    }
+  };
+
+  // Method for deleting the favourites.
+  const deleteFavourite = async (fileId, token) => {
+    const options = {
+      method: 'delete',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      return await doFetch(baseUrl + 'favourites/file/' + fileId, options);
+    } catch (error) {
+      throw new Error('deleteFavourties error, ' + error.message);
+    }
+  };
+
+  return {
+    postFavourite,
+    getFavouritesByUser,
+    getFavouritesByFileId,
+    deleteFavourite,
+  };
+};
+
+// Method for comments.
+const useComment = () => {
+  // Method for getting comments according to the file id
+  const getCommentsByFileId = async (fileId) => {
+    console.log('get comments by file Id', fileId);
+    try {
+      return await doFetch(baseUrl + 'comments/file/' + fileId);
+    } catch (error) {
+      throw new Error('get comments error, ' + error.message);
+    }
+  };
+
+  // Method for adding the comments
+  const postComment = async (data, token) => {
+    console.log('post comment', data);
+    const options = {
+      method: 'post',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    console.log('post Comment', options);
+    try {
+      const commentResult = await doFetch(baseUrl + 'comments', options);
+      return commentResult;
+    } catch (error) {
+      throw new Error('post Comment error, ' + error.message);
+    }
+  };
+
+  // Method for deleting the comment
+  const deleteComment = async (commentId, token) => {
+    const options = {
+      method: 'delete',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      const deleteResult = await doFetch(
+        baseUrl + 'comments/' + commentId,
+        options
+      );
+      return deleteResult;
+    } catch (error) {
+      throw new Error('delete comment error, ' + error.message);
+    }
+  };
+
+  return {getCommentsByFileId, postComment, deleteComment};
+};
+
+export {useMedia, useTag, useUser, useAuthentication, useFavourite, useComment};

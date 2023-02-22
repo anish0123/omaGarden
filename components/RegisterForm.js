@@ -25,6 +25,7 @@ const RegisterForm = ({navigation}) => {
     },
   });
 
+  // Method of registering the user according to the data received from hook form
   const register = async (registerData) => {
     delete registerData.confirmPassword;
     setLoading(true);
