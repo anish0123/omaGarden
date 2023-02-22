@@ -31,7 +31,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   const loadAvatar = async () => {
     try {
-      const avatarArray = await getFilesByTag('OmaGarden_' + user.user_id);
+      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
       setAvatar(avatarArray[avatarArray.length - 1].filename);
     } catch (error) {
       console.error('User avatar fetch failed', error.message);
@@ -53,7 +53,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   useEffect(() => {
     loadAvatar();
-  }, []);
+  }, [avatar]);
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
