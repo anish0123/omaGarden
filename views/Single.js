@@ -43,6 +43,7 @@ const Single = ({route}) => {
     },
   });
 
+  // Loading the avatar
   const loadAvatar = async () => {
     try {
       setAvatar('');
@@ -53,6 +54,7 @@ const Single = ({route}) => {
     }
   };
 
+  // Getting the likes
   const getLikes = async () => {
     try {
       setUserLikesIt(false);
@@ -70,6 +72,7 @@ const Single = ({route}) => {
     }
   };
 
+  // Method for liking a post
   const likeFile = async () => {
     try {
       console.log('likeFile', item.file_id);
@@ -84,6 +87,7 @@ const Single = ({route}) => {
     }
   };
 
+  // Method for disliking a post
   const dislikeFile = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
@@ -97,6 +101,7 @@ const Single = ({route}) => {
     }
   };
 
+  // Method for adding a comment
   const uploadComment = async (data) => {
     console.log('upload Comment', data);
     const token = await AsyncStorage.getItem('userToken');

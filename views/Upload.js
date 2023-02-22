@@ -5,8 +5,9 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
-  ScrollView,
+  SafeAreaView,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {useCallback, useContext, useRef, useState} from 'react';
@@ -38,8 +39,8 @@ const Upload = ({navigation}) => {
     mode: 'onChange',
   });
 
+  // Method for uploading a post/ file.
   const uploadFile = async (data) => {
-    // TODO: create form data and post it
     setLoading(true);
     const formData = new FormData();
     formData.append('title', data.title);
@@ -85,6 +86,7 @@ const Upload = ({navigation}) => {
     }
   };
 
+  // Method for picking a file
   const pickFile = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -106,6 +108,7 @@ const Upload = ({navigation}) => {
     // No permissions request is necessary for launching the image library
   };
 
+  // Method for reseting the values.
   const resetValues = () => {
     setMediaFile({});
     reset();
@@ -121,7 +124,7 @@ const Upload = ({navigation}) => {
   );
 
   return (
-    <ScrollView>
+    <SafeAreaView>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
         <Card>
           {mediaFile.type === 'video' ? (
@@ -189,31 +192,54 @@ const Upload = ({navigation}) => {
             name="description"
           />
 
-          <Button title="Pick a file" onPress={pickFile} />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              onPress={pickFile}
+              title="Select file"
+              buttonStyle={{
+                backgroundColor: '#62BD69',
+                borderColor: 'black',
+                borderRadius: 5,
+              }}
+              type="outline"
+              titleStyle={{color: 'black'}}
+              containerStyle={{
+                width: '48%',
+              }}
+            />
+            <Button
+              onPress={resetValues}
+              title="Reset"
+              buttonStyle={{
+                backgroundColor: '#62BD69',
+                borderColor: 'black',
+                borderRadius: 5,
+              }}
+              type="outline"
+              titleStyle={{color: 'black'}}
+              containerStyle={{
+                width: '48%',
+              }}
+            />
+          </View>
           <Button
             loading={loading}
-            onPress={handleSubmit(uploadFile)}
-            radius={'sm'}
-            containerStyle={{
-              width: '100%',
-            }}
             disabled={!mediaFile.uri || errors.title || errors.description}
-          >
-            Upload
-          </Button>
-          <Button type="outline" onPress={resetValues}>
-            Reset
-          </Button>
+            title="Upload file"
+            onPress={handleSubmit(uploadFile)}
+          />
           {loading && <ActivityIndicator size="large" />}
         </Card>
       </TouchableOpacity>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
-Upload.propTypes = {
-  navigation: PropTypes.object,
-};
-
 Upload.propTypes = {
   navigation: PropTypes.object,
 };

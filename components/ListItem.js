@@ -21,6 +21,7 @@ const ListItem = ({singleMedia, navigation}) => {
     useFavourite();
   const {user} = useContext(MainContext);
 
+  // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
@@ -31,6 +32,7 @@ const ListItem = ({singleMedia, navigation}) => {
     }
   };
 
+  // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
       setAvatar('');
@@ -41,12 +43,11 @@ const ListItem = ({singleMedia, navigation}) => {
     }
   };
 
+  // Getting the likes of the post
   const getLikes = async () => {
     try {
       setUserLikesIt(false);
       const likes = await getFavouritesByFileId(item.file_id);
-      console.log('trying to get current user', user);
-      console.log('likes', likes);
       setLikes(likes);
       if (likes.length > 0) {
         const userLike = likes.filter((like) => like.user_id === user.user_id);
@@ -59,6 +60,7 @@ const ListItem = ({singleMedia, navigation}) => {
     }
   };
 
+  // Method for liking the post by the logged in user
   const likeFile = async () => {
     try {
       console.log('likeFile', item.file_id);
@@ -73,6 +75,7 @@ const ListItem = ({singleMedia, navigation}) => {
     }
   };
 
+  // // Method for disliking the post by the logged in user
   const dislikeFile = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
@@ -89,6 +92,7 @@ const ListItem = ({singleMedia, navigation}) => {
   useEffect(() => {
     getOwner();
     getLikes();
+    loadAvatar();
   }, []);
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
 import {appId, baseUrl} from '../utils/variables';
 
+// Method for fetching data from api
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
   const json = await response.json();
@@ -14,10 +15,12 @@ const doFetch = async (url, options) => {
   return json;
 };
 
+// Method for working on media (picture or videos).
 const useMedia = (myFilesOnly) => {
   const [mediaArray, setMediaArray] = useState([]);
   const {update, user} = useContext(MainContext);
 
+  // Method for loading the media from the api.
   const loadMedia = async () => {
     try {
       let json = await useTag().getFilesByTag(appId);
@@ -33,12 +36,12 @@ const useMedia = (myFilesOnly) => {
         })
       );
       setMediaArray(media);
-      console.log('loadMedia', mediaArray);
     } catch (error) {
       throw new Error('loadMedia', error.message);
     }
   };
 
+  // Method for posting the media in the api
   const postMedia = async (fileData, token) => {
     const options = {
       method: 'post',
@@ -63,6 +66,7 @@ const useMedia = (myFilesOnly) => {
   return {loadMedia, mediaArray, postMedia};
 };
 
+// Method for using tag in the media
 const useTag = () => {
   const getFilesByTag = async (tag) => {
     try {
@@ -72,6 +76,7 @@ const useTag = () => {
     }
   };
 
+  // Method for posting a tag.
   const postTag = async (data, token) => {
     const options = {
       method: 'post',
@@ -92,7 +97,9 @@ const useTag = () => {
   return {getFilesByTag, postTag};
 };
 
+// Method for authenticating users.
 const useAuthentication = () => {
+  // Method for logging in users.
   const postLogin = async (userCredentials) => {
     const options = {
       method: 'post',
@@ -112,7 +119,9 @@ const useAuthentication = () => {
   return {postLogin};
 };
 
+// Method about users.
 const useUser = () => {
+  // Method for getting users according to user id
   const getUserById = async (id, token) => {
     try {
       return await doFetch(baseUrl + 'users/' + id, {
@@ -123,6 +132,7 @@ const useUser = () => {
     }
   };
 
+  // Method for getting the current user
   const getCurrentUser = async (token) => {
     try {
       return await doFetch(baseUrl + 'users/user', {
@@ -132,6 +142,8 @@ const useUser = () => {
       throw new Error('getCurrentUser ' + error.message);
     }
   };
+
+  // Method for adding a new user.
   const postUser = async (userData) => {
     const options = {
       method: 'post',
@@ -147,6 +159,7 @@ const useUser = () => {
     }
   };
 
+  // Method for editing current user
   const putUser = async (data, token) => {
     const options = {
       method: 'put',
@@ -164,6 +177,7 @@ const useUser = () => {
     }
   };
 
+  // Method for checking the username if it's available
   const checkUsername = async (username) => {
     try {
       const result = await doFetch(baseUrl + 'users/username/' + username);
@@ -175,7 +189,9 @@ const useUser = () => {
   return {getUserById, getCurrentUser, putUser, checkUsername, postUser};
 };
 
+// Methods for favourites.
 const useFavourite = () => {
+  // Method for adding a favourite post for the users.
   const postFavourite = async (fileId, token) => {
     console.log('posting favourite', fileId);
     const options = {
@@ -198,8 +214,10 @@ const useFavourite = () => {
     }
   };
 
+  // Method for getting favourites posts of the users
   const getFavouritesByUser = async (token) => {};
 
+  // Method for getting all the favourites according to the file ID.
   const getFavouritesByFileId = async (fileId, token) => {
     try {
       return await doFetch(baseUrl + 'favourites/file/' + fileId);
@@ -208,6 +226,7 @@ const useFavourite = () => {
     }
   };
 
+  // Method for deleting the favourites.
   const deleteFavourite = async (fileId, token) => {
     const options = {
       method: 'delete',
@@ -230,7 +249,9 @@ const useFavourite = () => {
   };
 };
 
+// Method for comments.
 const useComment = () => {
+  // Method for getting comments according to the file id
   const getCommentsByFileId = async (fileId) => {
     console.log('get comments by file Id', fileId);
     try {
@@ -240,6 +261,7 @@ const useComment = () => {
     }
   };
 
+  // Method for adding the comments
   const postComment = async (data, token) => {
     console.log('post comment', data);
     const options = {
@@ -259,6 +281,7 @@ const useComment = () => {
     }
   };
 
+  // Method for deleting the comment
   const deleteComment = async (commentId, token) => {
     const options = {
       method: 'delete',
