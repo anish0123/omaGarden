@@ -13,6 +13,7 @@ const RegisterForm = ({navigation}) => {
     control,
     getValues,
     handleSubmit,
+    reset,
     formState: {errors},
   } = useForm({
     defaultValues: {
@@ -32,16 +33,20 @@ const RegisterForm = ({navigation}) => {
     try {
       const registerResult = await postUser(registerData);
       console.log('register', registerResult);
-      Alert.alert(
-        'Registered successfully.',
-        'You will be redirected to log in page',
-        [
-          {
-            text: 'OK',
-            onPress: () => {},
+      Alert.alert('Registered successfully.', 'UserName and Password Created', [
+        {
+          text: 'OK',
+          onPress: () => {
+            reset({
+              username: '',
+              password: '',
+              confirmPassword: '',
+              email: '',
+              full_name: '',
+            });
           },
-        ]
-      );
+        },
+      ]);
     } catch (error) {
       console.error('register', error);
     } finally {
