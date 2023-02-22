@@ -5,9 +5,11 @@ import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  Platform,
   SafeAreaView,
   TouchableOpacity,
   View,
+  StyleSheet,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {useCallback, useContext, useRef, useState} from 'react';
@@ -124,8 +126,20 @@ const Upload = ({navigation}) => {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginStart: 10,
+          }}
+        >
+          <Card.Title style={{fontSize: 22, color: 'darkgreen'}}>
+            OmaGarden
+          </Card.Title>
+        </View>
+        <Card.Divider />
         <Card>
           {mediaFile.type === 'video' ? (
             <Video
@@ -240,6 +254,15 @@ const Upload = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: Platform.OS === 'android' ? 30 : 0,
+  },
+});
+
 Upload.propTypes = {
   navigation: PropTypes.object,
 };
