@@ -11,7 +11,7 @@ import Profile from '../views/ProfilePage/Profile';
 import ProfilePictureUpload from '../views/ProfilePage/ProfilePictureUpload';
 import ProfilePictures from '../views/ProfilePage/ProfilePictures';
 import EditProfile from '../views/ProfilePage/EditProfile';
-import LoginForm from '../components/LoginForm';
+import SingleItem from '../views/ProfilePage/SingleItem';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,12 +50,14 @@ const StackScreen = () => {
             name="ProfilePictureUpload"
             component={ProfilePictureUpload}
           />
-          <Stack.Screen name="LoginForm" component={LoginForm} />
           <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="SingleItem" component={SingleItem} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={Login} />
+        <>
+          <Stack.Screen name="Login" component={Login} />
+        </>
       )}
     </Stack.Navigator>
   );

@@ -17,8 +17,9 @@ import {
 import {MainContext} from '../../contexts/MainContext';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SingleMedia from './SingleItem';
 
-const Profile = ({navigation, myFilesOnly = true, route}) => {
+const Profile = ({navigation, myFilesOnly = true}) => {
   const {mediaArray} = useMedia(myFilesOnly);
   console.log('Media array length ' + mediaArray.length);
   const {getFilesByTag} = useTag();
@@ -224,6 +225,29 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
                         Select Existing Pictures
                       </Text>
                     </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        padding: 15,
+                      }}
+                    >
+                      <Icon name="person" type="ionicon" color="white" />
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          marginLeft: 15,
+                        }}
+                        onPress={() => {
+                          showPictures();
+                          setShowModal(false);
+                          setEditClicked(false);
+                        }}
+                      >
+                        View profile Picture
+                      </Text>
+                    </View>
                   </View>
                 )}
 
@@ -355,6 +379,7 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
         renderItem={({item}) => (
           <View>
             <Image
+              onPress={() => navigation.navigate('SingleItem', item)}
               source={{uri: uploadsUrl + item.filename}}
               style={{
                 borderWidth: 1,
@@ -375,6 +400,5 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
 Profile.propTypes = {
   navigation: PropTypes.object,
   myFilesOnly: PropTypes.bool,
-  route: PropTypes.object,
 };
 export default Profile;
