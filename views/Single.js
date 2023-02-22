@@ -131,7 +131,6 @@ const Single = ({route}) => {
     try {
       const comments = await getCommentsByFileId(file.file_id);
       setComments(comments);
-      console.log(comments);
     } catch (error) {
       throw new Error('get comments error', error.message);
     }
