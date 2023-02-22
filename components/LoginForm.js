@@ -22,10 +22,10 @@ const LoginForm = ({navigation}) => {
     },
   });
 
+  // Method for logging the user according to the data received from hook form
   const logIn = async (logInData) => {
     setLoading(true);
     console.log('Login Button pressed');
-    // const data = {username: 'anishm', password: 'anishm123'};
     try {
       const loginResult = await postLogin(logInData);
       await AsyncStorage.setItem('userToken', loginResult.token);
