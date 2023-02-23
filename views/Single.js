@@ -41,6 +41,7 @@ const Single = ({route}) => {
   const {user} = useContext(MainContext);
   const {getCommentsByFileId} = useComment();
   const {postComment} = useComment();
+  console.log('file id ' + file.file_id);
 
   const {
     control,

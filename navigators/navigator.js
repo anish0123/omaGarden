@@ -12,7 +12,6 @@ import Profile from '../views/ProfilePage/Profile';
 import ProfilePictureUpload from '../views/ProfilePage/ProfilePictureUpload';
 import ProfilePictures from '../views/ProfilePage/ProfilePictures';
 import EditProfile from '../views/ProfilePage/EditProfile';
-import SingleItem from '../views/ProfilePage/SingleItem';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -54,7 +53,6 @@ const StackScreen = () => {
           />
           <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
-          <Stack.Screen name="SingleItem" component={SingleItem} />
         </>
       ) : (
         <>

@@ -17,7 +17,6 @@ import {
 import {MainContext} from '../../contexts/MainContext';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SingleMedia from './SingleItem';
 
 const Profile = ({navigation, myFilesOnly = true}) => {
   const {mediaArray} = useMedia(myFilesOnly);
@@ -379,7 +378,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         renderItem={({item}) => (
           <View>
             <Image
-              onPress={() => navigation.navigate('SingleItem', item)}
+              onPress={() => navigation.navigate('Single', [item, user])}
               source={{uri: uploadsUrl + item.filename}}
               style={{
                 borderWidth: 1,
