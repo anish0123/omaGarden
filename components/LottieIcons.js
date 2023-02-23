@@ -1,6 +1,7 @@
 import LottieView from 'lottie-react-native';
 import HomeIcon from '../Lottie/Home.json';
 import ProfileIcon from '../Lottie/Profile.json';
+import SearchIcon from '../Lottie/Search.json';
 import UploadIcon from '../Lottie/Upload.json';
 import PropTypes from 'prop-types';
 
@@ -8,6 +9,7 @@ const icons = {
   Home: HomeIcon,
   Profile: ProfileIcon,
   Upload: UploadIcon,
+  Search: SearchIcon,
 };
 
 const LottieIcons = ({iconName, focused}) => {
