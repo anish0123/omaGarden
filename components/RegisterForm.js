@@ -38,7 +38,7 @@ const RegisterForm = ({navigation}) => {
         [
           {
             text: 'OK',
-            onPress: () => {},
+            // onPress: () => {},
           },
         ]
       );
