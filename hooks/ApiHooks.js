@@ -69,6 +69,7 @@ const useMedia = (myFilesOnly) => {
 // Method for using tag in the media
 const useTag = () => {
   const getFilesByTag = async (tag) => {
+    console.log('getFilesByTag', tag);
     try {
       return await doFetch(baseUrl + 'tags/' + tag);
     } catch (error) {
@@ -143,6 +144,18 @@ const useUser = () => {
     }
   };
 
+  const getAllUsers = async (token) => {
+    try {
+      const result = await doFetch(baseUrl + 'users', {
+        headers: {'x-access-token': token},
+      });
+      console.log(result);
+      return result;
+    } catch (error) {
+      throw new Error('getAllUsers' + error.message);
+    }
+  };
+
   // Method for adding a new user.
   const postUser = async (userData) => {
     const options = {
@@ -186,7 +199,14 @@ const useUser = () => {
       throw new Error('Check username ' + error.message);
     }
   };
-  return {getUserById, getCurrentUser, putUser, checkUsername, postUser};
+  return {
+    getUserById,
+    getCurrentUser,
+    getAllUsers,
+    putUser,
+    checkUsername,
+    postUser,
+  };
 };
 
 // Methods for favourites.
