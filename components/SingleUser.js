@@ -5,6 +5,7 @@ import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 
+// This page provides the username and user avatar in search page
 const SingleUser = ({singleUser}) => {
   const user = singleUser.item;
   const [avatar, setAvatar] = useState('');
