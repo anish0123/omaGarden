@@ -12,7 +12,8 @@ const ProfilePictures = ({navigation, route}) => {
   console.log(route.params.length);
   const setProfilePicture = async (tagId) => {
     try {
-      const avatarArray = await getFilesByTag('OmaGarden_' + user.user_id);
+      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
+      console.log('setProfilePicture', avatarArray);
 
       for (let index = 0; index < avatarArray.length; index++) {
         if (avatarArray[index].tag_id === tagId) {

@@ -1,17 +1,19 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Main from '../views/Main';
+import Home from '../views/Home';
 import Upload from '../views/Upload';
 import LottieIcons from '../components/LottieIcons';
 import {MainContext} from '../contexts/MainContext';
 import {useContext} from 'react';
 import Login from '../views/Login';
+import Single from '../views/Single';
 import Profile from '../views/ProfilePage/Profile';
 import ProfilePictureUpload from '../views/ProfilePage/ProfilePictureUpload';
 import ProfilePictures from '../views/ProfilePage/ProfilePictures';
 import EditProfile from '../views/ProfilePage/EditProfile';
 import LoginForm from '../components/LoginForm';
+import Search from '../views/Search';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -28,7 +30,8 @@ const TabScreen = () => {
         tabBarItemStyle: {padding: 4},
       })}
     >
-      <Tab.Screen name="Home" component={Main} />
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="Upload" component={Upload} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
@@ -46,6 +49,7 @@ const StackScreen = () => {
             component={TabScreen}
             options={{headerShown: false}}
           />
+          <Stack.Screen name="Single" component={Single} />
           <Stack.Screen
             name="ProfilePictureUpload"
             component={ProfilePictureUpload}
