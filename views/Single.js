@@ -26,6 +26,7 @@ import {Video} from 'expo-av';
 import {uploadsUrl} from '../utils/variables';
 import {Controller, useForm} from 'react-hook-form';
 import SingleComment from '../components/SingleComment';
+import moment from 'moment';
 
 const Single = ({route}) => {
   const file = route.params[0];
@@ -127,7 +128,6 @@ const Single = ({route}) => {
 
   // Method for getting comments
   const getComments = async () => {
-    console.log('getcomments, ' + file.file_id);
     try {
       const comments = await getCommentsByFileId(file.file_id);
       setComments(comments);
@@ -195,7 +195,7 @@ const Single = ({route}) => {
             <RNEListItem.Title>{file.title}</RNEListItem.Title>
             <RNEListItem.Subtitle>{file.description}</RNEListItem.Subtitle>
             <RNEListItem.Subtitle>
-              Added At: {new Date(file.time_added).toLocaleString('fi-FI')}
+              Added: {moment(file.time_added).fromNow()}
             </RNEListItem.Subtitle>
           </RNEListItem.Content>
         </RNEListItem>
