@@ -15,6 +15,7 @@ import EditProfile from '../views/ProfilePage/EditProfile';
 import Search from '../views/Search';
 import LoginForm from '../components/LoginForm';
 import OtherUserProfile from '../views/ProfilePage/OtherUserProfile';
+import EditPost from '../views/EditPost';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -63,6 +64,7 @@ const StackScreen = () => {
             name="OtherUserProfile"
             component={OtherUserProfile}
           />
+          <Stack.Screen name="EditPost" component={EditPost} />
         </>
       ) : (
         <>
