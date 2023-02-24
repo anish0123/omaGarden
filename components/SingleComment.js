@@ -1,18 +1,33 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ListItem} from '@rneui/themed';
+import {Icon, ListItem} from '@rneui/themed';
 import PropTypes from 'prop-types';
-import {useEffect, useState} from 'react';
-import {useUser} from '../hooks/ApiHooks';
+import {useContext, useEffect, useState} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+import {MainContext} from '../contexts/MainContext';
+import {useComment, useUser} from '../hooks/ApiHooks';
 
 const SingleComment = ({singleComment}) => {
-  console.log(singleComment);
-  const [user, setUser] = useState({});
+  const [owner, setOwner] = useState({});
   const {getUserById} = useUser();
+  const {user} = useContext(MainContext);
+  const {deleteComment} = useComment();
+  const {updateComment, setUpdateComment} = useContext(MainContext);
 
   const getUser = async () => {
     const token = await AsyncStorage.getItem('userToken');
     const user = await getUserById(singleComment.user_id, token);
-    setUser(user);
+    setOwner(user);
+  };
+
+  const commentDelete = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const result = await deleteComment(singleComment.comment_id, token);
+      Alert.alert(result.message);
+      setUpdateComment(!updateComment);
+    } catch (error) {
+      throw new Error('comment Delete, ' + error.message);
+    }
   };
 
   useEffect(() => {
@@ -20,15 +35,37 @@ const SingleComment = ({singleComment}) => {
   }, []);
 
   return (
-    <ListItem>
-      <ListItem.Title>{user.username}</ListItem.Title>
-      <ListItem.Subtitle>{singleComment.comment}</ListItem.Subtitle>
-    </ListItem>
+    <View style={styles.container}>
+      <ListItem>
+        <ListItem.Title>{owner.username} :</ListItem.Title>
+        <ListItem.Subtitle>{singleComment.comment}</ListItem.Subtitle>
+      </ListItem>
+      {user.user_id === singleComment.user_id && (
+        <Icon
+          name="delete"
+          onPress={commentDelete}
+          containerStyle={styles.icon}
+        />
+      )}
+    </View>
   );
 };
 
 SingleComment.propTypes = {
   singleComment: PropTypes.object,
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    alignContent: 'center',
+    flexWrap: 'wrap',
+  },
+  icon: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+});
 
 export default SingleComment;
