@@ -17,14 +17,11 @@ import {uploadsUrl} from '../utils/variables';
 import {Video} from 'expo-av';
 
 const EditPostForm = ({item, owner, navigation}) => {
-  console.log('editPostForm', item);
-  console.log(navigation);
-
   // const item = route.params[0];
   // const navigation = route.params[1];
   const [loading, setLoading] = useState(false);
   const {update, setUpdate} = useContext(MainContext);
-  const {putMedia} = useMedia();
+  const {putMedia, deleteMedia} = useMedia();
   const {
     control,
     handleSubmit,
@@ -52,7 +49,7 @@ const EditPostForm = ({item, owner, navigation}) => {
             // update 'update' state in context
             setUpdate(!update);
             // reset form
-            reset();
+            resetValues();
             item.title = data.title;
             item.description = data.description;
             // TODO: navigated to home;
@@ -66,6 +63,36 @@ const EditPostForm = ({item, owner, navigation}) => {
       setLoading(false);
       setUpdate(!update);
     }
+  };
+
+  const mediaDelete = async () => {
+    const token = await AsyncStorage.getItem('userToken');
+    Alert.alert(
+      'Do you want to delete this file?',
+      'File id: ' + item.file_id,
+      [
+        {
+          text: 'OK',
+          onPress: async () => {
+            await deleteMedia(item.file_id, token);
+            console.log('OK Pressed');
+            // update 'update' state in context
+            setUpdate(!update);
+            // reset form
+            resetValues();
+            // TODO: navigated to home;
+            navigation.navigate('Home');
+          },
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ]
+    );
+  };
+  const resetValues = () => {
+    reset();
   };
   return (
     <ScrollView>
@@ -145,8 +172,11 @@ const EditPostForm = ({item, owner, navigation}) => {
           >
             Edit Info
           </Button>
-          <Button type="outline" onPress={reset}>
+          <Button type="outline" onPress={resetValues}>
             Reset
+          </Button>
+          <Button type="outline" onPress={mediaDelete}>
+            Delete
           </Button>
           {loading && <ActivityIndicator size="large" />}
         </Card>
