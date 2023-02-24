@@ -232,9 +232,7 @@ const Single = ({route}) => {
   );
 
   return (
-    <SafeAreaView
-      style={{flex: 1, paddingTop: Platform.OS === 'android' ? 30 : 0}}
-    >
+    <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
