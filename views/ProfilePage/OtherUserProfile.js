@@ -73,7 +73,7 @@ const OtherUserProfile = ({navigation, route}) => {
         containerStyle={{
           backgroundColor: '',
           margin: 0,
-          paddingTop: Platform.OS === 'android' ? 30 : 0,
+          paddingTop: Platform.OS === 'android' ? 40 : 0,
         }}
       >
         <View

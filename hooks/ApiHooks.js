@@ -43,6 +43,7 @@ const useMedia = (myFilesOnly) => {
   const loadAllMedia = async (id) => {
     try {
       const json = await doFetch(baseUrl + 'media/user/' + id);
+      json.reverse();
       return await Promise.all(
         json.map(async (file) => {
           const fileResponse = await fetch(baseUrl + 'media/' + file.file_id);
