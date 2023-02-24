@@ -159,7 +159,14 @@ const ListItem = ({singleMedia, navigation}) => {
               navigation.navigate('Single', [item, owner]);
             }}
           />
-          {item.user_id === user.user_id && <Icon name="edit" />}
+          {item.user_id === user.user_id && (
+            <Icon
+              name="edit"
+              onPress={() => {
+                navigation.navigate('EditPost', [item, owner]);
+              }}
+            />
+          )}
         </RNEListItem>
 
         <RNEListItem>

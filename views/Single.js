@@ -28,7 +28,7 @@ import {Controller, useForm} from 'react-hook-form';
 import SingleComment from '../components/SingleComment';
 import moment from 'moment';
 
-const Single = ({route}) => {
+const Single = ({route, navigation}) => {
   const file = route.params[0];
   const owner = route.params[1];
   const video = useRef(null);
@@ -39,7 +39,7 @@ const Single = ({route}) => {
   const {getFilesByTag} = useTag();
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
-  const {user} = useContext(MainContext);
+  const {user, setUpdateComment, updateComment} = useContext(MainContext);
   const {getCommentsByFileId} = useComment();
   const {postComment} = useComment();
 
@@ -121,6 +121,7 @@ const Single = ({route}) => {
       const result = await postComment(data, token);
       Alert.alert('Comment added', 'Commend Id: ' + result.comment_id);
       reset();
+      setUpdateComment(!updateComment);
     } catch (error) {
       throw new Error('upload comment, ' + error.message);
     }
@@ -130,6 +131,9 @@ const Single = ({route}) => {
   const getComments = async () => {
     try {
       const comments = await getCommentsByFileId(file.file_id);
+      /* const token = await AsyncStorage.getItem('userToken');
+      let comments = await getAllComments(token);
+      comments = comments.filter((comment) => comment.file_id === file.file_id); */
       setComments(comments);
     } catch (error) {
       throw new Error('get comments error', error.message);
@@ -139,8 +143,11 @@ const Single = ({route}) => {
   useEffect(() => {
     loadAvatar();
     getLikes();
-    getComments();
   }, []);
+
+  useEffect(() => {
+    getComments();
+  }, [updateComment]);
 
   const TopPart = () => {
     return (
@@ -186,7 +193,14 @@ const Single = ({route}) => {
           ) : (
             <Icon name="favorite-border" onPress={likeFile} />
           )}
-          {file.user_id === user.user_id && <Icon name="edit" />}
+          {file.user_id === user.user_id && (
+            <Icon
+              name="edit"
+              onPress={() => {
+                navigation.navigate('EditPost', [file, owner]);
+              }}
+            />
+          )}
         </RNEListItem>
 
         <RNEListItem>
@@ -207,6 +221,7 @@ const Single = ({route}) => {
 
   const BottomPart = () => (
     <>
+      <Card.Divider />
       <Controller
         control={control}
         rules={{
@@ -254,6 +269,7 @@ const Single = ({route}) => {
 
 Single.propTypes = {
   route: PropTypes.object,
+  navigation: PropTypes.object,
 };
 
 const styles = StyleSheet.create({

@@ -59,11 +59,30 @@ const useMedia = (myFilesOnly) => {
     }
   };
 
+  const putMedia = async (id, data, token) => {
+    const options = {
+      method: 'put',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      // TODO: use fetch to send request to media endpoint and return the result as json, handle errors with try/catch and response.ok
+      const uploadResult = await doFetch(baseUrl + 'media/' + id, options);
+      return uploadResult;
+    } catch (error) {
+      console.log('putMedia:', error.message);
+      throw new Error('putMedia:', error.message);
+    }
+  };
+
   useEffect(() => {
     loadMedia();
   }, [update]);
 
-  return {loadMedia, mediaArray, postMedia};
+  return {loadMedia, mediaArray, postMedia, putMedia};
 };
 
 // Method for using tag in the media
@@ -279,6 +298,20 @@ const useComment = () => {
       throw new Error('get comments error, ' + error.message);
     }
   };
+
+  // Method for getting all the comments of all the files
+  const getAllComments = async (token) => {
+    try {
+      console.log('get All Comments', token);
+      const allComments = await doFetch(baseUrl + 'comments', {
+        headers: {'x-access-token': token},
+      });
+      return allComments;
+    } catch (error) {
+      throw new Error('get All comments, ' + error.message);
+    }
+  };
+
   // Method for adding the comments
   const postComment = async (data, token) => {
     const options = {
@@ -316,7 +349,7 @@ const useComment = () => {
     }
   };
 
-  return {getCommentsByFileId, postComment, deleteComment};
+  return {getCommentsByFileId, getAllComments, postComment, deleteComment};
 };
 
 export {useMedia, useTag, useUser, useAuthentication, useFavourite, useComment};

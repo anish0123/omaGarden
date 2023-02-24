@@ -14,6 +14,7 @@ import ProfilePictures from '../views/ProfilePage/ProfilePictures';
 import EditProfile from '../views/ProfilePage/EditProfile';
 import LoginForm from '../components/LoginForm';
 import Search from '../views/Search';
+import EditPost from '../views/EditPost';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -57,6 +58,7 @@ const StackScreen = () => {
           <Stack.Screen name="LoginForm" component={LoginForm} />
           <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="EditPost" component={EditPost} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />
