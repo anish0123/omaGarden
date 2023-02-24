@@ -12,6 +12,9 @@ import Profile from '../views/ProfilePage/Profile';
 import ProfilePictureUpload from '../views/ProfilePage/ProfilePictureUpload';
 import ProfilePictures from '../views/ProfilePage/ProfilePictures';
 import EditProfile from '../views/ProfilePage/EditProfile';
+import Search from '../views/Search';
+import LoginForm from '../components/LoginForm';
+import OtherUserProfile from '../views/ProfilePage/OtherUserProfile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,6 +32,7 @@ const TabScreen = () => {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="Upload" component={Upload} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
@@ -38,7 +42,7 @@ const TabScreen = () => {
 const StackScreen = () => {
   const {isLoggedIn} = useContext(MainContext);
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       {isLoggedIn ? (
         <>
           <Stack.Screen
@@ -51,8 +55,10 @@ const StackScreen = () => {
             name="ProfilePictureUpload"
             component={ProfilePictureUpload}
           />
+          <Stack.Screen name="LoginForm" component={LoginForm} />
           <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} />
         </>
       ) : (
         <>

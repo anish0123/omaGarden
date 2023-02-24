@@ -20,15 +20,12 @@ const ListItem = ({singleMedia, navigation}) => {
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
   const {user} = useContext(MainContext);
-  console.log('list item', item);
 
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      console.log('get owner', item.user_id);
       const ownerDetails = await getUserById(item.user_id, token);
-      console.log('get Owner', ownerDetails);
       setOwner(ownerDetails);
     } catch (error) {
       console.error('getOwner', error);

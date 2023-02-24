@@ -20,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation, myFilesOnly = true}) => {
   const {mediaArray} = useMedia(myFilesOnly);
+  console.log(JSON.stringify(mediaArray));
   console.log('Media array length ' + mediaArray.length);
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn, user, setUser} = useContext(MainContext);
@@ -43,7 +44,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   const showPictures = async () => {
     try {
-      const avatarArray = await getFilesByTag('OmaGarden_' + user.user_id);
+      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
       navigation.navigate('ProfilePictures', avatarArray);
     } catch (error) {
       console.error('User avatar fetch failed', error.message);
@@ -60,7 +61,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         containerStyle={{
           backgroundColor: '',
           margin: 0,
-          marginTop: 10,
         }}
       >
         <View

@@ -13,7 +13,6 @@ const SingleComment = ({singleComment}) => {
     const token = await AsyncStorage.getItem('userToken');
     const user = await getUserById(singleComment.user_id, token);
     setUser(user);
-    console.log(user);
   };
 
   useEffect(() => {
