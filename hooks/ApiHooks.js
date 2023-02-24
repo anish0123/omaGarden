@@ -78,11 +78,22 @@ const useMedia = (myFilesOnly) => {
     }
   };
 
+  const deleteMedia = async (id, token) => {
+    try {
+      return await doFetch(baseUrl + 'media/' + id, {
+        headers: {'x-access-token': token},
+        method: 'delete',
+      });
+    } catch (error) {
+      throw new Error('deleteMedia' + error.message);
+    }
+  };
+
   useEffect(() => {
     loadMedia();
   }, [update]);
 
-  return {loadMedia, mediaArray, postMedia, putMedia};
+  return {loadMedia, mediaArray, postMedia, putMedia, deleteMedia};
 };
 
 // Method for using tag in the media
