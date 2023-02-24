@@ -69,7 +69,6 @@ const useMedia = (myFilesOnly) => {
 // Method for using tag in the media
 const useTag = () => {
   const getFilesByTag = async (tag) => {
-    console.log('getFilesByTag', tag);
     try {
       return await doFetch(baseUrl + 'tags/' + tag);
     } catch (error) {
@@ -280,10 +279,8 @@ const useComment = () => {
       throw new Error('get comments error, ' + error.message);
     }
   };
-
   // Method for adding the comments
   const postComment = async (data, token) => {
-    console.log('post comment', data);
     const options = {
       method: 'post',
       headers: {
@@ -292,7 +289,6 @@ const useComment = () => {
       },
       body: JSON.stringify(data),
     };
-    console.log('post Comment', options);
     try {
       const commentResult = await doFetch(baseUrl + 'comments', options);
       return commentResult;

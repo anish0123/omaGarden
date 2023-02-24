@@ -1,5 +1,5 @@
 import {Avatar, Card, Icon, ListItem as RNEListItem} from '@rneui/themed';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 import {useFavourite, useTag, useUser} from '../hooks/ApiHooks';
@@ -25,9 +25,7 @@ const ListItem = ({singleMedia, navigation}) => {
   const getOwner = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      console.log('get owner', item.user_id);
       const ownerDetails = await getUserById(item.user_id, token);
-      console.log('get Owner', ownerDetails);
       setOwner(ownerDetails);
     } catch (error) {
       console.error('getOwner', error);
@@ -125,13 +123,16 @@ const ListItem = ({singleMedia, navigation}) => {
         </RNEListItem>
         <Card.Divider color="#ffff" />
         {item.media_type === 'image' ? (
-          <Image
-            source={{uri: uploadsUrl + item.thumbnails?.w640}}
-            style={styles.image}
+          <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Single');
+              navigation.navigate('Single', [item, owner]);
             }}
-          />
+          >
+            <Image
+              source={{uri: uploadsUrl + item.thumbnails?.w640}}
+              style={styles.image}
+            />
+          </TouchableOpacity>
         ) : (
           <Video
             ref={video}
