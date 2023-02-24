@@ -41,7 +41,6 @@ const Single = ({route}) => {
   const {user} = useContext(MainContext);
   const {getCommentsByFileId} = useComment();
   const {postComment} = useComment();
-  console.log('file id ' + file.file_id);
 
   const {
     control,
@@ -233,7 +232,9 @@ const Single = ({route}) => {
   );
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView
+      style={{flex: 1, paddingTop: Platform.OS === 'android' ? 30 : 0}}
+    >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >

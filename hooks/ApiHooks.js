@@ -24,7 +24,6 @@ const useMedia = (myFilesOnly) => {
   const loadMedia = async () => {
     try {
       let json = await useTag().getFilesByTag(appId);
-
       if (myFilesOnly) {
         json = json.filter((file) => file.user_id === user.user_id);
       }
@@ -38,6 +37,20 @@ const useMedia = (myFilesOnly) => {
       setMediaArray(media);
     } catch (error) {
       throw new Error('loadMedia', error.message);
+    }
+  };
+
+  const loadAllMedia = async (id) => {
+    try {
+      const json = await doFetch(baseUrl + 'media/user/' + id);
+      return await Promise.all(
+        json.map(async (file) => {
+          const fileResponse = await fetch(baseUrl + 'media/' + file.file_id);
+          return await fileResponse.json();
+        })
+      );
+    } catch (error) {
+      console.error('List, loadMedia', error);
     }
   };
 
@@ -63,7 +76,7 @@ const useMedia = (myFilesOnly) => {
     loadMedia();
   }, [update]);
 
-  return {loadMedia, mediaArray, postMedia};
+  return {loadMedia, loadAllMedia, mediaArray, postMedia};
 };
 
 // Method for using tag in the media
@@ -112,7 +125,6 @@ const useAuthentication = () => {
       const loginResult = await doFetch(baseUrl + 'login', options);
       return loginResult;
     } catch (error) {
-      console.log('postlogin', error);
       throw new Error('postLogin: ', error.message);
     }
   };
@@ -140,6 +152,17 @@ const useUser = () => {
       });
     } catch (error) {
       throw new Error('getCurrentUser ' + error.message);
+    }
+  };
+
+  const getAllUsers = async (token) => {
+    try {
+      const result = await doFetch(baseUrl + 'users', {
+        headers: {'x-access-token': token},
+      });
+      return result;
+    } catch (error) {
+      throw new Error('getAllUsers' + error.message);
     }
   };
 
@@ -186,7 +209,14 @@ const useUser = () => {
       throw new Error('Check username ' + error.message);
     }
   };
-  return {getUserById, getCurrentUser, putUser, checkUsername, postUser};
+  return {
+    getUserById,
+    getCurrentUser,
+    getAllUsers,
+    putUser,
+    checkUsername,
+    postUser,
+  };
 };
 
 // Methods for favourites.
