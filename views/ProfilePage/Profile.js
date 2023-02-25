@@ -20,8 +20,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation, myFilesOnly = true}) => {
   const {mediaArray} = useMedia(myFilesOnly);
-  console.log(JSON.stringify(mediaArray));
-  console.log('Media array length ' + mediaArray.length);
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn, user, setUser} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
@@ -58,44 +56,47 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginStart: 10,
+          marginEnd: 15,
+        }}
+      >
+        <Image
+          source={require('../../assets/logo.png')}
+          style={{
+            width: 110,
+            height: 40,
+            marginBottom: 20,
+            marginTop: 30,
+            justifyContent: 'center',
+          }}
+        ></Image>
+        <Icon
+          name="settings"
+          onPress={() => {
+            setShowModal(!showModal);
+            setSettingClicked(!settingClicked);
+          }}
+        />
+      </View>
       <Card
         containerStyle={{
           backgroundColor: '',
           margin: 0,
+          padding: 0,
         }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginStart: 10,
-          }}
-        >
-          <Image
-            source={require('../../assets/logo.png')}
-            style={{
-              width: 110,
-              height: 40,
-              marginBottom: 20,
-              marginTop: 30,
-              justifyContent: 'center',
-            }}
-          ></Image>
-          <Icon
-            name="settings"
-            onPress={() => {
-              setShowModal(!showModal);
-              setSettingClicked(!settingClicked);
-            }}
-          />
-        </View>
-        <Card.Divider />
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Card.Image
             source={{uri: uploadsUrl + avatar}}
             style={{
               width: 120,
               height: 120,
+              margin: 15,
               borderRadius: 120 / 2,
               borderWidth: 1,
               borderColor: 'black',
@@ -126,8 +127,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         <View
           style={{
             position: 'absolute',
-            top: 135,
-            left: 88,
+            top: 88,
+            left: 106,
             elevation: 8,
             backgroundColor: 'white',
             borderColor: 'black',
@@ -338,10 +339,10 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             }}
           />
         </View>
-        <ListItem.Title style={{margin: 10, fontSize: 20}}>
+        <ListItem.Title style={{margin: 15, fontSize: 20}}>
           {user.username}
         </ListItem.Title>
-        <ListItem.Title style={{marginLeft: 10, fontSize: 20}}>
+        <ListItem.Title style={{marginLeft: 15, fontSize: 20}}>
           {user.full_name}
         </ListItem.Title>
         <Button
@@ -350,6 +351,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             backgroundColor: '#62BD69',
             borderColor: 'black',
             borderRadius: 5,
+            margin: 5,
           }}
           type="outline"
           titleStyle={{color: 'black'}}

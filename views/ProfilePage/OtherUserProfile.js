@@ -77,32 +77,39 @@ const OtherUserProfile = ({navigation, route}) => {
 
   return (
     <SafeAreaView>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginEnd: 10,
+          marginStart: 15,
+        }}
+      >
+        <Image
+          source={require('../../assets/logo.png')}
+          style={{
+            width: 110,
+            height: 40,
+            marginTop: 15,
+            marginBottom: 15,
+            justifyContent: 'center',
+          }}
+        ></Image>
+        <Icon
+          name="settings"
+          onPress={() => {
+            setShowModal(!showModal);
+            setSettingClicked(!settingClicked);
+          }}
+        />
+      </View>
       <Card
         containerStyle={{
-          backgroundColor: '',
           margin: 0,
           paddingTop: Platform.OS === 'android' ? 40 : 0,
         }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginStart: 10,
-          }}
-        >
-          <Card.Title style={{fontSize: 22, color: 'darkgreen'}}>
-            OmaGarden
-          </Card.Title>
-          <Icon
-            name="settings"
-            onPress={() => {
-              setShowModal(!showModal);
-              setSettingClicked(!settingClicked);
-            }}
-          />
-        </View>
-        <Card.Divider />
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Card.Image
             source={{uri: uploadsUrl + avatar}}
