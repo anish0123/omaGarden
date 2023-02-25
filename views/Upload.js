@@ -185,6 +185,12 @@ const Upload = ({navigation}) => {
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
+                  style={{
+                    borderWidth: 1,
+                    padding: 8,
+                    marginTop: 20,
+                    borderColor: 'green',
+                  }}
                   placeholder="Title"
                   onBlur={onBlur}
                   onChangeText={onChange}
@@ -205,6 +211,12 @@ const Upload = ({navigation}) => {
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
+                  style={{
+                    borderWidth: 1,
+                    padding: 8,
+                    borderColor: 'green',
+                  }}
+                  multiline
                   placeholder="Description"
                   onBlur={onBlur}
                   onChangeText={onChange}
