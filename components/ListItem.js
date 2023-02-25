@@ -19,7 +19,7 @@ const ListItem = ({singleMedia, navigation}) => {
   const [userLikesIt, setUserLikesIt] = useState(false);
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
-  const {user, update, setUpdate} = useContext(MainContext);
+  const {user, updateLike, setUpdateLike} = useContext(MainContext);
 
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
@@ -48,10 +48,13 @@ const ListItem = ({singleMedia, navigation}) => {
     try {
       setUserLikesIt(false);
       const likes = await getFavouritesByFileId(item.file_id);
+      console.log(userLikesIt);
+      console.log('likes', likes);
       setLikes(likes);
       if (likes.length > 0) {
+        console.log('Is it working till here');
         const userLike = likes.filter((like) => like.user_id === user.user_id);
-        if (userLike) {
+        if (userLike.length !== 0) {
           setUserLikesIt(true);
         }
       }
@@ -69,7 +72,7 @@ const ListItem = ({singleMedia, navigation}) => {
       getLikes();
       setUserLikesIt(true);
       console.log(result);
-      setUpdate(!update);
+      setUpdateLike(!updateLike);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile', error);
@@ -84,7 +87,7 @@ const ListItem = ({singleMedia, navigation}) => {
       getLikes();
       setUserLikesIt(false);
       console.log(result);
-      setUpdate(!update);
+      setUpdateLike(!updateLike);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile' + error);
@@ -93,21 +96,20 @@ const ListItem = ({singleMedia, navigation}) => {
 
   useEffect(() => {
     getOwner();
-    getLikes();
     loadAvatar();
   }, []);
-
-  useEffect(() => {
-    loadAvatar();
-  }, [owner]);
 
   useEffect(() => {
     getOwner();
   }, [item]);
 
   useEffect(() => {
+    loadAvatar();
+  }, [owner]);
+
+  useEffect(() => {
     getLikes();
-  }, [update]);
+  }, [updateLike]);
 
   return (
     <View styles={styles.main}>

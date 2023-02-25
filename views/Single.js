@@ -42,7 +42,8 @@ const Single = ({route, navigation}) => {
   const {user, setUpdateComment, updateComment} = useContext(MainContext);
   const {getCommentsByFileId} = useComment();
   const {postComment} = useComment();
-  const {update, setUpdate} = useContext(MainContext);
+  const {updateLike, setUpdateLike} = useContext(MainContext);
+  console.log(userLikesIt);
 
   const {
     control,
@@ -72,11 +73,13 @@ const Single = ({route, navigation}) => {
     try {
       setUserLikesIt(false);
       const likes = await getFavouritesByFileId(file.file_id);
+      console.log(userLikesIt);
       console.log('likes', likes);
       setLikes(likes);
       if (likes.length > 0) {
+        console.log('Is it working till here');
         const userLike = likes.filter((like) => like.user_id === user.user_id);
-        if (userLike) {
+        if (userLike.length !== 0) {
           setUserLikesIt(true);
         }
       }
@@ -94,7 +97,7 @@ const Single = ({route, navigation}) => {
       getLikes();
       setUserLikesIt(true);
       console.log(result);
-      setUpdate(!update);
+      setUpdateLike(!updateLike);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile', error);
@@ -109,7 +112,7 @@ const Single = ({route, navigation}) => {
       getLikes();
       setUserLikesIt(false);
       console.log(result);
-      setUpdate(!update);
+      setUpdateLike(!updateLike);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile' + error);
@@ -145,7 +148,6 @@ const Single = ({route, navigation}) => {
 
   useEffect(() => {
     loadAvatar();
-    getLikes();
   }, []);
 
   useEffect(() => {
@@ -154,7 +156,7 @@ const Single = ({route, navigation}) => {
 
   useEffect(() => {
     getLikes();
-  }, [update]);
+  }, [updateLike]);
 
   const TopPart = () => {
     return (
