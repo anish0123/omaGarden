@@ -19,7 +19,7 @@ const ListItem = ({singleMedia, navigation}) => {
   const [userLikesIt, setUserLikesIt] = useState(false);
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
-  const {user} = useContext(MainContext);
+  const {user, update, setUpdate} = useContext(MainContext);
 
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
@@ -69,6 +69,7 @@ const ListItem = ({singleMedia, navigation}) => {
       getLikes();
       setUserLikesIt(true);
       console.log(result);
+      setUpdate(!update);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile', error);
@@ -83,6 +84,7 @@ const ListItem = ({singleMedia, navigation}) => {
       getLikes();
       setUserLikesIt(false);
       console.log(result);
+      setUpdate(!update);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile' + error);
@@ -102,6 +104,10 @@ const ListItem = ({singleMedia, navigation}) => {
   useEffect(() => {
     getOwner();
   }, [item]);
+
+  useEffect(() => {
+    getLikes();
+  }, [update]);
 
   return (
     <View styles={styles.main}>
