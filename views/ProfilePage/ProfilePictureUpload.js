@@ -1,6 +1,6 @@
-import {Button, Card, Input} from '@rneui/base';
+import {Button, Card} from '@rneui/base';
 import {useCallback, useContext, useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {useMedia, useTag} from '../../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
@@ -16,14 +16,8 @@ const ProfilePictureUpload = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const {update, setUpdate, user} = useContext(MainContext);
   const {postTag} = useTag();
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-    trigger,
-    reset,
-  } = useForm({
-    defaultValues: {title: '', description: ''},
+  const {handleSubmit, trigger, reset} = useForm({
+    defaultValues: {title: 'profile pic', description: ''},
     mode: 'onChange',
   });
 
@@ -69,6 +63,7 @@ const ProfilePictureUpload = ({navigation}) => {
       console.error('File upload error', error);
     } finally {
       setLoading(false);
+      setUpdate(!update);
     }
     console.log('Upload a file');
   };
@@ -119,7 +114,7 @@ const ProfilePictureUpload = ({navigation}) => {
         <Video
           ref={Video}
           source={{uri: mediaFile.uri}}
-          style={{width: '100%', height: 200}}
+          style={{width: '100%', height: 300}}
           useNativeControls
           resizeMode="contain"
           onError={(error) => {
@@ -128,56 +123,15 @@ const ProfilePictureUpload = ({navigation}) => {
         />
       ) : (
         <Card.Image
+          style={{width: '100%', height: 300}}
           source={{
             uri: mediaFile.uri,
           }}
           onPress={pickFile}
         />
       )}
+      <Card.Divider />
 
-      <Controller
-        rules={{
-          required: {
-            value: true,
-            message: 'is required',
-          },
-          minLength: {
-            value: 3,
-            message: 'Length should be 3 characters',
-          },
-        }}
-        control={control}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            placeholder="Title"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            errorMessage={errors.title && errors.title.message}
-          />
-        )}
-        name="title"
-      />
-
-      <Controller
-        rules={{
-          minLength: {
-            value: 5,
-            message: 'Length should be 5 characters',
-          },
-        }}
-        control={control}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            placeholder="Description"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            errorMessage={errors.description && errors.description.message}
-          />
-        )}
-        name="description"
-      />
       <View
         style={{
           display: 'flex',
@@ -214,9 +168,10 @@ const ProfilePictureUpload = ({navigation}) => {
           }}
         />
       </View>
+      <Card.Divider />
       <Button
         loading={loading}
-        disabled={!mediaFile.uri || errors.title || errors.description}
+        disabled={!mediaFile.uri}
         title="Upload file"
         onPress={handleSubmit(uploadFile)}
       />
