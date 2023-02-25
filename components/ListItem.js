@@ -19,7 +19,7 @@ const ListItem = ({singleMedia, navigation}) => {
   const [userLikesIt, setUserLikesIt] = useState(false);
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
-  const {user} = useContext(MainContext);
+  const {user, updateLike, setUpdateLike} = useContext(MainContext);
 
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
@@ -48,10 +48,13 @@ const ListItem = ({singleMedia, navigation}) => {
     try {
       setUserLikesIt(false);
       const likes = await getFavouritesByFileId(item.file_id);
+      console.log(userLikesIt);
+      console.log('likes', likes);
       setLikes(likes);
       if (likes.length > 0) {
+        console.log('Is it working till here');
         const userLike = likes.filter((like) => like.user_id === user.user_id);
-        if (userLike) {
+        if (userLike.length !== 0) {
           setUserLikesIt(true);
         }
       }
@@ -69,6 +72,7 @@ const ListItem = ({singleMedia, navigation}) => {
       getLikes();
       setUserLikesIt(true);
       console.log(result);
+      setUpdateLike(!updateLike);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile', error);
@@ -83,6 +87,7 @@ const ListItem = ({singleMedia, navigation}) => {
       getLikes();
       setUserLikesIt(false);
       console.log(result);
+      setUpdateLike(!updateLike);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile' + error);
@@ -91,22 +96,32 @@ const ListItem = ({singleMedia, navigation}) => {
 
   useEffect(() => {
     getOwner();
-    getLikes();
     loadAvatar();
   }, []);
+
+  useEffect(() => {
+    getOwner();
+  }, [item]);
 
   useEffect(() => {
     loadAvatar();
   }, [owner]);
 
   useEffect(() => {
-    getOwner();
-  }, [item]);
+    getLikes();
+  }, [updateLike]);
 
   return (
     <View styles={styles.main}>
       <Card styles={styles.post}>
-        <RNEListItem containerStyle={styles.avatar}>
+        <RNEListItem
+          containerStyle={styles.avatar}
+          onPress={() => {
+            owner.user_id !== user.user_id
+              ? navigation.navigate('OtherUserProfile', owner)
+              : navigation.navigate('Profile', owner);
+          }}
+        >
           {avatar ? (
             <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
           ) : (
