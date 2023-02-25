@@ -1,20 +1,22 @@
 import {Avatar, Card, ListItem} from '@rneui/themed';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
+import {MainContext} from '../contexts/MainContext';
 
 const SingleUser = ({singleUser, navigation}) => {
-  const user = singleUser.item;
+  const clickedUser = singleUser.item;
   const [avatar, setAvatar] = useState('');
   const {getFilesByTag} = useTag();
+  const {user} = useContext(MainContext);
 
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
       setAvatar('');
-      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
+      const avatarArray = await getFilesByTag('avatar_' + clickedUser.user_id);
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
       // console.error('load Avatar', error);
@@ -22,13 +24,17 @@ const SingleUser = ({singleUser, navigation}) => {
   };
   useEffect(() => {
     loadAvatar();
-  }, [user]);
+  }, [clickedUser]);
 
   return (
     <Card>
       <ListItem
         containerStyle={styles.avatar}
-        onPress={() => navigation.navigate('OtherUserProfile', user)}
+        onPress={() => {
+          clickedUser.user_id !== user.user_id
+            ? navigation.navigate('OtherUserProfile', clickedUser)
+            : navigation.navigate('Profile', clickedUser);
+        }}
       >
         {avatar ? (
           <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
@@ -41,7 +47,7 @@ const SingleUser = ({singleUser, navigation}) => {
         )}
 
         <ListItem.Content>
-          <ListItem.Title> {user.username}</ListItem.Title>
+          <ListItem.Title> {clickedUser.username}</ListItem.Title>
         </ListItem.Content>
       </ListItem>
     </Card>

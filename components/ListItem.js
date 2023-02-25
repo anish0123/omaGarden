@@ -112,7 +112,14 @@ const ListItem = ({singleMedia, navigation}) => {
   return (
     <View styles={styles.main}>
       <Card styles={styles.post}>
-        <RNEListItem containerStyle={styles.avatar}>
+        <RNEListItem
+          containerStyle={styles.avatar}
+          onPress={() => {
+            owner.user_id !== user.user_id
+              ? navigation.navigate('OtherUserProfile', owner)
+              : navigation.navigate('Profile', owner);
+          }}
+        >
           {avatar ? (
             <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
           ) : (
