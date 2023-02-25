@@ -24,7 +24,6 @@ const useMedia = (myFilesOnly) => {
   const loadMedia = async () => {
     try {
       let json = await useTag().getFilesByTag(appId);
-
       if (myFilesOnly) {
         json = json.filter((file) => file.user_id === user.user_id);
       }
@@ -38,6 +37,21 @@ const useMedia = (myFilesOnly) => {
       setMediaArray(media);
     } catch (error) {
       throw new Error('loadMedia', error.message);
+    }
+  };
+
+  const loadAllMedia = async (id) => {
+    try {
+      const json = await doFetch(baseUrl + 'media/user/' + id);
+      json.reverse();
+      return await Promise.all(
+        json.map(async (file) => {
+          const fileResponse = await fetch(baseUrl + 'media/' + file.file_id);
+          return await fileResponse.json();
+        })
+      );
+    } catch (error) {
+      console.error('List, loadMedia', error);
     }
   };
 
@@ -59,17 +73,53 @@ const useMedia = (myFilesOnly) => {
     }
   };
 
+  const putMedia = async (id, data, token) => {
+    const options = {
+      method: 'put',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      // TODO: use fetch to send request to media endpoint and return the result as json, handle errors with try/catch and response.ok
+      const uploadResult = await doFetch(baseUrl + 'media/' + id, options);
+      return uploadResult;
+    } catch (error) {
+      console.log('putMedia:', error.message);
+      throw new Error('putMedia:', error.message);
+    }
+  };
+
+  const deleteMedia = async (id, token) => {
+    try {
+      return await doFetch(baseUrl + 'media/' + id, {
+        headers: {'x-access-token': token},
+        method: 'delete',
+      });
+    } catch (error) {
+      throw new Error('deleteMedia' + error.message);
+    }
+  };
+
   useEffect(() => {
     loadMedia();
   }, [update]);
 
-  return {loadMedia, mediaArray, postMedia};
+  return {
+    loadMedia,
+    mediaArray,
+    postMedia,
+    putMedia,
+    deleteMedia,
+    loadAllMedia,
+  };
 };
 
 // Method for using tag in the media
 const useTag = () => {
   const getFilesByTag = async (tag) => {
-    console.log('getFilesByTag', tag);
     try {
       return await doFetch(baseUrl + 'tags/' + tag);
     } catch (error) {
@@ -113,7 +163,6 @@ const useAuthentication = () => {
       const loginResult = await doFetch(baseUrl + 'login', options);
       return loginResult;
     } catch (error) {
-      console.log('postlogin', error);
       throw new Error('postLogin: ', error.message);
     }
   };
@@ -149,7 +198,6 @@ const useUser = () => {
       const result = await doFetch(baseUrl + 'users', {
         headers: {'x-access-token': token},
       });
-      console.log(result);
       return result;
     } catch (error) {
       throw new Error('getAllUsers' + error.message);
@@ -281,9 +329,21 @@ const useComment = () => {
     }
   };
 
+  // Method for getting all the comments of all the files
+  const getAllComments = async (token) => {
+    try {
+      console.log('get All Comments', token);
+      const allComments = await doFetch(baseUrl + 'comments', {
+        headers: {'x-access-token': token},
+      });
+      return allComments;
+    } catch (error) {
+      throw new Error('get All comments, ' + error.message);
+    }
+  };
+
   // Method for adding the comments
   const postComment = async (data, token) => {
-    console.log('post comment', data);
     const options = {
       method: 'post',
       headers: {
@@ -292,7 +352,6 @@ const useComment = () => {
       },
       body: JSON.stringify(data),
     };
-    console.log('post Comment', options);
     try {
       const commentResult = await doFetch(baseUrl + 'comments', options);
       return commentResult;
@@ -320,7 +379,7 @@ const useComment = () => {
     }
   };
 
-  return {getCommentsByFileId, postComment, deleteComment};
+  return {getCommentsByFileId, getAllComments, postComment, deleteComment};
 };
 
 export {useMedia, useTag, useUser, useAuthentication, useFavourite, useComment};
