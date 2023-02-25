@@ -28,6 +28,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   const [showModal, setShowModal] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
+  const {update, setUpdate} = useContext(MainContext);
 
   const loadAvatar = async () => {
     try {
@@ -53,7 +54,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   useEffect(() => {
     loadAvatar();
-  }, [avatar]);
+  }, [update]);
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
