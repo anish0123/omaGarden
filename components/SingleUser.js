@@ -5,7 +5,7 @@ import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 
-const SingleUser = ({singleUser}) => {
+const SingleUser = ({singleUser, navigation}) => {
   const user = singleUser.item;
   const [avatar, setAvatar] = useState('');
   const {getFilesByTag} = useTag();
@@ -17,7 +17,7 @@ const SingleUser = ({singleUser}) => {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
-      console.log('load Avatar', error);
+      // console.error('load Avatar', error);
     }
   };
   useEffect(() => {
@@ -26,7 +26,10 @@ const SingleUser = ({singleUser}) => {
 
   return (
     <Card>
-      <ListItem containerStyle={styles.avatar}>
+      <ListItem
+        containerStyle={styles.avatar}
+        onPress={() => navigation.navigate('OtherUserProfile', user)}
+      >
         {avatar ? (
           <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
         ) : (
@@ -59,5 +62,10 @@ const styles = StyleSheet.create({
     padding: 0,
   },
 });
+
+SingleUser.propTypes = {
+  navigation: PropTypes.object,
+  route: PropTypes.object,
+};
 
 export default SingleUser;

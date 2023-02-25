@@ -18,8 +18,10 @@ import {MainContext} from '../../contexts/MainContext';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Profile = ({navigation, myFilesOnly = true, route}) => {
+const Profile = ({navigation, myFilesOnly = true}) => {
   const {mediaArray} = useMedia(myFilesOnly);
+  console.log(JSON.stringify(mediaArray));
+  console.log('Media array length ' + mediaArray.length);
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn, user, setUser} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
@@ -42,7 +44,7 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
 
   const showPictures = async () => {
     try {
-      const avatarArray = await getFilesByTag('OmaGarden_' + user.user_id);
+      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
       navigation.navigate('ProfilePictures', avatarArray);
     } catch (error) {
       console.error('User avatar fetch failed', error.message);
@@ -59,7 +61,6 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
         containerStyle={{
           backgroundColor: '',
           margin: 0,
-          marginTop: 10,
         }}
       >
         <View
@@ -92,16 +93,27 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
               borderColor: 'black',
             }}
           />
-
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: 20,
-              left: 70,
-            }}
-          >
-            Posts
-          </Text>
+          <View>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                textAlign: 'center',
+                fontSize: 20,
+                left: 70,
+              }}
+            >
+              Posts
+            </Text>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 20,
+                left: 70,
+              }}
+            >
+              {mediaArray.length}
+            </Text>
+          </View>
         </View>
         <View
           style={{
@@ -210,6 +222,29 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
                         }}
                       >
                         Select Existing Pictures
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        padding: 15,
+                      }}
+                    >
+                      <Icon name="person" type="ionicon" color="white" />
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          marginLeft: 15,
+                        }}
+                        onPress={() => {
+                          showPictures();
+                          setShowModal(false);
+                          setEditClicked(false);
+                        }}
+                      >
+                        View profile Picture
                       </Text>
                     </View>
                   </View>
@@ -343,6 +378,7 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
         renderItem={({item}) => (
           <View>
             <Image
+              onPress={() => navigation.navigate('Single', [item, user])}
               source={{uri: uploadsUrl + item.filename}}
               style={{
                 borderWidth: 1,
@@ -363,6 +399,5 @@ const Profile = ({navigation, myFilesOnly = true, route}) => {
 Profile.propTypes = {
   navigation: PropTypes.object,
   myFilesOnly: PropTypes.bool,
-  route: PropTypes.object,
 };
 export default Profile;

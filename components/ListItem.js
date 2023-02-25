@@ -1,5 +1,5 @@
 import {Avatar, Card, Icon, ListItem as RNEListItem} from '@rneui/themed';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 import {useFavourite, useTag, useUser} from '../hooks/ApiHooks';
@@ -19,15 +19,13 @@ const ListItem = ({singleMedia, navigation}) => {
   const [userLikesIt, setUserLikesIt] = useState(false);
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
-  const {user} = useContext(MainContext);
+  const {user, update, setUpdate} = useContext(MainContext);
 
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      console.log('get owner', item.user_id);
       const ownerDetails = await getUserById(item.user_id, token);
-      console.log('get Owner', ownerDetails);
       setOwner(ownerDetails);
     } catch (error) {
       console.error('getOwner', error);
@@ -71,6 +69,7 @@ const ListItem = ({singleMedia, navigation}) => {
       getLikes();
       setUserLikesIt(true);
       console.log(result);
+      setUpdate(!update);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile', error);
@@ -85,6 +84,7 @@ const ListItem = ({singleMedia, navigation}) => {
       getLikes();
       setUserLikesIt(false);
       console.log(result);
+      setUpdate(!update);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile' + error);
@@ -104,6 +104,10 @@ const ListItem = ({singleMedia, navigation}) => {
   useEffect(() => {
     getOwner();
   }, [item]);
+
+  useEffect(() => {
+    getLikes();
+  }, [update]);
 
   return (
     <View styles={styles.main}>
@@ -125,13 +129,16 @@ const ListItem = ({singleMedia, navigation}) => {
         </RNEListItem>
         <Card.Divider color="#ffff" />
         {item.media_type === 'image' ? (
-          <Image
-            source={{uri: uploadsUrl + item.thumbnails?.w640}}
-            style={styles.image}
+          <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Single');
+              navigation.navigate('Single', [item, owner]);
             }}
-          />
+          >
+            <Image
+              source={{uri: uploadsUrl + item.thumbnails?.w640}}
+              style={styles.image}
+            />
+          </TouchableOpacity>
         ) : (
           <Video
             ref={video}
@@ -158,7 +165,14 @@ const ListItem = ({singleMedia, navigation}) => {
               navigation.navigate('Single', [item, owner]);
             }}
           />
-          {item.user_id === user.user_id && <Icon name="edit" />}
+          {item.user_id === user.user_id && (
+            <Icon
+              name="edit"
+              onPress={() => {
+                navigation.navigate('EditPost', [item, owner]);
+              }}
+            />
+          )}
         </RNEListItem>
 
         <RNEListItem>

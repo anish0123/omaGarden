@@ -14,6 +14,7 @@ const RegisterForm = ({navigation}) => {
     control,
     getValues,
     handleSubmit,
+    reset,
     formState: {errors},
   } = useForm({
     defaultValues: {
@@ -34,16 +35,20 @@ const RegisterForm = ({navigation}) => {
     try {
       const registerResult = await postUser(registerData);
       console.log('register', registerResult);
-      Alert.alert(
-        'Registered successfully.',
-        'You will be redirected to log in page',
-        [
-          {
-            text: 'OK',
-            // onPress: () => {},
+      Alert.alert('Registered successfully.', 'UserName and Password Created', [
+        {
+          text: 'OK',
+          onPress: () => {
+            reset({
+              username: '',
+              password: '',
+              confirmPassword: '',
+              email: '',
+              full_name: '',
+            });
           },
-        ]
-      );
+        },
+      ]);
     } catch (error) {
       console.error('register', error);
     } finally {
@@ -53,15 +58,14 @@ const RegisterForm = ({navigation}) => {
   return (
     <ScrollView
       style={{
-        marginTop: 60,
-        marginBottom: 60,
+        marginTop: 30,
+        marginBottom: 30,
         flexDirection: 'column',
       }}
     >
       <Text
         h2
         h2Style={{
-          fontFamily: 'Nunito-SemiBold',
           fontWeight: '300',
           flexDirection: 'row',
           justifyContent: 'center',
@@ -71,8 +75,8 @@ const RegisterForm = ({navigation}) => {
       </Text>
       <View
         style={{
-          marginTop: 60,
-          marginBottom: 60,
+          marginTop: 30,
+          marginBottom: 30,
           flexDirection: 'column',
           justifyContent: 'centre',
         }}
