@@ -28,6 +28,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   const [showModal, setShowModal] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
+  const {update, setUpdate} = useContext(MainContext);
 
   const loadAvatar = async () => {
     try {
@@ -53,7 +54,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   useEffect(() => {
     loadAvatar();
-  }, [avatar]);
+  }, [update]);
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
@@ -70,9 +71,16 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             marginStart: 10,
           }}
         >
-          <Card.Title style={{fontSize: 22, color: 'darkgreen'}}>
-            OmaGarden
-          </Card.Title>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={{
+              width: 110,
+              height: 40,
+              marginBottom: 20,
+              marginTop: 30,
+              justifyContent: 'center',
+            }}
+          ></Image>
           <Icon
             name="settings"
             onPress={() => {

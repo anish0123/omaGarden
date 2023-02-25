@@ -37,7 +37,13 @@ const LoginForm = ({navigation}) => {
     }
   };
   return (
-    <View>
+    <View
+      style={{
+        marginTop: 30,
+        marginBottom: 30,
+        flexDirection: 'column',
+      }}
+    >
       <Controller
         control={control}
         rules={{

@@ -59,11 +59,7 @@ const StackScreen = () => {
           <Stack.Screen name="LoginForm" component={LoginForm} />
           <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="OtherUserProfile"
-            component={OtherUserProfile}
-          />
+          <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} />
           <Stack.Screen name="EditPost" component={EditPost} />
         </>
       ) : (

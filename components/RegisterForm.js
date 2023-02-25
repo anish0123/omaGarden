@@ -1,9 +1,10 @@
 import {Button, Input} from '@rneui/themed';
 import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Alert, Dimensions, ScrollView, Text} from 'react-native';
+import {Alert, Dimensions, ScrollView, View} from 'react-native';
 import {useUser} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
+import {Text} from '@rneui/base';
 
 const RegisterForm = ({navigation}) => {
   // const {setIsLoggedIn, setUser} = useContext(MainContext);
@@ -55,139 +56,169 @@ const RegisterForm = ({navigation}) => {
     }
   };
   return (
-    <ScrollView>
-      <Text>Welcome to Oma Garden</Text>
-      <Controller
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: 'Username is required',
-          },
+    <ScrollView
+      style={{
+        marginTop: 30,
+        marginBottom: 30,
+        flexDirection: 'column',
+      }}
+    >
+      <Text
+        h2
+        h2Style={{
+          fontWeight: '300',
+          flexDirection: 'row',
+          justifyContent: 'center',
         }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            inputContainerStyle={{
-              borderWidth: 1,
-              borderColor: 'green',
-              borderRadius: 5,
-            }}
-            placeholder="Username"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            errorMessage={errors.username && errors.username.message}
-          />
-        )}
-        name="username"
-      />
-      <Controller
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: 'Password is required',
-          },
+      >
+        Welcome to OmaGarden
+      </Text>
+      <View
+        style={{
+          marginTop: 30,
+          marginBottom: 30,
+          flexDirection: 'column',
+          justifyContent: 'centre',
         }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            inputContainerStyle={{
-              borderWidth: 1,
-              borderColor: 'green',
-              borderRadius: 5,
-            }}
-            placeholder="Password"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            errorMessage={errors.username && errors.username.message}
-          />
-        )}
-        name="password"
-      />
-      <Controller
-        control={control}
-        rules={{
-          validate: (value) => {
-            if (value === getValues('password')) {
-              return true;
-            } else {
-              return 'password doesnt match';
-            }
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            inputContainerStyle={{
-              borderWidth: 1,
-              borderColor: 'green',
-              borderRadius: 5,
-            }}
-            placeholder="Confirm Password"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            secureTextEntry={true}
-            autoCapitalize="none"
-            errorMessage={
-              errors.confirmPassword && errors.confirmPassword.message
-            }
-          />
-        )}
-        name="confirmPassword"
-      />
-      <Controller
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: 'Email is required in form of abc@de.fg',
-          },
-          pattern: {
-            value: /^[a-z0-9.]{1,64}@[a-z0-9.-]{3,64}/i,
-            message: 'Must be a valid email',
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            inputContainerStyle={{
-              borderWidth: 1,
-              borderColor: 'green',
-              borderRadius: 5,
-            }}
-            placeholder="Email"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            errorMessage={errors.email && errors.email.message}
-          />
-        )}
-        name="email"
-      />
-      <Controller
-        control={control}
-        rules={{
-          minLength: {value: 3, message: 'must be at least 3 characters'},
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            inputContainerStyle={{
-              borderWidth: 1,
-              borderColor: 'green',
-              borderRadius: 5,
-            }}
-            placeholder="Full name"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="words"
-            errorMessage={errors.full_name && errors.full_name.message}
-          />
-        )}
-        name="full_name"
-      />
+      >
+        <Controller
+          control={control}
+          rules={{
+            required: {
+              value: true,
+              message: 'Username is required',
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: 'green',
+                borderRadius: 7,
+                width: '80%',
+                justifyContent: 'centre',
+              }}
+              placeholder="Username"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              errorMessage={errors.username && errors.username.message}
+            />
+          )}
+          name="username"
+        />
+        <Controller
+          control={control}
+          rules={{
+            required: {
+              value: true,
+              message: 'Password is required',
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: 'green',
+                borderRadius: 7,
+                width: '80%',
+              }}
+              placeholder="Password"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              errorMessage={errors.username && errors.username.message}
+            />
+          )}
+          name="password"
+        />
+        <Controller
+          control={control}
+          rules={{
+            validate: (value) => {
+              if (value === getValues('password')) {
+                return true;
+              } else {
+                return 'password doesnt match';
+              }
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: 'green',
+                borderRadius: 7,
+                width: '80%',
+              }}
+              placeholder="Confirm Password"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              secureTextEntry={true}
+              autoCapitalize="none"
+              errorMessage={
+                errors.confirmPassword && errors.confirmPassword.message
+              }
+            />
+          )}
+          name="confirmPassword"
+        />
+        <Controller
+          control={control}
+          rules={{
+            required: {
+              value: true,
+              message: 'Email is required in form of abc@de.fg',
+            },
+            pattern: {
+              value: /^[a-z0-9.]{1,64}@[a-z0-9.-]{3,64}/i,
+              message: 'Must be a valid email',
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: 'green',
+                borderRadius: 7,
+                width: '80%',
+              }}
+              placeholder="Email"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              errorMessage={errors.email && errors.email.message}
+            />
+          )}
+          name="email"
+        />
+        <Controller
+          control={control}
+          rules={{
+            minLength: {value: 3, message: 'must be at least 3 characters'},
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: 'green',
+                borderRadius: 7,
+                width: '80%',
+              }}
+              placeholder="Full name"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="words"
+              errorMessage={errors.full_name && errors.full_name.message}
+            />
+          )}
+          name="full_name"
+        />
+      </View>
       <Button
         onPress={handleSubmit(register)}
         loading={loading}
