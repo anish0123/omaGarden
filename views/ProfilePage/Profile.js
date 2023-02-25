@@ -71,9 +71,16 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             marginStart: 10,
           }}
         >
-          <Card.Title style={{fontSize: 22, color: 'darkgreen'}}>
-            OmaGarden
-          </Card.Title>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={{
+              width: 110,
+              height: 40,
+              marginBottom: 20,
+              marginTop: 30,
+              justifyContent: 'center',
+            }}
+          ></Image>
           <Icon
             name="settings"
             onPress={() => {
