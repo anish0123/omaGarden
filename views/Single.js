@@ -42,6 +42,7 @@ const Single = ({route, navigation}) => {
   const {user, setUpdateComment, updateComment} = useContext(MainContext);
   const {getCommentsByFileId} = useComment();
   const {postComment} = useComment();
+  const {update, setUpdate} = useContext(MainContext);
 
   const {
     control,
@@ -93,6 +94,7 @@ const Single = ({route, navigation}) => {
       getLikes();
       setUserLikesIt(true);
       console.log(result);
+      setUpdate(!update);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile', error);
@@ -107,6 +109,7 @@ const Single = ({route, navigation}) => {
       getLikes();
       setUserLikesIt(false);
       console.log(result);
+      setUpdate(!update);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile' + error);
@@ -148,6 +151,10 @@ const Single = ({route, navigation}) => {
   useEffect(() => {
     getComments();
   }, [updateComment]);
+
+  useEffect(() => {
+    getLikes();
+  }, [update]);
 
   const TopPart = () => {
     return (
