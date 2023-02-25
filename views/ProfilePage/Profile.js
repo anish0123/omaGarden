@@ -108,7 +108,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                 fontWeight: 'bold',
                 textAlign: 'center',
                 fontSize: 20,
-                left: 70,
+                marginHorizontal: Dimensions.get('screen').width / 2 - 135,
               }}
             >
               Posts
@@ -117,7 +117,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
               style={{
                 textAlign: 'center',
                 fontSize: 20,
-                left: 70,
+                marginHorizontal: Dimensions.get('screen').width / 2 - 135,
               }}
             >
               {mediaArray.length}
