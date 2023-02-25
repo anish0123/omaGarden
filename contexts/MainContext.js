@@ -8,6 +8,7 @@ const MainProvider = (props) => {
   const [user, setUser] = useState({});
   const [update, setUpdate] = useState(true);
   const [updateComment, setUpdateComment] = useState(true);
+  const [updateLike, setUpdateLike] = useState(true);
 
   return (
     <MainContext.Provider
@@ -20,6 +21,8 @@ const MainProvider = (props) => {
         setUpdate,
         updateComment,
         setUpdateComment,
+        updateLike,
+        setUpdateLike,
       }}
     >
       {props.children}
