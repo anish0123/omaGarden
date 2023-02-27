@@ -7,6 +7,7 @@ import {useContext, useEffect, useRef, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Video} from 'expo-av';
 import {MainContext} from '../contexts/MainContext';
+import Like from './Like';
 
 const ListItem = ({singleMedia, navigation}) => {
   const video = useRef(null);
@@ -16,10 +17,8 @@ const ListItem = ({singleMedia, navigation}) => {
   const {getFilesByTag} = useTag();
   const item = singleMedia;
   const [likes, setLikes] = useState([]);
-  const [userLikesIt, setUserLikesIt] = useState(false);
-  const {getFavouritesByFileId, postFavourite, deleteFavourite} =
-    useFavourite();
-  const {user, updateLike, setUpdateLike} = useContext(MainContext);
+  const {getFavouritesByFileId} = useFavourite();
+  const {user, updateLike} = useContext(MainContext);
 
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
@@ -46,51 +45,10 @@ const ListItem = ({singleMedia, navigation}) => {
   // Getting the likes of the post
   const getLikes = async () => {
     try {
-      setUserLikesIt(false);
       const likes = await getFavouritesByFileId(item.file_id);
-      console.log(userLikesIt);
-      console.log('likes', likes);
       setLikes(likes);
-      if (likes.length > 0) {
-        console.log('Is it working till here');
-        const userLike = likes.filter((like) => like.user_id === user.user_id);
-        if (userLike.length !== 0) {
-          setUserLikesIt(true);
-        }
-      }
     } catch (error) {
       console.log('getLikes' + error);
-    }
-  };
-
-  // Method for liking the post by the logged in user
-  const likeFile = async () => {
-    try {
-      console.log('likeFile', item.file_id);
-      const token = await AsyncStorage.getItem('userToken');
-      const result = await postFavourite(singleMedia.file_id, token);
-      getLikes();
-      setUserLikesIt(true);
-      console.log(result);
-      setUpdateLike(!updateLike);
-    } catch (error) {
-      // note: you cannot like same file multiple times
-      console.log('likeFile', error);
-    }
-  };
-
-  // // Method for disliking the post by the logged in user
-  const dislikeFile = async () => {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const result = await deleteFavourite(singleMedia.file_id, token);
-      getLikes();
-      setUserLikesIt(false);
-      console.log(result);
-      setUpdateLike(!updateLike);
-    } catch (error) {
-      // note: you cannot like same file multiple times
-      console.log('likeFile' + error);
     }
   };
 
@@ -172,11 +130,7 @@ const ListItem = ({singleMedia, navigation}) => {
         )}
 
         <RNEListItem containerStyle={styles.iconList}>
-          {userLikesIt ? (
-            <Icon name="favorite" color="red" onPress={dislikeFile} />
-          ) : (
-            <Icon name="favorite-border" onPress={likeFile} />
-          )}
+          <Like file={item} />
           <Icon
             name="comment"
             onPress={() => {
