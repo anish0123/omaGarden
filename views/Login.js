@@ -38,7 +38,7 @@ const Login = ({navigation}) => {
           width: 110,
           height: 40,
           marginBottom: 20,
-          marginTop: +30,
+          marginTop: 80,
           justifyContent: 'center',
         }}
       ></Image>
@@ -61,7 +61,7 @@ const Login = ({navigation}) => {
               style={{color: 'green', fontSize: 20}}
               onPress={() => setToggleForm(!toggleForm)}
             >
-              {toggleForm ? 'register' : 'sign in'}
+              {toggleForm ? 'register' : 'log in'}
             </Text>
           </View>
         </TouchableOpacity>

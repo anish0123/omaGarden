@@ -112,7 +112,7 @@ const LoginForm = ({navigation}) => {
           marginHorizontal: Dimensions.get('screen').width / 5,
         }}
       >
-        Sign in!
+        Log in!
       </Button>
     </View>
   );
