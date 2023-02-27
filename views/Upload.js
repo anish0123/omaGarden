@@ -1,13 +1,17 @@
-import {Button, Input} from '@rneui/themed';
+import {Button, Card, Input} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {Controller, useForm} from 'react-hook-form';
 import {
   ActivityIndicator,
   Alert,
   Keyboard,
+  Platform,
+  SafeAreaView,
   TouchableOpacity,
   View,
+  StyleSheet,
   ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {useCallback, useContext, useRef, useState} from 'react';
@@ -18,7 +22,6 @@ import {useFocusEffect} from '@react-navigation/native';
 import {appId} from '../utils/variables';
 import {Video} from 'expo-av';
 import {Image} from '@rneui/base';
-import {SafeAreaView} from 'react-native';
 
 const Upload = ({navigation}) => {
   const {postMedia} = useMedia();
@@ -126,69 +129,51 @@ const Upload = ({navigation}) => {
   );
 
   return (
-    <SafeAreaView
-      style={{
-        flexDirection: 'column',
-        width: '100%',
-      }}
-    >
-      <View
-        style={{
-          paddingBottom: 10,
-          paddingTop: 10,
-          paddingLeft: 15,
-        }}
-      >
-        <Image
-          source={require('../assets/logo.png')}
-          style={{
-            width: 110,
-            height: 40,
-          }}
-        ></Image>
-      </View>
-      <ScrollView
-        contentContainerStyle={{justifyContent: 'center', display: 'flex'}}
-      >
-        <TouchableOpacity
-          style={{
-            paddingHorizontal: 20,
-            paddingVertical: 40,
-          }}
-          onPress={() => Keyboard.dismiss()}
-          activeOpacity={1}
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          {mediaFile.type === 'video' ? (
-            <Video
-              ref={video}
-              source={{uri: mediaFile.uri}}
-              style={{width: '100%', height: 500}}
-              resizeMode="contain"
-              useNativeControls
-              onError={(error) => {
-                console.log(error);
-              }}
-            />
-          ) : (
-            <Image
+          <ScrollView>
+            <View
               style={{
-                width: '100%',
-                height: 500,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginStart: 10,
               }}
-              source={{
-                uri: mediaFile.uri || 'https://placekitten.com/g/200/300',
-              }}
-              onPress={pickFile}
-            />
-          )}
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+            >
+              <Image
+                source={require('../assets/logo.png')}
+                style={{
+                  width: 110,
+                  height: 40,
+                  marginBottom: 20,
+                  marginTop: 30,
+                  justifyContent: 'center',
+                }}
+              ></Image>
+            </View>
+            <Card.Divider />
+            {mediaFile.type === 'video' ? (
+              <Video
+                ref={video}
+                source={{uri: mediaFile.uri}}
+                style={{width: '100%', height: 500}}
+                resizeMode="contain"
+                useNativeControls
+                onError={(error) => {
+                  console.log(error);
+                }}
+              />
+            ) : (
+              <Card.Image
+                source={{
+                  uri: mediaFile.uri || 'https://placekitten.com/g/200/300',
+                }}
+                onPress={pickFile}
+              />
+            )}
+
             <Controller
               control={control}
               rules={{
@@ -203,13 +188,11 @@ const Upload = ({navigation}) => {
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
-                  inputContainerStyle={{
+                  style={{
                     borderWidth: 1,
+                    padding: 8,
+                    marginTop: 20,
                     borderColor: 'green',
-                    borderRadius: 7,
-                    width: '100%',
-                    justifyContent: 'center',
-                    marginTop: 40,
                   }}
                   placeholder="Title"
                   onBlur={onBlur}
@@ -232,27 +215,14 @@ const Upload = ({navigation}) => {
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
                   style={{
-                    paddingHorizontal: 5,
-                  }}
-                  containerStyle={{
-                    minHeight: 90,
-                  }}
-                  inputContainer={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}
-                  inputContainerStyle={{
                     borderWidth: 1,
+                    padding: 8,
                     borderColor: 'green',
-                    borderRadius: 7,
-                    width: '100%',
-                    justifyContent: 'center',
-                    minHeight: 110,
                   }}
+                  multiline
                   placeholder="Description"
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  multiline={true}
                   value={value}
                   autoCapitalize="none"
                   errorMessage={
@@ -262,55 +232,66 @@ const Upload = ({navigation}) => {
               )}
               name="description"
             />
-          </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
+            <Card.Divider />
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Button
+                onPress={pickFile}
+                title="Select file"
+                buttonStyle={{
+                  backgroundColor: '#62BD69',
+                  borderColor: 'black',
+                  borderRadius: 5,
+                }}
+                type="outline"
+                titleStyle={{color: 'black'}}
+                containerStyle={{
+                  width: '48%',
+                }}
+              />
+              <Button
+                onPress={resetValues}
+                title="Reset"
+                buttonStyle={{
+                  backgroundColor: '#62BD69',
+                  borderColor: 'black',
+                  borderRadius: 5,
+                }}
+                type="outline"
+                titleStyle={{color: 'black'}}
+                containerStyle={{
+                  width: '48%',
+                }}
+              />
+            </View>
+            <Card.Divider />
             <Button
-              onPress={pickFile}
-              title="Select file"
-              buttonStyle={{
-                backgroundColor: '#62BD69',
-                borderColor: 'black',
-                borderRadius: 5,
-              }}
-              type="outline"
-              titleStyle={{color: 'black'}}
-              containerStyle={{
-                width: '48%',
-              }}
+              loading={loading}
+              disabled={!mediaFile.uri || errors.title || errors.description}
+              title="Upload file"
+              onPress={handleSubmit(uploadFile)}
             />
-            <Button
-              onPress={resetValues}
-              title="Reset"
-              buttonStyle={{
-                backgroundColor: '#62BD69',
-                borderColor: 'black',
-                borderRadius: 5,
-              }}
-              type="outline"
-              titleStyle={{color: 'black'}}
-              containerStyle={{
-                width: '48%',
-              }}
-            />
-          </View>
-          <Button
-            loading={loading}
-            disabled={!mediaFile.uri || errors.title || errors.description}
-            title="Upload file"
-            onPress={handleSubmit(uploadFile)}
-          />
-          {loading && <ActivityIndicator size="large" />}
-        </TouchableOpacity>
-      </ScrollView>
+            {loading && <ActivityIndicator size="large" />}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: Platform.OS === 'android' ? 30 : 0,
+  },
+});
+
 Upload.propTypes = {
   navigation: PropTypes.object,
 };

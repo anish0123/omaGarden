@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
 import {uploadsUrl} from '../utils/variables';
 import {Video} from 'expo-av';
-import {Button, Icon} from '@rneui/base';
+import {Icon} from '@rneui/base';
 
 // This component is used to edit file info in editPost view.
 const EditPostForm = ({item, owner, navigation}) => {
