@@ -36,9 +36,11 @@ const SingleComment = ({singleComment}) => {
 
   return (
     <View style={styles.container}>
-      <ListItem>
+      <ListItem style={styles.list}>
         <ListItem.Title>{owner.username} :</ListItem.Title>
-        <ListItem.Subtitle>{singleComment.comment}</ListItem.Subtitle>
+        <ListItem.Subtitle style={{width: '75%'}}>
+          {singleComment.comment}
+        </ListItem.Subtitle>
       </ListItem>
       {user.user_id === singleComment.user_id && (
         <Icon
@@ -65,6 +67,9 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: 'column',
     justifyContent: 'center',
+  },
+  list: {
+    flex: 2,
   },
 });
 

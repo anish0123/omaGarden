@@ -13,6 +13,7 @@ import {useContext} from 'react';
 import {useComment} from '../hooks/ApiHooks';
 import {MainContext} from '../contexts/MainContext';
 
+// This view is used to add comment about a file in single view.
 const AddComment = ({file}) => {
   const {setUpdateComment, updateComment} = useContext(MainContext);
   const {postComment} = useComment();

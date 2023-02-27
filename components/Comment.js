@@ -4,6 +4,7 @@ import {useComment} from '../hooks/ApiHooks';
 import SingleComment from './SingleComment';
 import PropTypes from 'prop-types';
 
+// This view prints out the comment about the file in single view
 const Comment = ({file}) => {
   const [comments, setComments] = useState([]);
   const {updateComment} = useContext(MainContext);

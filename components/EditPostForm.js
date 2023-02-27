@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {useContext, useRef, useState} from 'react';
 import {useMedia} from '../hooks/ApiHooks';
@@ -16,6 +17,7 @@ import {MainContext} from '../contexts/MainContext';
 import {uploadsUrl} from '../utils/variables';
 import {Video} from 'expo-av';
 
+// This component is used to edit file info in editPost view.
 const EditPostForm = ({item, owner, navigation}) => {
   // const item = route.params[0];
   // const navigation = route.params[1];
@@ -162,6 +164,43 @@ const EditPostForm = ({item, owner, navigation}) => {
             )}
             name="description"
           />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              onPress={mediaDelete}
+              title="Delete file"
+              buttonStyle={{
+                backgroundColor: '#62BD69',
+                borderColor: 'black',
+                borderRadius: 5,
+              }}
+              type="outline"
+              titleStyle={{color: 'black'}}
+              containerStyle={{
+                width: '48%',
+              }}
+            />
+            <Button
+              onPress={resetValues}
+              title="Reset"
+              buttonStyle={{
+                backgroundColor: '#62BD69',
+                borderColor: 'black',
+                borderRadius: 5,
+              }}
+              type="outline"
+              titleStyle={{color: 'black'}}
+              containerStyle={{
+                width: '48%',
+              }}
+            />
+          </View>
+          <Card.Divider />
           <Button
             loading={loading}
             onPress={handleSubmit(editPost)}
@@ -173,12 +212,7 @@ const EditPostForm = ({item, owner, navigation}) => {
           >
             Edit Info
           </Button>
-          <Button type="outline" onPress={resetValues}>
-            Reset
-          </Button>
-          <Button type="outline" onPress={mediaDelete}>
-            Delete
-          </Button>
+
           {loading && <ActivityIndicator size="large" />}
         </Card>
       </TouchableOpacity>

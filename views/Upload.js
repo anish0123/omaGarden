@@ -258,6 +258,7 @@ const Upload = ({navigation}) => {
                   }}
                 />
               </View>
+              <Card.Divider />
               <Button
                 loading={loading}
                 disabled={!mediaFile.uri || errors.title || errors.description}
