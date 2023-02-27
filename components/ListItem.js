@@ -151,7 +151,11 @@ const ListItem = ({singleMedia, navigation}) => {
         <RNEListItem>
           <RNEListItem.Content>
             <RNEListItem.Title>{likes.length} Likes</RNEListItem.Title>
-            <RNEListItem.Title>{item.title}</RNEListItem.Title>
+            <Card.Divider width={1} />
+            <RNEListItem.Title style={{fontSize: 20, fontWeight: '500'}}>
+              {item.title}
+            </RNEListItem.Title>
+            <Card.Divider width={1} />
             <RNEListItem.Subtitle>{item.description}</RNEListItem.Subtitle>
           </RNEListItem.Content>
         </RNEListItem>
