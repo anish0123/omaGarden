@@ -76,7 +76,7 @@ const OtherUserProfile = ({navigation, route}) => {
   }, [avatar, owner.user_id]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
       <View
         style={{
           flexDirection: 'row',
@@ -107,7 +107,7 @@ const OtherUserProfile = ({navigation, route}) => {
       <Card
         containerStyle={{
           margin: 0,
-          paddingTop: Platform.OS === 'android' ? 40 : 0,
+          paddingTop: Platform.OS === 'android' ? 30 : 0,
         }}
       >
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -127,7 +127,7 @@ const OtherUserProfile = ({navigation, route}) => {
                 fontWeight: 'bold',
                 textAlign: 'center',
                 fontSize: 20,
-                left: 70,
+                marginHorizontal: Dimensions.get('screen').width / 2 - 135,
               }}
             >
               Posts
@@ -136,7 +136,7 @@ const OtherUserProfile = ({navigation, route}) => {
               style={{
                 textAlign: 'center',
                 fontSize: 20,
-                left: 70,
+                marginHorizontal: Dimensions.get('screen').width / 2 - 135,
               }}
             >
               {files.length}
@@ -293,7 +293,7 @@ const OtherUserProfile = ({navigation, route}) => {
             textAlignVertical: 'center',
             textAlign: 'center',
             justifyContent: 'center',
-            marginVertical: 150,
+            marginVertical: 110,
           }}
         >
           No posts yet
