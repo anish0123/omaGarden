@@ -1,18 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  Avatar,
-  Button,
-  Card,
-  Icon,
-  Input,
-  ListItem as RNEListItem,
-  Text,
-} from '@rneui/themed';
+import {Avatar, Card, Icon, ListItem as RNEListItem, Text} from '@rneui/themed';
 import {
   View,
   StyleSheet,
   Image,
-  Alert,
   SafeAreaView,
   FlatList,
   KeyboardAvoidingView,
@@ -24,9 +14,10 @@ import {MainContext} from '../contexts/MainContext';
 import {useComment, useFavourite, useTag} from '../hooks/ApiHooks';
 import {Video} from 'expo-av';
 import {uploadsUrl} from '../utils/variables';
-import {Controller, useForm} from 'react-hook-form';
 import SingleComment from '../components/SingleComment';
 import moment from 'moment';
+import AddComment from '../components/AddComment';
+import Like from '../components/Like';
 
 const Single = ({route, navigation}) => {
   const file = route.params[0];
@@ -35,27 +26,11 @@ const Single = ({route, navigation}) => {
   const [avatar, setAvatar] = useState('');
   const [likes, setLikes] = useState([]);
   const [comments, setComments] = useState([]);
-  const [userLikesIt, setUserLikesIt] = useState(false);
   const {getFilesByTag} = useTag();
-  const {getFavouritesByFileId, postFavourite, deleteFavourite} =
-    useFavourite();
-  const {user, setUpdateComment, updateComment} = useContext(MainContext);
+  const {getFavouritesByFileId} = useFavourite();
+  const {user, updateComment} = useContext(MainContext);
   const {getCommentsByFileId} = useComment();
-  const {postComment} = useComment();
-  const {updateLike, setUpdateLike} = useContext(MainContext);
-  console.log(userLikesIt);
-
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-    reset,
-  } = useForm({
-    defaultValues: {
-      comment: '',
-      file_id: file.file_id,
-    },
-  });
+  const {updateLike} = useContext(MainContext);
 
   // Loading the avatar
   const loadAvatar = async () => {
@@ -71,62 +46,10 @@ const Single = ({route, navigation}) => {
   // Getting the likes
   const getLikes = async () => {
     try {
-      setUserLikesIt(false);
       const likes = await getFavouritesByFileId(file.file_id);
       setLikes(likes);
-      if (likes.length > 0) {
-        const userLike = likes.filter((like) => like.user_id === user.user_id);
-        if (userLike.length !== 0) {
-          setUserLikesIt(true);
-        }
-      }
     } catch (error) {
       console.log('getLikes' + error);
-    }
-  };
-
-  // Method for liking a post
-  const likeFile = async () => {
-    try {
-      console.log('likeFile', file.file_id);
-      const token = await AsyncStorage.getItem('userToken');
-      const result = await postFavourite(file.file_id, token);
-      getLikes();
-      setUserLikesIt(true);
-      console.log(result);
-      setUpdateLike(!updateLike);
-    } catch (error) {
-      // note: you cannot like same file multiple times
-      console.log('likeFile', error);
-    }
-  };
-
-  // Method for disliking a post
-  const dislikeFile = async () => {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const result = await deleteFavourite(file.file_id, token);
-      getLikes();
-      setUserLikesIt(false);
-      console.log(result);
-      setUpdateLike(!updateLike);
-    } catch (error) {
-      // note: you cannot like same file multiple times
-      console.log('likeFile' + error);
-    }
-  };
-
-  // Method for adding a comment
-  const uploadComment = async (data) => {
-    console.log('upload Comment', data);
-    const token = await AsyncStorage.getItem('userToken');
-    try {
-      const result = await postComment(data, token);
-      Alert.alert('Comment added', 'Commend Id: ' + result.comment_id);
-      reset();
-      setUpdateComment(!updateComment);
-    } catch (error) {
-      throw new Error('upload comment, ' + error.message);
     }
   };
 
@@ -134,9 +57,7 @@ const Single = ({route, navigation}) => {
   const getComments = async () => {
     try {
       const comments = await getCommentsByFileId(file.file_id);
-      /* const token = await AsyncStorage.getItem('userToken');
-      let comments = await getAllComments(token);
-      comments = comments.filter((comment) => comment.file_id === file.file_id); */
+      console.log(comments);
       setComments(comments);
     } catch (error) {
       throw new Error('get comments error', error.message);
@@ -145,6 +66,7 @@ const Single = ({route, navigation}) => {
 
   useEffect(() => {
     loadAvatar();
+    getComments();
   }, []);
 
   useEffect(() => {
@@ -194,11 +116,7 @@ const Single = ({route, navigation}) => {
         )}
 
         <RNEListItem containerStyle={styles.iconList}>
-          {userLikesIt ? (
-            <Icon name="favorite" color="red" onPress={dislikeFile} />
-          ) : (
-            <Icon name="favorite-border" onPress={likeFile} />
-          )}
+          <Like file={file} />
           {file.user_id === user.user_id && (
             <Icon
               name="edit"
@@ -225,32 +143,7 @@ const Single = ({route, navigation}) => {
     );
   };
 
-  const BottomPart = () => (
-    <>
-      <Card.Divider />
-      <Controller
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: 'comment is required',
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            placeholder="Add Comment"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            errorMessage={errors.title && errors.title.message}
-          />
-        )}
-        name="comment"
-      />
-      <Button title="Add comment" onPress={handleSubmit(uploadComment)} />
-    </>
-  );
+  const BottomPart = () => <AddComment file={file} />;
 
   return (
     <SafeAreaView style={{flex: 1}}>
