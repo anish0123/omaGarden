@@ -101,7 +101,7 @@ const EditProfile = ({navigation, route}) => {
             style={{
               borderWidth: 1,
               padding: 8,
-              borderRadius: 1,
+              borderColor: 'green',
             }}
             placeholder="Username"
             onBlur={onBlur}
@@ -127,6 +127,7 @@ const EditProfile = ({navigation, route}) => {
             style={{
               borderWidth: 1,
               padding: 8,
+              borderColor: 'green',
             }}
             placeholder="Email"
             onBlur={onBlur}
@@ -151,6 +152,7 @@ const EditProfile = ({navigation, route}) => {
             style={{
               borderWidth: 1,
               padding: 8,
+              borderColor: 'green',
             }}
             placeholder="Password (Optional)"
             onBlur={onBlur}
@@ -178,6 +180,7 @@ const EditProfile = ({navigation, route}) => {
             style={{
               borderWidth: 1,
               padding: 8,
+              borderColor: 'green',
             }}
             placeholder="Confirm Password (Optional)"
             onBlur={onBlur}

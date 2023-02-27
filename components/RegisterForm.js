@@ -129,6 +129,7 @@ const RegisterForm = ({navigation}) => {
               onChangeText={onChange}
               value={value}
               autoCapitalize="none"
+              secureTextEntry={true}
               errorMessage={errors.username && errors.username.message}
             />
           )}

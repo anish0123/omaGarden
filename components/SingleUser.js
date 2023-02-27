@@ -27,7 +27,7 @@ const SingleUser = ({singleUser, navigation}) => {
   }, [clickedUser]);
 
   return (
-    <Card>
+    <Card containerStyle={styles.Card}>
       <ListItem
         containerStyle={styles.avatar}
         onPress={() => {
@@ -37,17 +37,19 @@ const SingleUser = ({singleUser, navigation}) => {
         }}
       >
         {avatar ? (
-          <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
+          <Avatar source={{uri: uploadsUrl + avatar}} size={60} rounded />
         ) : (
           <Avatar
             source={{uri: 'https://placekitten.com/g/200/300'}}
-            size={40}
+            size={60}
             rounded
           />
         )}
 
         <ListItem.Content>
-          <ListItem.Title> {clickedUser.username}</ListItem.Title>
+          <ListItem.Title style={{fontSize: 20, fontWeight: '600'}}>
+            {clickedUser.username}
+          </ListItem.Title>
         </ListItem.Content>
       </ListItem>
     </Card>
@@ -60,8 +62,8 @@ SingleUser.propTypes = {
 
 const styles = StyleSheet.create({
   Card: {
-    margin: 0,
-    padding: 0,
+    borderColor: '#62BD69',
+    borderRadius: 20,
   },
   avatar: {
     margin: 0,
