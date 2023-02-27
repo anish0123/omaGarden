@@ -2,7 +2,13 @@ import {Button, Card, Input} from '@rneui/themed';
 import {Controller, useForm} from 'react-hook-form';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Alert} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+} from 'react-native';
 import {useContext} from 'react';
 import {useComment} from '../hooks/ApiHooks';
 import {MainContext} from '../contexts/MainContext';
@@ -37,30 +43,50 @@ const AddComment = ({file}) => {
   };
 
   return (
-    <>
-      <Card.Divider />
-      <Controller
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: 'comment is required',
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <Input
-            placeholder="Add Comment"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            autoCapitalize="none"
-            errorMessage={errors.title && errors.title.message}
-          />
-        )}
-        name="comment"
-      />
-      <Button title="Add comment" onPress={handleSubmit(uploadComment)} />
-    </>
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <Card.Divider />
+        <Controller
+          control={control}
+          rules={{
+            required: {
+              value: true,
+              message: 'comment is required',
+            },
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              placeholder="Add Comment"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              autoCapitalize="none"
+              errorMessage={errors.title && errors.title.message}
+            />
+          )}
+          name="comment"
+        />
+        <Button
+          onPress={handleSubmit(uploadComment)}
+          title="Add comment"
+          buttonStyle={{
+            backgroundColor: '#62BD69',
+            borderColor: 'black',
+            borderWidth: 1,
+            borderRadius: 20,
+          }}
+          type="outline"
+          titleStyle={{color: 'black', fontSize: 20}}
+          containerStyle={{
+            padding: 10,
+            width: Dimensions.get('screen').width / 2,
+            marginHorizontal: Dimensions.get('screen').width / 5,
+          }}
+        />
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
