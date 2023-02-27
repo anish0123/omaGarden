@@ -20,6 +20,7 @@ import {MainContext} from '../contexts/MainContext';
 import {useFocusEffect} from '@react-navigation/native';
 import {appId} from '../utils/variables';
 import {Video} from 'expo-av';
+import {Image} from '@rneui/base';
 
 const Upload = ({navigation}) => {
   const {postMedia} = useMedia();
@@ -137,9 +138,16 @@ const Upload = ({navigation}) => {
               marginStart: 10,
             }}
           >
-            <Card.Title style={{fontSize: 22, color: 'darkgreen'}}>
-              OmaGarden
-            </Card.Title>
+            <Image
+              source={require('../assets/logo.png')}
+              style={{
+                width: 110,
+                height: 40,
+                marginBottom: 20,
+                marginTop: 30,
+                justifyContent: 'center',
+              }}
+            ></Image>
           </View>
           <Card.Divider />
           <Card>

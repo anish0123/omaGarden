@@ -133,7 +133,16 @@ const ListItem = ({singleMedia, navigation}) => {
           )}
 
           <RNEListItem.Content>
-            <RNEListItem.Title> {owner.username}</RNEListItem.Title>
+            <RNEListItem.Title
+              onPress={() => {
+                user.user_id === owner.user_id
+                  ? navigation.navigate('Profile', owner)
+                  : navigation.navigate('OtherUserProfile', owner);
+              }}
+            >
+              {' '}
+              {owner.username}
+            </RNEListItem.Title>
           </RNEListItem.Content>
         </RNEListItem>
         <Card.Divider color="#ffff" />

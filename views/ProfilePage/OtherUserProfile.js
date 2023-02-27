@@ -40,8 +40,17 @@ const OtherUserProfile = ({navigation, route}) => {
   };
 
   const allMediaFiles = async () => {
+    /* try {
+      const mediaFiles = {mediaArray};
+      setFiles(mediaFiles);
+      console.log('Length of all media files ' + files.length);
+    } catch (error) {
+      console.error('All media files fetching failed ', error.message);
+    }
+    */
     try {
       const mediaFiles = await loadAllMedia(owner.user_id);
+      console.log(mediaFiles);
       setFiles(mediaFiles);
       console.log('Length of all media files ' + files.length);
     } catch (error) {
@@ -55,7 +64,6 @@ const OtherUserProfile = ({navigation, route}) => {
       const token = await AsyncStorage.getItem('userToken');
       const ownerDetails = await getUserById(userDetail.user_id, token);
       setOwner(ownerDetails);
-      console.log('Owner of the profile ' + owner.user_id);
     } catch (error) {
       // console.error('getOwner', error);
     }
@@ -69,32 +77,39 @@ const OtherUserProfile = ({navigation, route}) => {
 
   return (
     <SafeAreaView>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginEnd: 10,
+          marginStart: 15,
+        }}
+      >
+        <Image
+          source={require('../../assets/logo.png')}
+          style={{
+            width: 110,
+            height: 40,
+            marginTop: 15,
+            marginBottom: 15,
+            justifyContent: 'center',
+          }}
+        ></Image>
+        <Icon
+          name="settings"
+          onPress={() => {
+            setShowModal(!showModal);
+            setSettingClicked(!settingClicked);
+          }}
+        />
+      </View>
       <Card
         containerStyle={{
-          backgroundColor: '',
           margin: 0,
           paddingTop: Platform.OS === 'android' ? 40 : 0,
         }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginStart: 10,
-          }}
-        >
-          <Card.Title style={{fontSize: 22, color: 'darkgreen'}}>
-            OmaGarden
-          </Card.Title>
-          <Icon
-            name="settings"
-            onPress={() => {
-              setShowModal(!showModal);
-              setSettingClicked(!settingClicked);
-            }}
-          />
-        </View>
-        <Card.Divider />
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Card.Image
             source={{uri: uploadsUrl + avatar}}
@@ -182,6 +197,7 @@ const OtherUserProfile = ({navigation, route}) => {
                         marginLeft: 15,
                       }}
                       onPress={() => {
+                        setShowModal(false);
                         setIsLoggedIn(false);
                         try {
                           AsyncStorage.clear();
@@ -247,26 +263,42 @@ const OtherUserProfile = ({navigation, route}) => {
           <Icon name="favorite" onPress={() => {}} />
         </View>
       </Card>
-      <FlatList
-        data={files}
-        renderItem={({item}) => (
-          <View>
-            <Image
-              onPress={() => navigation.navigate('Single', [item, userDetail])}
-              source={{uri: uploadsUrl + item.filename}}
-              style={{
-                borderWidth: 1,
-                borderColor: 'black',
-                margin: 1,
-                width: Dimensions.get('screen').width / 3,
-                height: Dimensions.get('screen').width / 3,
-              }}
-            />
-          </View>
-        )}
-        numColumns={3}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      {files.length !== 0 ? (
+        <FlatList
+          data={files}
+          renderItem={({item}) => (
+            <View>
+              <Image
+                onPress={() =>
+                  navigation.navigate('Single', [item, userDetail])
+                }
+                source={{uri: uploadsUrl + item.filename}}
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'black',
+                  margin: 1,
+                  width: Dimensions.get('screen').width / 3,
+                  height: Dimensions.get('screen').width / 3,
+                }}
+              />
+            </View>
+          )}
+          numColumns={3}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <Text
+          style={{
+            fontSize: 25,
+            textAlignVertical: 'center',
+            textAlign: 'center',
+            justifyContent: 'center',
+            marginVertical: 150,
+          }}
+        >
+          No posts yet
+        </Text>
+      )}
     </SafeAreaView>
   );
 };
