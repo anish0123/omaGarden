@@ -22,6 +22,7 @@ const EditPostForm = ({item, owner, navigation}) => {
   const [loading, setLoading] = useState(false);
   const {update, setUpdate} = useContext(MainContext);
   const {putMedia, deleteMedia} = useMedia();
+  console.log(item.title);
   const {
     control,
     handleSubmit,
@@ -29,8 +30,8 @@ const EditPostForm = ({item, owner, navigation}) => {
     reset,
   } = useForm({
     defaultValues: {
-      title: '',
-      description: '',
+      title: item.title,
+      description: item.description,
     },
     mode: 'onChange',
   });

@@ -42,7 +42,11 @@ const useMedia = (myFilesOnly) => {
 
   const loadAllMedia = async (id) => {
     try {
-      const json = await doFetch(baseUrl + 'media/user/' + id);
+      let json = await useTag().getFilesByTag(appId);
+
+      for (let i = 0; i < json.length; i++) {
+        json = json.filter((file) => file.user_id === id);
+      }
       json.reverse();
       return await Promise.all(
         json.map(async (file) => {

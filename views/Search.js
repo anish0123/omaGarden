@@ -30,9 +30,9 @@ const Search = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <SearchBar
         platform="default"
-        containerStyle={{}}
-        inputContainerStyle={{}}
-        inputStyle={{}}
+        containerStyle={{backgroundColor: '#62BD69'}}
+        inputContainerStyle={{backgroundColor: '#ffff'}}
+        inputStyle={{color: '#000000'}}
         leftIconContainerStyle={{}}
         rightIconContainerStyle={{}}
         loadingProps={{}}
