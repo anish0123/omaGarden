@@ -196,7 +196,9 @@ const ListItem = ({singleMedia, navigation}) => {
         <RNEListItem>
           <RNEListItem.Content>
             <RNEListItem.Title>{likes.length} Likes</RNEListItem.Title>
-            <RNEListItem.Title>{item.title}</RNEListItem.Title>
+            <RNEListItem.Title style={{fontWeight: 'bold'}}>
+              {item.title}
+            </RNEListItem.Title>
             <RNEListItem.Subtitle>{item.description}</RNEListItem.Subtitle>
           </RNEListItem.Content>
         </RNEListItem>
