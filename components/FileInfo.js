@@ -16,6 +16,7 @@ import Like from './Like';
 import PropTypes from 'prop-types';
 import {StyleSheet} from 'react-native';
 
+// This component prints the file and file owner info in single view.
 const FileInfo = ({navigation, file, owner}) => {
   const video = useRef(null);
   const [avatar, setAvatar] = useState('');
@@ -56,7 +57,14 @@ const FileInfo = ({navigation, file, owner}) => {
 
   return (
     <>
-      <RNEListItem containerStyle={styles.avatar}>
+      <RNEListItem
+        containerStyle={styles.avatar}
+        onPress={() => {
+          user.user_id === owner.user_id
+            ? navigation.navigate('Profile', owner)
+            : navigation.navigate('OtherUserProfile', owner);
+        }}
+      >
         {avatar ? (
           <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
         ) : (

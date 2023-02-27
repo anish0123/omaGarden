@@ -9,6 +9,7 @@ import {Video} from 'expo-av';
 import {MainContext} from '../contexts/MainContext';
 import Like from './Like';
 
+// ListItem is used to display all the files that have been posted in home view.
 const ListItem = ({singleMedia, navigation}) => {
   const video = useRef(null);
   const [owner, setOwner] = useState({});

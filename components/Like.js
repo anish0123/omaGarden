@@ -5,6 +5,7 @@ import {useContext, useEffect, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
 import {useFavourite} from '../hooks/ApiHooks';
 
+// This component is used to like or dislike a file through home and single view.
 const Like = ({file}) => {
   const [userLikesIt, setUserLikesIt] = useState(false);
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =

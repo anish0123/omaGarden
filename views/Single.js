@@ -24,7 +24,7 @@ const Single = ({route, navigation}) => {
         <ScrollView>
           <View styles={styles.main}>
             <Card styles={styles.post}>
-              <FileInfo file={file} owner={owner} />
+              <FileInfo file={file} owner={owner} navigation={navigation} />
               <Comment file={file} />
               <AddComment file={file} />
             </Card>
