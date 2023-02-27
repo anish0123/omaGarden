@@ -127,7 +127,7 @@ const OtherUserProfile = ({navigation, route}) => {
                 fontWeight: 'bold',
                 textAlign: 'center',
                 fontSize: 20,
-                marginHorizontal: Dimensions.get('screen').width / 3,
+                marginHorizontal: Dimensions.get('screen').width / 2 - 135,
               }}
             >
               Posts
@@ -136,7 +136,7 @@ const OtherUserProfile = ({navigation, route}) => {
               style={{
                 textAlign: 'center',
                 fontSize: 20,
-                marginHorizontal: Dimensions.get('screen').width / 3,
+                marginHorizontal: Dimensions.get('screen').width / 2 - 135,
               }}
             >
               {files.length}
