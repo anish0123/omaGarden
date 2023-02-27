@@ -350,7 +350,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
           buttonStyle={{
             backgroundColor: '#62BD69',
             borderColor: 'black',
-            borderRadius: 5,
+            borderRadius: 20,
             margin: 5,
           }}
           type="outline"
