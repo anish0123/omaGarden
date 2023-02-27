@@ -76,7 +76,7 @@ const OtherUserProfile = ({navigation, route}) => {
   }, [avatar, owner.user_id]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
       <View
         style={{
           flexDirection: 'row',
