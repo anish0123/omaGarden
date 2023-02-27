@@ -73,11 +73,8 @@ const Single = ({route, navigation}) => {
     try {
       setUserLikesIt(false);
       const likes = await getFavouritesByFileId(file.file_id);
-      console.log(userLikesIt);
-      console.log('likes', likes);
       setLikes(likes);
       if (likes.length > 0) {
-        console.log('Is it working till here');
         const userLike = likes.filter((like) => like.user_id === user.user_id);
         if (userLike.length !== 0) {
           setUserLikesIt(true);
