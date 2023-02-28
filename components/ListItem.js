@@ -35,7 +35,6 @@ const ListItem = ({singleMedia, navigation}) => {
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
-      setAvatar('');
       const avatarArray = await getFilesByTag('avatar_' + owner.user_id);
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
@@ -47,7 +46,6 @@ const ListItem = ({singleMedia, navigation}) => {
   const getComments = async () => {
     try {
       const comments = await getCommentsByFileId(item.file_id);
-      console.log(comments);
       setComments(comments);
     } catch (error) {
       throw new Error('get comments error', error.message);
@@ -86,7 +84,7 @@ const ListItem = ({singleMedia, navigation}) => {
             <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
           ) : (
             <Avatar
-              source={{uri: 'https://placekitten.com/g/200/300'}}
+              source={require('../assets/avatar.png')}
               size={40}
               rounded
             />
