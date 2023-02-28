@@ -27,6 +27,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   const [editClicked, setEditClicked] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
   const {update, setUpdate} = useContext(MainContext);
+  console.log(mediaArray);
 
   const loadAvatar = async () => {
     try {
