@@ -82,7 +82,7 @@ const EditProfile = ({navigation, route}) => {
         style={{
           flexDirection: 'column',
           justifyContent: 'center',
-          marginHorizontal: Dimensions.get('screen').width / 2 - 100,
+          marginHorizontal: Dimensions.get('screen').width / 2 - 110,
           width: 200,
           height: 200,
           marginBottom: 20,
@@ -104,7 +104,7 @@ const EditProfile = ({navigation, route}) => {
               borderRadius: 7,
               width: '100%',
               justifyContent: 'center',
-              marginTop: 40,
+              marginTop: 20,
               padding: 5,
             }}
             placeholder="Username"
@@ -212,7 +212,7 @@ const EditProfile = ({navigation, route}) => {
         loading={loading}
         title="Save Changes"
         buttonStyle={{
-          backgroundColor: '#62BD69',
+          backgroundColor: '#6fdc6f',
           borderColor: 'black',
           borderWidth: 1,
           borderRadius: 20,
