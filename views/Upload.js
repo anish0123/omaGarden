@@ -159,7 +159,7 @@ const Upload = ({navigation}) => {
                 <Video
                   ref={video}
                   source={{uri: mediaFile.uri}}
-                  style={{width: '100%', height: 500}}
+                  style={{width: '100%', height: 300}}
                   resizeMode="contain"
                   useNativeControls
                   onError={(error) => {
@@ -168,6 +168,7 @@ const Upload = ({navigation}) => {
                 />
               ) : (
                 <Card.Image
+                  style={{width: '100%', height: 300}}
                   source={{
                     uri: mediaFile.uri || 'https://placekitten.com/g/200/300',
                   }}
