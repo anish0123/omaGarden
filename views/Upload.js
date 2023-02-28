@@ -23,6 +23,7 @@ import {appId} from '../utils/variables';
 import {Video} from 'expo-av';
 import {Image} from '@rneui/base';
 
+// This view is used to upload files into the app
 const Upload = ({navigation}) => {
   const {postMedia} = useMedia();
   const {postTag} = useTag();
