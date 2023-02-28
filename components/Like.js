@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Icon} from '@rneui/themed';
+import {Icon, Text} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {useContext, useEffect, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
@@ -11,6 +11,7 @@ const Like = ({file}) => {
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
   const {user, updateLike, setUpdateLike} = useContext(MainContext);
+  const [likes, setLikes] = useState([]);
 
   // Getting the likes of the post
   const getLikes = async () => {
@@ -19,6 +20,7 @@ const Like = ({file}) => {
       const likes = await getFavouritesByFileId(file.file_id);
       console.log(userLikesIt);
       console.log('likes', likes);
+      setLikes(likes);
       if (likes.length > 0) {
         console.log('Is it working till here');
         const userLike = likes.filter((like) => like.user_id === user.user_id);
@@ -70,6 +72,14 @@ const Like = ({file}) => {
       ) : (
         <Icon name="favorite-border" onPress={likeFile} />
       )}
+      <Text
+        style={{
+          fontSize: '20',
+          marginLeft: 10,
+        }}
+      >
+        {likes.length}
+      </Text>
     </>
   );
 };
