@@ -152,11 +152,15 @@ const Upload = ({navigation}) => {
       </View>
       <KeyboardAvoidingView>
         <ScrollView
-          contentContainerStyle={{justifyContent: 'center', display: 'flex'}}
+          contentContainerStyle={{
+            justifyContent: 'center',
+            display: 'flex',
+            alignItems: 'center',
+          }}
         >
           <TouchableOpacity
             style={{
-              paddingHorizontal: 20,
+              paddingHorizontal: '5%',
               paddingVertical: 40,
             }}
             onPress={() => Keyboard.dismiss()}
@@ -176,8 +180,8 @@ const Upload = ({navigation}) => {
             ) : (
               <Image
                 style={{
-                  width: '100%',
-                  height: 500,
+                  width: '80%',
+                  height: 350,
                 }}
                 source={{
                   uri: mediaFile.uri || 'https://placekitten.com/g/200/300',
