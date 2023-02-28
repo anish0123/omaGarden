@@ -1,4 +1,6 @@
-import {Card, Image, Input} from '@rneui/themed';
+// eslint-disable-next-line no-unused-vars
+import React, {Component} from 'react';
+import {Card, Image, Input, Button} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {Controller, useForm} from 'react-hook-form';
 import {
@@ -9,6 +11,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
 import {useContext, useRef, useState} from 'react';
 import {useMedia} from '../hooks/ApiHooks';
@@ -97,42 +100,32 @@ const EditPostForm = ({item, owner, navigation}) => {
   };
   const resetValues = () => {
     reset();
-    navigation.navigate('Single', [item, owner]);
   };
   return (
     <ScrollView>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}
-        >
-          <Icon
-            raised
-            name="close-outline"
-            type="ionicon"
-            onPress={resetValues}
-          />
-          <Icon
-            raised
-            name="trash-outline"
-            type="ionicon"
-            color="red"
-            onPress={mediaDelete}
-          />
-          <Icon
-            raised
-            name="checkmark-outline"
-            type="ionicon"
-            color="green"
-            loading={loading}
-            onPress={handleSubmit(editPost)}
-            disabled={errors.title || errors.description}
-          />
-        </View>
-        <Card>
+        <Card containerStyle={{margin: 0}}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Icon
+              raised
+              name="refresh-outline"
+              type="ionicon"
+              onPress={resetValues}
+            />
+            <Icon
+              raised
+              name="trash-outline"
+              type="ionicon"
+              color="red"
+              onPress={mediaDelete}
+            />
+          </View>
           {item.media_type === 'image' ? (
             <Image
               source={{uri: uploadsUrl + item.thumbnails?.w640}}
@@ -208,7 +201,22 @@ const EditPostForm = ({item, owner, navigation}) => {
             )}
             name="description"
           />
-
+          <Button
+            onPress={handleSubmit(editPost)}
+            title="Save Changes"
+            disabled={errors.title || errors.description}
+            buttonStyle={{
+              backgroundColor: '#62BD69',
+              borderColor: 'black',
+              borderRadius: 20,
+            }}
+            type="outline"
+            titleStyle={{color: 'black'}}
+            containerStyle={{
+              width: Dimensions.get('screen').width / 3,
+              marginHorizontal: Dimensions.get('screen').width / 4,
+            }}
+          />
           {loading && <ActivityIndicator size="large" />}
         </Card>
       </TouchableOpacity>
