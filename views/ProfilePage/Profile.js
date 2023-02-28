@@ -285,8 +285,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                           marginLeft: 15,
                         }}
                         onPress={() => {
-                          setShowModal(false);
                           setIsLoggedIn(false);
+                          setShowModal(false);
                           try {
                             AsyncStorage.clear();
                           } catch (error) {

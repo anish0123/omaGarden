@@ -191,6 +191,14 @@ const Upload = ({navigation}) => {
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
+                    inputContainerStyle={{
+                      borderWidth: 1,
+                      borderColor: 'green',
+                      borderRadius: 7,
+                      width: '100%',
+                      justifyContent: 'center',
+                      marginTop: 40,
+                    }}
                     placeholder="Title"
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -211,10 +219,29 @@ const Upload = ({navigation}) => {
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
+                    style={{
+                      paddingHorizontal: 5,
+                    }}
+                    containerStyle={{
+                      minHeight: 90,
+                    }}
+                    inputContainer={{
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}
+                    inputContainerStyle={{
+                      borderWidth: 1,
+                      borderColor: 'green',
+                      borderRadius: 7,
+                      width: '100%',
+                      justifyContent: 'center',
+                      minHeight: 110,
+                    }}
                     placeholder="Description"
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
+                    multiline={true}
                     autoCapitalize="none"
                     errorMessage={
                       errors.description && errors.description.message
@@ -262,6 +289,9 @@ const Upload = ({navigation}) => {
               </View>
               <Card.Divider />
               <Button
+                style={{
+                  marginBottom: 100,
+                }}
                 loading={loading}
                 disabled={!mediaFile.uri || errors.title || errors.description}
                 title="Upload file"
