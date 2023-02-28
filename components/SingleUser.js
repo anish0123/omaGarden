@@ -39,11 +39,7 @@ const SingleUser = ({singleUser, navigation}) => {
         {avatar ? (
           <Avatar source={{uri: uploadsUrl + avatar}} size={60} rounded />
         ) : (
-          <Avatar
-            source={{uri: 'https://placekitten.com/g/200/300'}}
-            size={60}
-            rounded
-          />
+          <Avatar source={require('../assets/avatar.png')} size={60} rounded />
         )}
 
         <ListItem.Content>
