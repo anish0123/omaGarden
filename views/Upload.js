@@ -135,26 +135,26 @@ const Upload = ({navigation}) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <ScrollView>
-            <View
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginStart: 10,
+            }}
+          >
+            <Image
+              source={require('../assets/logo.png')}
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginStart: 10,
+                width: 110,
+                height: 40,
+                marginBottom: 20,
+                marginTop: 30,
+                justifyContent: 'center',
               }}
-            >
-              <Image
-                source={require('../assets/logo.png')}
-                style={{
-                  width: 110,
-                  height: 40,
-                  marginBottom: 20,
-                  marginTop: 30,
-                  justifyContent: 'center',
-                }}
-              ></Image>
-            </View>
-            <Card.Divider />
+            ></Image>
+          </View>
+          <Card.Divider />
+          <ScrollView>
             <Card>
               {mediaFile.type === 'video' ? (
                 <Video
