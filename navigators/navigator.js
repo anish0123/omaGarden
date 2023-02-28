@@ -87,7 +87,7 @@ const Navigator = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#62BD69',
+    backgroundColor: '#ffffff',
   },
 });
 

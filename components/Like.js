@@ -74,7 +74,7 @@ const Like = ({file}) => {
       )}
       <Text
         style={{
-          fontSize: '20',
+          fontSize: 20,
           marginLeft: 10,
         }}
       >
