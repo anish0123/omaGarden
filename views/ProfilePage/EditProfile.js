@@ -82,11 +82,11 @@ const EditProfile = ({navigation, route}) => {
         style={{
           flexDirection: 'column',
           justifyContent: 'center',
-          marginHorizontal: Dimensions.get('screen').width / 2 - 75,
-          width: 100,
-          height: 100,
+          marginHorizontal: Dimensions.get('screen').width / 2 - 100,
+          width: 200,
+          height: 200,
           marginBottom: 20,
-          borderRadius: 100 / 2,
+          borderRadius: 200 / 2,
           borderWidth: 2,
           borderColor: 'black',
         }}
@@ -98,10 +98,14 @@ const EditProfile = ({navigation, route}) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
-            style={{
+            inputContainerStyle={{
               borderWidth: 1,
-              padding: 8,
               borderColor: 'green',
+              borderRadius: 7,
+              width: '100%',
+              justifyContent: 'center',
+              marginTop: 40,
+              padding: 5,
             }}
             placeholder="Username"
             onBlur={onBlur}
@@ -124,10 +128,13 @@ const EditProfile = ({navigation, route}) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
-            style={{
+            inputContainerStyle={{
               borderWidth: 1,
-              padding: 8,
               borderColor: 'green',
+              borderRadius: 7,
+              width: '100%',
+              justifyContent: 'center',
+              padding: 5,
             }}
             placeholder="Email"
             onBlur={onBlur}
@@ -149,10 +156,13 @@ const EditProfile = ({navigation, route}) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
-            style={{
+            inputContainerStyle={{
               borderWidth: 1,
-              padding: 8,
               borderColor: 'green',
+              borderRadius: 7,
+              width: '100%',
+              justifyContent: 'center',
+              padding: 5,
             }}
             placeholder="Password (Optional)"
             onBlur={onBlur}
@@ -177,10 +187,13 @@ const EditProfile = ({navigation, route}) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
-            style={{
+            inputContainerStyle={{
               borderWidth: 1,
-              padding: 8,
               borderColor: 'green',
+              borderRadius: 7,
+              width: '100%',
+              justifyContent: 'center',
+              padding: 5,
             }}
             placeholder="Confirm Password (Optional)"
             onBlur={onBlur}
