@@ -1,8 +1,8 @@
-import {Avatar, Card, Icon, ListItem as RNEListItem} from '@rneui/themed';
+import {Avatar, Card, Icon, ListItem as RNEListItem, Text} from '@rneui/themed';
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
-import {useFavourite, useTag, useUser} from '../hooks/ApiHooks';
+import {useComment, useTag, useUser} from '../hooks/ApiHooks';
 import {useContext, useEffect, useRef, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Video} from 'expo-av';
@@ -17,9 +17,9 @@ const ListItem = ({singleMedia, navigation}) => {
   const {getUserById} = useUser();
   const {getFilesByTag} = useTag();
   const item = singleMedia;
-  const [likes, setLikes] = useState([]);
-  const {getFavouritesByFileId} = useFavourite();
-  const {user, updateLike} = useContext(MainContext);
+  const [comments, setComments] = useState([]);
+  const {user, updateComment} = useContext(MainContext);
+  const {getCommentsByFileId} = useComment();
 
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
@@ -35,7 +35,6 @@ const ListItem = ({singleMedia, navigation}) => {
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
-      setAvatar('');
       const avatarArray = await getFilesByTag('avatar_' + owner.user_id);
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
@@ -43,13 +42,13 @@ const ListItem = ({singleMedia, navigation}) => {
     }
   };
 
-  // Getting the likes of the post
-  const getLikes = async () => {
+  // Method for getting comments
+  const getComments = async () => {
     try {
-      const likes = await getFavouritesByFileId(item.file_id);
-      setLikes(likes);
+      const comments = await getCommentsByFileId(item.file_id);
+      setComments(comments);
     } catch (error) {
-      console.log('getLikes' + error);
+      throw new Error('get comments error', error.message);
     }
   };
 
@@ -67,8 +66,8 @@ const ListItem = ({singleMedia, navigation}) => {
   }, [owner]);
 
   useEffect(() => {
-    getLikes();
-  }, [updateLike]);
+    getComments();
+  }, [updateComment]);
 
   return (
     <View styles={styles.main}>
@@ -85,7 +84,7 @@ const ListItem = ({singleMedia, navigation}) => {
             <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
           ) : (
             <Avatar
-              source={{uri: 'https://placekitten.com/g/200/300'}}
+              source={require('../assets/avatar.png')}
               size={40}
               rounded
             />
@@ -138,6 +137,14 @@ const ListItem = ({singleMedia, navigation}) => {
               navigation.navigate('Single', [item, owner]);
             }}
           />
+          <Text
+            style={{
+              marginLeft: 10,
+            }}
+          >
+            {comments.length}
+          </Text>
+
           {item.user_id === user.user_id && (
             <Icon
               name="edit"
@@ -150,8 +157,6 @@ const ListItem = ({singleMedia, navigation}) => {
 
         <RNEListItem>
           <RNEListItem.Content>
-            <RNEListItem.Title>{likes.length} Likes</RNEListItem.Title>
-            <Card.Divider width={1} />
             <RNEListItem.Title style={{fontSize: 20, fontWeight: '500'}}>
               {item.title}
             </RNEListItem.Title>
