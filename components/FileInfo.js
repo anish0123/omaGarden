@@ -10,7 +10,7 @@ import {Video} from 'expo-av';
 import moment from 'moment';
 import {useContext, useEffect, useRef, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
-import {useFavourite, useTag} from '../hooks/ApiHooks';
+import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import Like from './Like';
 import PropTypes from 'prop-types';
@@ -20,11 +20,8 @@ import {StyleSheet} from 'react-native';
 const FileInfo = ({navigation, file, owner}) => {
   const video = useRef(null);
   const [avatar, setAvatar] = useState('');
-  const [likes, setLikes] = useState([]);
   const {getFilesByTag} = useTag();
-  const {getFavouritesByFileId} = useFavourite();
   const {user} = useContext(MainContext);
-  const {updateLike} = useContext(MainContext);
 
   // Loading the avatar
   const loadAvatar = async () => {
@@ -37,23 +34,9 @@ const FileInfo = ({navigation, file, owner}) => {
     }
   };
 
-  // Getting the likes
-  const getLikes = async () => {
-    try {
-      const likes = await getFavouritesByFileId(file.file_id);
-      setLikes(likes);
-    } catch (error) {
-      console.log('getLikes' + error);
-    }
-  };
-
   useEffect(() => {
     loadAvatar();
   }, []);
-
-  useEffect(() => {
-    getLikes();
-  }, [updateLike]);
 
   return (
     <>
@@ -113,7 +96,6 @@ const FileInfo = ({navigation, file, owner}) => {
 
       <RNEListItem>
         <RNEListItem.Content>
-          <RNEListItem.Title>{likes.length} Likes</RNEListItem.Title>
           <Card.Divider width={1} />
           <RNEListItem.Title style={{fontSize: 20, fontWeight: '500'}}>
             {file.title}

@@ -16,6 +16,7 @@ import Search from '../views/Search';
 import LoginForm from '../components/LoginForm';
 import OtherUserProfile from '../views/ProfilePage/OtherUserProfile';
 import EditPost from '../views/EditPost';
+import {StyleSheet} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ const TabScreen = () => {
         tabBarIcon: ({focused, color, size}) => {
           return <LottieIcons iconName={route.name} focused={focused} />;
         },
+        tabBarStyle: styles.container,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarItemStyle: {padding: 4},
@@ -82,5 +84,11 @@ const Navigator = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#62BD69',
+  },
+});
 
 export default Navigator;
