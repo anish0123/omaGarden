@@ -139,8 +139,7 @@ const ListItem = ({singleMedia, navigation}) => {
           />
           <Text
             style={{
-              fontSize: '20',
-              marginLeft: 10,
+              fontSize: 20,
             }}
           >
             {comments.length}
@@ -155,7 +154,7 @@ const ListItem = ({singleMedia, navigation}) => {
             />
           )}
         </RNEListItem>
-
+        <Card.Divider style={{marginTop: 10, marginBottom: 0}} />
         <RNEListItem>
           <RNEListItem.Content>
             <RNEListItem.Title style={{fontSize: 20, fontWeight: '500'}}>
