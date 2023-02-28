@@ -51,11 +51,7 @@ const FileInfo = ({navigation, file, owner}) => {
         {avatar ? (
           <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
         ) : (
-          <Avatar
-            source={{uri: 'https://placekitten.com/g/200/300'}}
-            size={40}
-            rounded
-          />
+          <Avatar source={require('../assets/avatar.png')} size={40} rounded />
         )}
 
         <RNEListItem.Content>
