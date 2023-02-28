@@ -113,7 +113,6 @@ const FileInfo = ({navigation, file, owner}) => {
 
       <RNEListItem>
         <RNEListItem.Content>
-          <RNEListItem.Title>{likes.length} Likes</RNEListItem.Title>
           <Card.Divider width={1} />
           <RNEListItem.Title style={{fontSize: 20, fontWeight: '500'}}>
             {file.title}
