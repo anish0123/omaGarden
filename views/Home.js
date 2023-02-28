@@ -2,6 +2,7 @@ import {StyleSheet, SafeAreaView, Platform, View} from 'react-native';
 import List from '../components/List';
 import PropTypes from 'prop-types';
 import {Card, Image} from '@rneui/themed';
+import {Icon} from '@rneui/base';
 
 const Home = ({navigation}) => {
   return (
@@ -11,6 +12,8 @@ const Home = ({navigation}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           marginStart: 10,
+          marginEnd: 15,
+          alignItems: 'center',
         }}
       >
         <Image
@@ -23,6 +26,7 @@ const Home = ({navigation}) => {
             justifyContent: 'center',
           }}
         ></Image>
+        <Icon name="reorder-three-outline" type="ionicon" />
       </View>
       <Card.Divider />
       <List navigation={navigation} />

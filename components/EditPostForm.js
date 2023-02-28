@@ -1,4 +1,4 @@
-import {Button, Card, Image, Input} from '@rneui/themed';
+import {Card, Image, Input} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {Controller, useForm} from 'react-hook-form';
 import {
@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
 import {uploadsUrl} from '../utils/variables';
 import {Video} from 'expo-av';
+import {Button, Icon} from '@rneui/base';
 
 // This component is used to edit file info in editPost view.
 const EditPostForm = ({item, owner, navigation}) => {
@@ -96,10 +97,41 @@ const EditPostForm = ({item, owner, navigation}) => {
   };
   const resetValues = () => {
     reset();
+    navigation.navigate('Single', [item, owner]);
   };
   return (
     <ScrollView>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}
+        >
+          <Icon
+            raised
+            name="close-outline"
+            type="ionicon"
+            onPress={resetValues}
+          />
+          <Icon
+            raised
+            name="trash-outline"
+            type="ionicon"
+            color="red"
+            onPress={mediaDelete}
+          />
+          <Icon
+            raised
+            name="checkmark-outline"
+            type="ionicon"
+            color="green"
+            loading={loading}
+            onPress={handleSubmit(editPost)}
+            disabled={errors.title || errors.description}
+          />
+        </View>
         <Card>
           {item.media_type === 'image' ? (
             <Image
@@ -134,6 +166,12 @@ const EditPostForm = ({item, owner, navigation}) => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <Input
+                style={{
+                  borderWidth: 1,
+                  padding: 8,
+                  marginTop: 20,
+                  borderColor: 'green',
+                }}
                 placeholder="Title"
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -154,6 +192,12 @@ const EditPostForm = ({item, owner, navigation}) => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <Input
+                multiline
+                style={{
+                  borderWidth: 1,
+                  padding: 8,
+                  borderColor: 'green',
+                }}
                 placeholder="Description"
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -164,54 +208,6 @@ const EditPostForm = ({item, owner, navigation}) => {
             )}
             name="description"
           />
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Button
-              onPress={mediaDelete}
-              title="Delete file"
-              buttonStyle={{
-                backgroundColor: '#62BD69',
-                borderColor: 'black',
-                borderRadius: 5,
-              }}
-              type="outline"
-              titleStyle={{color: 'black'}}
-              containerStyle={{
-                width: '48%',
-              }}
-            />
-            <Button
-              onPress={resetValues}
-              title="Reset"
-              buttonStyle={{
-                backgroundColor: '#62BD69',
-                borderColor: 'black',
-                borderRadius: 5,
-              }}
-              type="outline"
-              titleStyle={{color: 'black'}}
-              containerStyle={{
-                width: '48%',
-              }}
-            />
-          </View>
-          <Card.Divider />
-          <Button
-            loading={loading}
-            onPress={handleSubmit(editPost)}
-            radius={'sm'}
-            containerStyle={{
-              width: '100%',
-            }}
-            disabled={errors.title || errors.description}
-          >
-            Edit Info
-          </Button>
 
           {loading && <ActivityIndicator size="large" />}
         </Card>
