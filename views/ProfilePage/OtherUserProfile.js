@@ -30,12 +30,13 @@ const OtherUserProfile = ({navigation, route}) => {
   const [owner, setOwner] = useState({});
   const [files, setFiles] = useState([]);
 
+  // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + userDetail.user_id);
-      setAvatar(avatarArray[avatarArray.length - 1].filename);
+      setAvatar(avatarArray.pop().filename);
     } catch (error) {
-      console.error('User avatar fetch failed ', error.message);
+      console.log('load Avatar', error);
     }
   };
 
@@ -111,16 +112,31 @@ const OtherUserProfile = ({navigation, route}) => {
         }}
       >
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Card.Image
-            source={{uri: uploadsUrl + avatar}}
-            style={{
-              width: 120,
-              height: 120,
-              borderRadius: 120 / 2,
-              borderWidth: 1,
-              borderColor: 'black',
-            }}
-          />
+          {avatar ? (
+            <Card.Image
+              source={{uri: uploadsUrl + avatar}}
+              style={{
+                width: 120,
+                height: 120,
+                margin: 15,
+                borderRadius: 120 / 2,
+                borderWidth: 1,
+                borderColor: 'black',
+              }}
+            />
+          ) : (
+            <Card.Image
+              source={require('../../assets/avatar.png')}
+              style={{
+                width: 120,
+                height: 120,
+                margin: 15,
+                borderRadius: 120 / 2,
+                borderWidth: 1,
+                borderColor: 'black',
+              }}
+            />
+          )}
           <View>
             <Text
               style={{
