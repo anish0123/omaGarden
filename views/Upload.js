@@ -150,7 +150,9 @@ const Upload = ({navigation}) => {
           }}
         ></Image>
       </View>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <ScrollView
           contentContainerStyle={{
             justifyContent: 'center',
@@ -180,7 +182,7 @@ const Upload = ({navigation}) => {
             ) : (
               <Image
                 style={{
-                  width: '80%',
+                  width: '100%',
                   height: 350,
                 }}
                 source={{
