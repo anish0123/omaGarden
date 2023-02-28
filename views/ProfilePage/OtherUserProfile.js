@@ -29,13 +29,15 @@ const OtherUserProfile = ({navigation, route}) => {
   const [settingClicked, setSettingClicked] = useState(false);
   const [owner, setOwner] = useState({});
   const [files, setFiles] = useState([]);
+  console.log(userDetail);
 
+  // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + userDetail.user_id);
-      setAvatar(avatarArray[avatarArray.length - 1].filename);
+      setAvatar(avatarArray.pop().filename);
     } catch (error) {
-      console.error('User avatar fetch failed ', error.message);
+      console.log('load Avatar', error);
     }
   };
 
@@ -50,6 +52,7 @@ const OtherUserProfile = ({navigation, route}) => {
     */
     try {
       const mediaFiles = await loadAllMedia(owner.user_id);
+      console.log(mediaFiles);
       console.log(mediaFiles);
       setFiles(mediaFiles);
       console.log('Length of all media files ' + files.length);
@@ -76,51 +79,66 @@ const OtherUserProfile = ({navigation, route}) => {
   }, [avatar, owner.user_id]);
 
   return (
-    <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginEnd: 10,
-          marginStart: 15,
-        }}
-      >
-        <Image
-          source={require('../../assets/logo.png')}
-          style={{
-            width: 110,
-            height: 40,
-            marginTop: 15,
-            marginBottom: 15,
-            justifyContent: 'center',
-          }}
-        ></Image>
-        <Icon
-          name="settings"
-          onPress={() => {
-            setShowModal(!showModal);
-            setSettingClicked(!settingClicked);
-          }}
-        />
-      </View>
+    <SafeAreaView>
       <Card
         containerStyle={{
           margin: 0,
           paddingTop: Platform.OS === 'android' ? 30 : 0,
         }}
       >
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Card.Image
-            source={{uri: uploadsUrl + avatar}}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginEnd: 10,
+            marginStart: 15,
+          }}
+        >
+          <Image
+            source={require('../../assets/logo.png')}
             style={{
-              width: 120,
-              height: 120,
-              borderRadius: 120 / 2,
-              borderWidth: 1,
-              borderColor: 'black',
+              width: 110,
+              height: 40,
+              marginBottom: 10,
+              justifyContent: 'center',
+            }}
+          ></Image>
+          <Icon
+            name="settings"
+            onPress={() => {
+              setShowModal(!showModal);
+              setSettingClicked(!settingClicked);
             }}
           />
+        </View>
+        <Card.Divider style={{left: 0}} />
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {avatar ? (
+            <Card.Image
+              source={{uri: uploadsUrl + avatar}}
+              style={{
+                width: 120,
+                height: 120,
+                margin: 10,
+                borderRadius: 120 / 2,
+                borderWidth: 1,
+                borderColor: 'black',
+              }}
+            />
+          ) : (
+            <Card.Image
+              source={require('../../assets/avatar.png')}
+              style={{
+                width: 120,
+                height: 120,
+                margin: 10,
+                borderRadius: 120 / 2,
+                borderWidth: 1,
+                borderColor: 'black',
+              }}
+            />
+          )}
           <View>
             <Text
               style={{
@@ -232,19 +250,14 @@ const OtherUserProfile = ({navigation, route}) => {
             </TouchableOpacity>
           </Modal>
         </GestureRecognizer>
-        {owner.full_name === 'null' ? (
-          <ListItem.Title style={{margin: 10, fontSize: 20}}>
+        {owner.full_name !== 'null' ? (
+          <ListItem.Title style={{padding: 10, fontSize: 20, marginLeft: 10}}>
             {userDetail.username}
           </ListItem.Title>
         ) : (
-          <View>
-            <ListItem.Title style={{margin: 10, fontSize: 20}}>
-              {userDetail.username}
-            </ListItem.Title>
-            <ListItem.Title style={{margin: 10, fontSize: 20}}>
-              {owner.full_name}
-            </ListItem.Title>
-          </View>
+          <ListItem.Title style={{padding: 10, fontSize: 20, marginLeft: 10}}>
+            {userDetail.full_name}
+          </ListItem.Title>
         )}
       </Card>
       <Card
@@ -268,19 +281,35 @@ const OtherUserProfile = ({navigation, route}) => {
           data={files}
           renderItem={({item}) => (
             <View>
-              <Image
-                onPress={() =>
-                  navigation.navigate('Single', [item, userDetail])
-                }
-                source={{uri: uploadsUrl + item.filename}}
-                style={{
-                  borderWidth: 1,
-                  borderColor: 'black',
-                  margin: 1,
-                  width: Dimensions.get('screen').width / 3,
-                  height: Dimensions.get('screen').width / 3,
-                }}
-              />
+              {item.media_type === 'image' ? (
+                <Image
+                  onPress={() =>
+                    navigation.navigate('Single', [item, userDetail])
+                  }
+                  source={{uri: uploadsUrl + item.filename}}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: 'black',
+                    margin: 1,
+                    width: Dimensions.get('screen').width / 3,
+                    height: Dimensions.get('screen').width / 3,
+                  }}
+                />
+              ) : (
+                <Image
+                  onPress={() =>
+                    navigation.navigate('Single', [item, userDetail])
+                  }
+                  source={{uri: uploadsUrl + item.screenshot}}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: 'black',
+                    margin: 1,
+                    width: Dimensions.get('screen').width / 3,
+                    height: Dimensions.get('screen').width / 3,
+                  }}
+                />
+              )}
             </View>
           )}
           numColumns={3}
