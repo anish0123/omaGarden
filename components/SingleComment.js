@@ -22,9 +22,27 @@ const SingleComment = ({singleComment}) => {
   const commentDelete = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      const result = await deleteComment(singleComment.comment_id, token);
-      Alert.alert(result.message);
-      setUpdateComment(!updateComment);
+
+      Alert.alert(
+        'Do you want to delete this comment?',
+        'Comment id: ' + singleComment.comment_id,
+        [
+          {
+            text: 'Delete',
+            onPress: async () => {
+              const result = await deleteComment(
+                singleComment.comment_id,
+                token
+              );
+              Alert.alert(result.message);
+              setUpdateComment(!updateComment);
+            },
+          },
+          {
+            text: 'Cancel',
+          },
+        ]
+      );
     } catch (error) {
       throw new Error('comment Delete, ' + error.message);
     }
