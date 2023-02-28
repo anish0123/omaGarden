@@ -165,7 +165,7 @@ const EditPostForm = ({item, owner, navigation}) => {
                   borderRadius: 7,
                   width: '100%',
                   justifyContent: 'center',
-                  marginTop: 40,
+                  marginTop: 20,
                   padding: 5,
                 }}
                 placeholder="Title"
