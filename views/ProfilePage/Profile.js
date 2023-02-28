@@ -29,12 +29,13 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   const {update, setUpdate} = useContext(MainContext);
   console.log(mediaArray);
 
+  // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
-      setAvatar(avatarArray[avatarArray.length - 1].filename);
+      setAvatar(avatarArray.pop().filename);
     } catch (error) {
-      console.error('User avatar fetch failed', error.message);
+      console.log('load Avatar', error);
     }
   };
 
@@ -92,17 +93,32 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         }}
       >
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Card.Image
-            source={{uri: uploadsUrl + avatar}}
-            style={{
-              width: 120,
-              height: 120,
-              margin: 15,
-              borderRadius: 120 / 2,
-              borderWidth: 1,
-              borderColor: 'black',
-            }}
-          />
+          {avatar != '' ? (
+            <Card.Image
+              source={{uri: uploadsUrl + avatar}}
+              style={{
+                width: 120,
+                height: 120,
+                margin: 15,
+                borderRadius: 120 / 2,
+                borderWidth: 1,
+                borderColor: 'black',
+              }}
+            />
+          ) : (
+            <Card.Image
+              source={require('../../assets/avatar.png')}
+              style={{
+                width: 120,
+                height: 120,
+                margin: 15,
+                borderRadius: 120 / 2,
+                borderWidth: 1,
+                borderColor: 'black',
+              }}
+            />
+          )}
+
           <View>
             <Text
               style={{
@@ -286,8 +302,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                           marginLeft: 15,
                         }}
                         onPress={() => {
-                          setShowModal(false);
                           setIsLoggedIn(false);
+                          setShowModal(false);
                           try {
                             AsyncStorage.clear();
                           } catch (error) {

@@ -159,11 +159,14 @@ const EditPostForm = ({item, owner, navigation}) => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <Input
-                style={{
+                inputContainerStyle={{
                   borderWidth: 1,
-                  padding: 8,
-                  marginTop: 20,
                   borderColor: 'green',
+                  borderRadius: 7,
+                  width: '100%',
+                  justifyContent: 'center',
+                  marginTop: 40,
+                  padding: 5,
                 }}
                 placeholder="Title"
                 onBlur={onBlur}
@@ -186,10 +189,13 @@ const EditPostForm = ({item, owner, navigation}) => {
             render={({field: {onChange, onBlur, value}}) => (
               <Input
                 multiline
-                style={{
+                inputContainerStyle={{
                   borderWidth: 1,
-                  padding: 8,
                   borderColor: 'green',
+                  borderRadius: 7,
+                  width: '100%',
+                  justifyContent: 'center',
+                  padding: 5,
                 }}
                 placeholder="Description"
                 onBlur={onBlur}
