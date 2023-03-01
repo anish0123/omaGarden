@@ -3,6 +3,7 @@ import List from '../components/List';
 import PropTypes from 'prop-types';
 import {Card, Image} from '@rneui/themed';
 import {Icon} from '@rneui/base';
+import {LinearGradient} from 'expo-linear-gradient';
 
 const Home = ({navigation}) => {
   return (
@@ -28,8 +29,15 @@ const Home = ({navigation}) => {
         ></Image>
         <Icon name="reorder-three-outline" type="ionicon" />
       </View>
-      <Card.Divider />
-      <List navigation={navigation} />
+
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
+        colors={['#C9FFBF', '#FFAFBD']}
+      >
+        <Card.Divider />
+        <List navigation={navigation} />
+      </LinearGradient>
     </SafeAreaView>
   );
 };

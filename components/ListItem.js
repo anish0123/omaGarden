@@ -222,6 +222,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 0,
     width: '100%',
+    backgroundColor: 'transparent',
   },
   image: {
     flex: 1,

@@ -5,6 +5,7 @@ import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
+import {LinearGradient} from 'expo-linear-gradient';
 
 const SingleUser = ({singleUser, navigation}) => {
   const clickedUser = singleUser.item;
@@ -28,28 +29,40 @@ const SingleUser = ({singleUser, navigation}) => {
   }, [clickedUser]);
 
   return (
-    <Card containerStyle={styles.Card}>
-      <ListItem
-        containerStyle={styles.avatar}
-        onPress={() => {
-          clickedUser.user_id !== user.user_id
-            ? navigation.navigate('OtherUserProfile', clickedUser)
-            : navigation.navigate('Profile', clickedUser);
-        }}
-      >
-        {avatar ? (
-          <Avatar source={{uri: uploadsUrl + avatar}} size={60} rounded />
-        ) : (
-          <Avatar source={require('../assets/avatar.png')} size={60} rounded />
-        )}
+    <LinearGradient
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
+      colors={['#FFEEEE', '#DDEFBB']}
+    >
+      <Card containerStyle={styles.Card}>
+        <>
+          <ListItem
+            containerStyle={styles.avatar}
+            onPress={() => {
+              clickedUser.user_id !== user.user_id
+                ? navigation.navigate('OtherUserProfile', clickedUser)
+                : navigation.navigate('Profile', clickedUser);
+            }}
+          >
+            {avatar ? (
+              <Avatar source={{uri: uploadsUrl + avatar}} size={60} rounded />
+            ) : (
+              <Avatar
+                source={require('../assets/avatar.png')}
+                size={60}
+                rounded
+              />
+            )}
 
-        <ListItem.Content>
-          <ListItem.Title style={{fontSize: 20, fontWeight: '600'}}>
-            {clickedUser.username}
-          </ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-    </Card>
+            <ListItem.Content>
+              <ListItem.Title style={{fontSize: 20, fontWeight: '600'}}>
+                {clickedUser.username}
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </>
+      </Card>
+    </LinearGradient>
   );
 };
 
@@ -59,7 +72,7 @@ SingleUser.propTypes = {
 
 const styles = StyleSheet.create({
   Card: {
-    borderColor: '#62BD69',
+    borderColor: '#A6EFFD',
     borderRadius: 20,
   },
   avatar: {

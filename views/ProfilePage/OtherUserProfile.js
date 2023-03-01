@@ -17,6 +17,7 @@ import {
 import {MainContext} from '../../contexts/MainContext';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LinearGradient} from 'expo-linear-gradient';
 
 const OtherUserProfile = ({navigation, route}) => {
   const userDetail = route.params;
@@ -84,7 +85,6 @@ const OtherUserProfile = ({navigation, route}) => {
         containerStyle={{
           margin: 0,
           padding: 0,
-          backgroundColor: '#d6f5d6',
         }}
       >
         <View
@@ -112,102 +112,108 @@ const OtherUserProfile = ({navigation, route}) => {
             }}
           />
         </View>
-        <Card.Divider width={1} />
-        <View style={{flexDirection: 'column', alignItems: 'center'}}>
-          {avatar ? (
-            <Card.Image
-              source={{uri: uploadsUrl + avatar}}
-              style={{
-                width: 120,
-                height: 120,
-                borderRadius: 120 / 2,
-                borderWidth: 1,
-                borderColor: 'black',
-              }}
-            />
-          ) : (
-            <Card.Image
-              source={require('../../assets/avatar.png')}
-              style={{
-                width: 120,
-                height: 120,
-                borderRadius: 120 / 2,
-                borderWidth: 1,
-                borderColor: 'black',
-              }}
-            />
-          )}
-          {owner.full_name !== 'null' ? (
-            <ListItem.Title style={{padding: 10, fontSize: 20}}>
-              {userDetail.username}
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          colors={['#FFEEEE', '#DDEFBB']}
+        >
+          <Card.Divider width={1} />
+          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+            {avatar ? (
+              <Card.Image
+                source={{uri: uploadsUrl + avatar}}
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 120 / 2,
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}
+              />
+            ) : (
+              <Card.Image
+                source={require('../../assets/avatar.png')}
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 120 / 2,
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}
+              />
+            )}
+            {owner.full_name !== 'null' ? (
+              <ListItem.Title style={{padding: 10, fontSize: 20}}>
+                {userDetail.username}
+              </ListItem.Title>
+            ) : (
+              <ListItem.Title style={{padding: 10, fontSize: 20}}>
+                {userDetail.full_name}
+              </ListItem.Title>
+            )}
+            <ListItem.Title style={{fontSize: 20}}>
+              {userDetail.email}
             </ListItem.Title>
-          ) : (
-            <ListItem.Title style={{padding: 10, fontSize: 20}}>
-              {userDetail.full_name}
-            </ListItem.Title>
-          )}
-          <ListItem.Title style={{fontSize: 20}}>
-            {userDetail.email}
-          </ListItem.Title>
-          <Card
-            containerStyle={{
-              width: '100%',
-              height: 80,
-              backgroundColor: 'white',
-            }}
-          >
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
+            <Card
+              containerStyle={{
+                width: '100%',
+                height: 80,
+                backgroundColor: 'white',
               }}
             >
-              <View>
-                <Text
-                  style={{
-                    padding: 0,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    fontSize: 20,
-                  }}
-                >
-                  Posts
-                </Text>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 20,
-                  }}
-                >
-                  {files.length}
-                </Text>
-              </View>
               <View
-                style={{height: '100%', backgroundColor: 'black', width: 1.5}}
-              ></View>
-              <View>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    fontSize: 20,
-                  }}
-                >
-                  Likes
-                </Text>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 20,
-                  }}
-                >
-                  {likes}
-                </Text>
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      padding: 0,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    Posts
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    {files.length}
+                  </Text>
+                </View>
+                <View
+                  style={{height: '100%', backgroundColor: 'black', width: 1.5}}
+                ></View>
+                <View>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    Likes
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    {likes}
+                  </Text>
+                </View>
               </View>
-            </View>
-          </Card>
-        </View>
+            </Card>
+          </View>
+        </LinearGradient>
         <GestureRecognizer
           onSwipeDown={() => {
             setShowModal(false);
