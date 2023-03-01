@@ -16,7 +16,9 @@ const Search = ({navigation}) => {
       const token = await AsyncStorage.getItem('userToken');
       const usersList = await getAllUsers(token);
       setFilteredUsersList(
-        usersList.filter((user) => user.username.includes(value.toLowerCase()))
+        usersList.filter((user) =>
+          user.username.toLowerCase().includes(value.toLowerCase())
+        )
       );
     } catch (error) {
       throw new Error('getUsers, ' + error.message);
