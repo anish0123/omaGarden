@@ -2,8 +2,6 @@ import {Text} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {TouchableOpacity} from 'react-native';
 const LikedBy = ({navigation, likes, lastLike}) => {
-  console.log('likes', likes);
-
   if (likes.length === 0) {
     return (
       <Text

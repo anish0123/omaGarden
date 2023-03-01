@@ -62,7 +62,6 @@ const ListItem = ({singleMedia, navigation}) => {
   const getLikes = async () => {
     try {
       const allLikes = await getFavouritesByFileId(item.file_id);
-      console.log('alllikes', allLikes);
 
       if (allLikes.length > 0) {
         setLikes(allLikes);
@@ -160,10 +159,11 @@ const ListItem = ({singleMedia, navigation}) => {
             onPress={() => {
               navigation.navigate('Single', [item, owner]);
             }}
+            style={{marginTop: 0}}
           />
           <Text
             style={{
-              marginLeft: 10,
+              fontSize: 20,
             }}
           >
             {comments.length}
