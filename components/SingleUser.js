@@ -15,11 +15,12 @@ const SingleUser = ({singleUser, navigation}) => {
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
-      setAvatar('');
       const avatarArray = await getFilesByTag('avatar_' + clickedUser.user_id);
-      setAvatar(avatarArray.pop().filename);
+      if (avatarArray.length > 0) {
+        setAvatar(avatarArray.pop().filename);
+      }
     } catch (error) {
-      // console.error('load Avatar', error);
+      console.log('load Avatar', error);
     }
   };
   useEffect(() => {

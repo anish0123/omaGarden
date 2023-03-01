@@ -17,6 +17,7 @@ import LoginForm from '../components/LoginForm';
 import OtherUserProfile from '../views/ProfilePage/OtherUserProfile';
 import EditPost from '../views/EditPost';
 import {StyleSheet} from 'react-native';
+import UsersWhoLiked from '../views/UsersWhoLiked';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -63,6 +64,7 @@ const StackScreen = () => {
           <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} />
           <Stack.Screen name="EditPost" component={EditPost} />
+          <Stack.Screen name="UserWhoLiked" component={UsersWhoLiked} />
         </>
       ) : (
         <>

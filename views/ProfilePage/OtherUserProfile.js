@@ -34,7 +34,9 @@ const OtherUserProfile = ({navigation, route}) => {
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + userDetail.user_id);
-      setAvatar(avatarArray.pop().filename);
+      if (avatarArray.length > 0) {
+        setAvatar(avatarArray.pop().filename);
+      }
     } catch (error) {
       console.log('load Avatar', error);
     }

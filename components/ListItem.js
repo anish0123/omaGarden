@@ -2,12 +2,13 @@ import {Avatar, Card, Icon, ListItem as RNEListItem, Text} from '@rneui/themed';
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
-import {useComment, useTag, useUser} from '../hooks/ApiHooks';
+import {useComment, useFavourite, useTag, useUser} from '../hooks/ApiHooks';
 import {useContext, useEffect, useRef, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Video} from 'expo-av';
 import {MainContext} from '../contexts/MainContext';
 import Like from './Like';
+import LikedBy from './LikedBy';
 
 // ListItem is used to display all the files that have been posted in home view.
 const ListItem = ({singleMedia, navigation}) => {
@@ -18,8 +19,11 @@ const ListItem = ({singleMedia, navigation}) => {
   const {getFilesByTag} = useTag();
   const item = singleMedia;
   const [comments, setComments] = useState([]);
-  const {user, updateComment} = useContext(MainContext);
+  const [likes, setLikes] = useState([]);
+  const [lastLike, setLastLike] = useState('');
+  const {user, updateComment, updateLike} = useContext(MainContext);
   const {getCommentsByFileId} = useComment();
+  const {getFavouritesByFileId} = useFavourite();
 
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
@@ -36,7 +40,9 @@ const ListItem = ({singleMedia, navigation}) => {
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + owner.user_id);
-      setAvatar(avatarArray.pop().filename);
+      if (avatarArray.length > 0) {
+        setAvatar(avatarArray.pop().filename);
+      }
     } catch (error) {
       console.log('load Avatar', error);
     }
@@ -52,10 +58,24 @@ const ListItem = ({singleMedia, navigation}) => {
     }
   };
 
-  useEffect(() => {
-    getOwner();
-    loadAvatar();
-  }, []);
+  // Getting the likes of the post
+  const getLikes = async () => {
+    try {
+      const allLikes = await getFavouritesByFileId(item.file_id);
+      console.log('alllikes', allLikes);
+
+      if (allLikes.length > 0) {
+        setLikes(allLikes);
+        const token = await AsyncStorage.getItem('userToken');
+        const firstLikedUser = await getUserById(allLikes[0].user_id, token);
+        setLastLike(firstLikedUser.username);
+      } else {
+        setLastLike('');
+      }
+    } catch (error) {
+      console.log('getLikes' + error);
+    }
+  };
 
   useEffect(() => {
     getOwner();
@@ -68,6 +88,10 @@ const ListItem = ({singleMedia, navigation}) => {
   useEffect(() => {
     getComments();
   }, [updateComment]);
+
+  useEffect(() => {
+    getLikes();
+  }, [updateLike]);
 
   return (
     <View styles={styles.main}>
@@ -154,7 +178,9 @@ const ListItem = ({singleMedia, navigation}) => {
             />
           )}
         </RNEListItem>
-        <Card.Divider style={{marginTop: 10, marginBottom: 0}} />
+        <LikedBy navigation={navigation} likes={likes} lastLike={lastLike} />
+
+        <Card.Divider style={{marginBottom: 0}} />
         <RNEListItem>
           <RNEListItem.Content>
             <RNEListItem.Title style={{fontSize: 20, fontWeight: '500'}}>
@@ -179,6 +205,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 0,
     padding: 0,
+    backgroundColor: '#000000',
   },
   avatar: {
     margin: 0,
@@ -191,7 +218,6 @@ const styles = StyleSheet.create({
     height: '70%',
   },
   iconList: {
-    margin: 0,
     paddingTop: 10,
     paddingBottom: 0,
     width: '100%',
