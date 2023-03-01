@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import {Button, Card, Icon, Image, ListItem, Text} from '@rneui/base';
 import {useContext, useEffect, useState} from 'react';
-import {useMedia, useTag, useUser} from '../../hooks/ApiHooks';
+import {useFavourite, useMedia, useTag, useUser} from '../../hooks/ApiHooks';
 import {uploadsUrl} from '../../utils/variables';
 import PropTypes from 'prop-types';
 import {
@@ -23,12 +23,15 @@ const OtherUserProfile = ({navigation, route}) => {
   const {loadAllMedia} = useMedia();
   const {getUserById} = useUser();
   const {getFilesByTag} = useTag();
-  const {setIsLoggedIn, user, setUser} = useContext(MainContext);
+  const {getFavouritesByFileId} = useFavourite();
+  const {setIsLoggedIn, user, setUser, updateLike} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
   const [owner, setOwner] = useState({});
   const [files, setFiles] = useState([]);
+  const [likes, totalLikes] = useState(0);
+  console.log(userDetail);
 
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
@@ -43,17 +46,14 @@ const OtherUserProfile = ({navigation, route}) => {
   };
 
   const allMediaFiles = async () => {
-    /* try {
-      const mediaFiles = {mediaArray};
-      setFiles(mediaFiles);
-      console.log('Length of all media files ' + files.length);
-    } catch (error) {
-      console.error('All media files fetching failed ', error.message);
-    }
-    */
+    let noOfLikes = 0;
     try {
       const mediaFiles = await loadAllMedia(owner.user_id);
-      console.log(mediaFiles);
+      for (let i = 0; i < mediaFiles.length; i++) {
+        const likes = await getFavouritesByFileId(mediaFiles[i].file_id);
+        noOfLikes += Number(likes.length);
+      }
+      totalLikes(noOfLikes);
       setFiles(mediaFiles);
       console.log('Length of all media files ' + files.length);
     } catch (error) {
@@ -76,51 +76,50 @@ const OtherUserProfile = ({navigation, route}) => {
     getOwner();
     loadAvatar();
     allMediaFiles();
-  }, [avatar, owner.user_id]);
+  }, [avatar, owner.user_id, updateLike]);
 
   return (
-    <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 30 : 0}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginEnd: 10,
-          marginStart: 15,
-        }}
-      >
-        <Image
-          source={require('../../assets/logo.png')}
-          style={{
-            width: 110,
-            height: 40,
-            marginTop: 15,
-            marginBottom: 15,
-            justifyContent: 'center',
-          }}
-        ></Image>
-        <Icon
-          name="settings"
-          onPress={() => {
-            setShowModal(!showModal);
-            setSettingClicked(!settingClicked);
-          }}
-        />
-      </View>
+    <SafeAreaView>
       <Card
         containerStyle={{
           margin: 0,
-          paddingTop: Platform.OS === 'android' ? 30 : 0,
+          padding: 0,
+          backgroundColor: '#d6f5d6',
         }}
       >
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}
+        >
+          <Image
+            source={require('../../assets/logo.png')}
+            style={{
+              width: 110,
+              height: 40,
+              marginBottom: 10,
+              justifyContent: 'center',
+            }}
+          ></Image>
+          <Icon
+            name="settings"
+            onPress={() => {
+              setShowModal(!showModal);
+              setSettingClicked(!settingClicked);
+            }}
+          />
+        </View>
+        <Card.Divider width={1} />
+        <View style={{flexDirection: 'column', alignItems: 'center'}}>
           {avatar ? (
             <Card.Image
               source={{uri: uploadsUrl + avatar}}
               style={{
                 width: 120,
                 height: 120,
-                margin: 15,
                 borderRadius: 120 / 2,
                 borderWidth: 1,
                 borderColor: 'black',
@@ -132,34 +131,82 @@ const OtherUserProfile = ({navigation, route}) => {
               style={{
                 width: 120,
                 height: 120,
-                margin: 15,
                 borderRadius: 120 / 2,
                 borderWidth: 1,
                 borderColor: 'black',
               }}
             />
           )}
-          <View>
-            <Text
+          {owner.full_name !== 'null' ? (
+            <ListItem.Title style={{padding: 10, fontSize: 20}}>
+              {userDetail.username}
+            </ListItem.Title>
+          ) : (
+            <ListItem.Title style={{padding: 10, fontSize: 20}}>
+              {userDetail.full_name}
+            </ListItem.Title>
+          )}
+          <ListItem.Title style={{fontSize: 20}}>
+            {userDetail.email}
+          </ListItem.Title>
+          <Card
+            containerStyle={{
+              width: '100%',
+              height: 80,
+              backgroundColor: 'white',
+            }}
+          >
+            <View
               style={{
-                fontWeight: 'bold',
-                textAlign: 'center',
-                fontSize: 20,
-                marginHorizontal: Dimensions.get('screen').width / 2 - 135,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-around',
               }}
             >
-              Posts
-            </Text>
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 20,
-                marginHorizontal: Dimensions.get('screen').width / 2 - 135,
-              }}
-            >
-              {files.length}
-            </Text>
-          </View>
+              <View>
+                <Text
+                  style={{
+                    padding: 0,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontSize: 20,
+                  }}
+                >
+                  Posts
+                </Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 20,
+                  }}
+                >
+                  {files.length}
+                </Text>
+              </View>
+              <View
+                style={{height: '100%', backgroundColor: 'black', width: 1.5}}
+              ></View>
+              <View>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontSize: 20,
+                  }}
+                >
+                  Likes
+                </Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 20,
+                  }}
+                >
+                  {likes}
+                </Text>
+              </View>
+            </View>
+          </Card>
         </View>
         <GestureRecognizer
           onSwipeDown={() => {
@@ -250,55 +297,38 @@ const OtherUserProfile = ({navigation, route}) => {
             </TouchableOpacity>
           </Modal>
         </GestureRecognizer>
-        {owner.full_name === 'null' ? (
-          <ListItem.Title style={{margin: 10, fontSize: 20}}>
-            {userDetail.username}
-          </ListItem.Title>
-        ) : (
-          <View>
-            <ListItem.Title style={{margin: 10, fontSize: 20}}>
-              {userDetail.username}
-            </ListItem.Title>
-            <ListItem.Title style={{margin: 10, fontSize: 20}}>
-              {owner.full_name}
-            </ListItem.Title>
-          </View>
-        )}
-      </Card>
-      <Card
-        containerStyle={{
-          backgroundColor: '#62BD69',
-          margin: 0,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}
-        >
-          <Icon name="collections" onPress={() => {}} />
-          <Icon name="favorite" onPress={() => {}} />
-        </View>
       </Card>
       {files.length !== 0 ? (
         <FlatList
+          nestedScrollEnabled
           data={files}
           renderItem={({item}) => (
             <View>
-              <Image
-                onPress={() =>
-                  navigation.navigate('Single', [item, userDetail])
-                }
-                source={{uri: uploadsUrl + item.filename}}
-                style={{
-                  borderWidth: 1,
-                  borderColor: 'black',
-                  margin: 1,
-                  width: Dimensions.get('screen').width / 3,
-                  height: Dimensions.get('screen').width / 3,
-                }}
-              />
+              {item.media_type === 'image' ? (
+                <Image
+                  onPress={() =>
+                    navigation.navigate('Single', [item, userDetail])
+                  }
+                  source={{uri: uploadsUrl + item.filename}}
+                  style={{
+                    margin: 2,
+                    width: Dimensions.get('screen').width / 3,
+                    height: Dimensions.get('screen').width / 3,
+                  }}
+                />
+              ) : (
+                <Image
+                  onPress={() =>
+                    navigation.navigate('Single', [item, userDetail])
+                  }
+                  source={{uri: uploadsUrl + item.screenshot}}
+                  style={{
+                    margin: 2,
+                    width: Dimensions.get('screen').width / 3,
+                    height: Dimensions.get('screen').width / 3,
+                  }}
+                />
+              )}
             </View>
           )}
           numColumns={3}
