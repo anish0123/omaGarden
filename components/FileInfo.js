@@ -52,6 +52,7 @@ const FileInfo = ({navigation, file, owner}) => {
         setLastLike(firstLikedUser.username);
       } else {
         setLastLike('');
+        setLikes([]);
       }
     } catch (error) {
       console.log('getLikes' + error);

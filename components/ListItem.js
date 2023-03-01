@@ -70,6 +70,7 @@ const ListItem = ({singleMedia, navigation}) => {
         setLastLike(firstLikedUser.username);
       } else {
         setLastLike('');
+        setLikes([]);
       }
     } catch (error) {
       console.log('getLikes' + error);
