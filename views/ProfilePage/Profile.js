@@ -54,11 +54,13 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         const likes = await getFavouritesByFileId(mediaArray[i].file_id);
         noOfLikes += Number(likes.length);
       }
-      totalLikes(noOfLikes);
     } catch (error) {
       console.log('getLikes' + error);
     }
+    totalLikes(noOfLikes);
   };
+
+  const getLikesTest = () => {};
 
   const showPictures = async () => {
     try {
