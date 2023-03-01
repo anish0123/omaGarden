@@ -171,7 +171,9 @@ const Upload = ({navigation}) => {
                 <Card.Image
                   style={{width: '100%', height: 300}}
                   source={{
-                    uri: mediaFile.uri || 'https://placekitten.com/g/200/300',
+                    uri:
+                      mediaFile.uri ||
+                      'https://i0.wp.com/www.charitycomms.org.uk/wp-content/uploads/2019/02/placeholder-image-square.jpg?ssl=1',
                   }}
                   onPress={pickFile}
                 />
