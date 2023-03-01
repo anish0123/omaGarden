@@ -70,6 +70,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   };
 
   useEffect(() => {
+    getLikes();
     loadAvatar();
   }, [update, updateLike]);
 
