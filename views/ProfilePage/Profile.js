@@ -60,8 +60,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
     totalLikes(noOfLikes);
   };
 
-  const getLikesTest = () => {};
-
   const showPictures = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
@@ -73,8 +71,11 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   useEffect(() => {
     loadAvatar();
-    getLikes();
   }, [update, updateLike]);
+
+  useEffect(() => {
+    getLikes();
+  }, [mediaArray]);
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 35 : 0}}>
