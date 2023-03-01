@@ -33,7 +33,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
-    getLikes;
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
       setAvatar(avatarArray.pop().filename);
@@ -47,7 +46,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   };
 
   const getLikes = async () => {
-    console.log("Iam shdf");
     let noOfLikes = 0;
     try {
       for (let i = 0; i < mediaArray.length; i++) {
@@ -71,11 +69,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   useEffect(() => {
     loadAvatar();
-  }, [update, updateLike]);
-
-  useEffect(() => {
     getLikes();
-  }, []);
+  }, [update, updateLike]);
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 35 : 0}}>
