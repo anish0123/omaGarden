@@ -49,7 +49,7 @@ const ProfilePictureUpload = ({navigation}) => {
       const tagResult = await postTag(appTag, token);
       console.log('tag result', tagResult);
 
-      Alert.alert('Upload complete', 'Fild id : ' + result.file_id, [
+      Alert.alert('Profile Picture Updated', 'Fild id : ' + result.file_id, [
         {
           text: 'ok',
           onPress: () => {

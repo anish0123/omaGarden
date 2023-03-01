@@ -325,7 +325,6 @@ const useFavourite = () => {
 const useComment = () => {
   // Method for getting comments according to the file id
   const getCommentsByFileId = async (fileId) => {
-    console.log('get comments by file Id', fileId);
     try {
       return await doFetch(baseUrl + 'comments/file/' + fileId);
     } catch (error) {
@@ -336,7 +335,6 @@ const useComment = () => {
   // Method for getting all the comments of all the files
   const getAllComments = async (token) => {
     try {
-      console.log('get All Comments', token);
       const allComments = await doFetch(baseUrl + 'comments', {
         headers: {'x-access-token': token},
       });

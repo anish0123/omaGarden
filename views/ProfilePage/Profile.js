@@ -32,7 +32,9 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
-      setAvatar(avatarArray.pop().filename);
+      if (avatarArray.length > 0) {
+        setAvatar(avatarArray.pop().filename);
+      }
     } catch (error) {
       console.log('load Avatar', error);
     }

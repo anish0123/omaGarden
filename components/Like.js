@@ -18,11 +18,8 @@ const Like = ({file}) => {
     try {
       setUserLikesIt(false);
       const likes = await getFavouritesByFileId(file.file_id);
-      console.log(userLikesIt);
-      console.log('likes', likes);
       setLikes(likes);
       if (likes.length > 0) {
-        console.log('Is it working till here');
         const userLike = likes.filter((like) => like.user_id === user.user_id);
         if (userLike.length !== 0) {
           setUserLikesIt(true);
@@ -38,10 +35,9 @@ const Like = ({file}) => {
     try {
       const token = await AsyncStorage.getItem('userToken');
       const result = await postFavourite(file.file_id, token);
-      getLikes();
+      setUpdateLike(!updateLike);
       setUserLikesIt(true);
       console.log(result);
-      setUpdateLike(!updateLike);
     } catch (error) {
       // note: you cannot like same file multiple times
       console.log('likeFile', error);
@@ -53,7 +49,6 @@ const Like = ({file}) => {
     try {
       const token = await AsyncStorage.getItem('userToken');
       const result = await deleteFavourite(file.file_id, token);
-      getLikes();
       setUserLikesIt(false);
       console.log(result);
       setUpdateLike(!updateLike);
