@@ -10,11 +10,11 @@ import {Video} from 'expo-av';
 import moment from 'moment';
 import {useContext, useEffect, useRef, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
-import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
 import Like from './Like';
 import PropTypes from 'prop-types';
 import {StyleSheet} from 'react-native';
+import {useTag} from '../hooks/ApiHooks';
 
 // This component prints the file and file owner info in single view.
 const FileInfo = ({navigation, file, owner}) => {

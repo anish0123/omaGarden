@@ -139,7 +139,7 @@ const ListItem = ({singleMedia, navigation}) => {
           />
           <Text
             style={{
-              fontSize: 20,
+              marginLeft: 10,
             }}
           >
             {comments.length}
