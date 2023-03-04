@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-unused-vars */
 import {Button, Card, Icon, Image, ListItem, Text} from '@rneui/base';
-import {useCallback, useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {useFavourite, useMedia, useTag} from '../../hooks/ApiHooks';
 import {uploadsUrl} from '../../utils/variables';
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ import {
   Dimensions,
   Modal,
   Platform,
+  Pressable,
   SafeAreaView,
   TouchableOpacity,
   View,
@@ -21,15 +22,15 @@ import UsersMedia from '../../components/UsersMedia';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const Profile = ({navigation, myFilesOnly = true}) => {
-  getLikes;
   const {mediaArray} = useMedia(myFilesOnly);
   const {getFilesByTag} = useTag();
-  const {setIsLoggedIn, user, setUser} = useContext(MainContext);
+  const {setIsLoggedIn, user} = useContext(MainContext);
   const {getFavouritesByFileId} = useFavourite();
   const [avatar, setAvatar] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
+  const [likeClicked, setLikeClicked] = useState(false);
   const {update, setUpdate, updateLike} = useContext(MainContext);
   const [likes, totalLikes] = useState(0);
 
@@ -233,7 +234,12 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                       width: 1.5,
                     }}
                   ></View>
-                  <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setLikeClicked(true);
+                      setShowModal(true);
+                    }}
+                  >
                     <Text
                       style={{
                         fontWeight: 'bold',
@@ -251,7 +257,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                     >
                       {likes}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </Card>
             </View>
@@ -273,6 +279,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                 setShowModal(false);
                 setEditClicked(false);
                 setSettingClicked(false);
+                setLikeClicked(false);
                 console.log('Model closed Edit ' + editClicked);
               }}
             >
@@ -284,27 +291,100 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                   setShowModal(false);
                   setEditClicked(false);
                   setSettingClicked(false);
+                  setLikeClicked(false);
                   console.log('Modal has been closed.');
                 }}
               >
                 <TouchableOpacity
                   style={{
-                    height: '50%',
-                    marginTop: 'auto',
-                    backgroundColor: '#3E3C3C',
-                    borderTopRightRadius: 30,
-                    borderTopLeftRadius: 30,
+                    height: '100%',
+                    backgroundColor: 'rgba(52, 52, 52, 0.1)',
                   }}
                   activeOpacity={1}
                   onPressOut={() => {
                     setShowModal(false);
                     setEditClicked(false);
                     setSettingClicked(false);
+                    setLikeClicked(false);
                     console.log('Model closed edit touch ' + editClicked);
                   }}
                 >
+                  {likeClicked && (
+                    <View
+                      style={{
+                        borderRadius: 20,
+                        backgroundColor: 'white',
+                        width: '80%',
+                        marginHorizontal: '10%',
+                        marginTop: '55%',
+                        alignItems: 'center',
+                        shadowOpacity: 0.25,
+                        elevation: 5,
+                      }}
+                    >
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-evenly',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Icon
+                          raised
+                          name="heartbeat"
+                          type="font-awesome"
+                          color="#f50"
+                        />
+                        <Text
+                          style={{
+                            padding: 20,
+                            color: 'black',
+                            fontSize: 20,
+                            textAlign: 'center',
+                          }}
+                        >
+                          {user.userName ||
+                            user.full_name +
+                              ` has total of ` +
+                              likes +
+                              ` likes across all posts.`}
+                        </Text>
+                        <Pressable
+                          onPress={() => {
+                            setShowModal(false);
+                            setLikeClicked(false);
+                          }}
+                          style={({pressed}) => [
+                            {
+                              backgroundColor: pressed ? '#EFEDED' : 'white',
+                            },
+                          ]}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: 'bold',
+                              textAlign: 'center',
+                              padding: 10,
+                            }}
+                          >
+                            Ok
+                          </Text>
+                        </Pressable>
+                      </View>
+                    </View>
+                  )}
                   {editClicked && (
-                    <View>
+                    <View
+                      style={{
+                        backgroundColor: 'black',
+                        height: '50%',
+                        marginTop: 'auto',
+                        borderTopRightRadius: 30,
+                        borderTopLeftRadius: 30,
+                      }}
+                    >
                       <View
                         style={{
                           width: Dimensions.get('screen').width / 3,
@@ -395,7 +475,15 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                   )}
 
                   {settingClicked && (
-                    <View>
+                    <View
+                      style={{
+                        backgroundColor: 'black',
+                        height: '50%',
+                        marginTop: 'auto',
+                        borderTopRightRadius: 30,
+                        borderTopLeftRadius: 30,
+                      }}
+                    >
                       <View
                         style={{
                           width: Dimensions.get('screen').width / 3,
@@ -442,7 +530,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                             fontSize: 20,
                             marginLeft: 15,
                           }}
-                          onPress={() => showPictures()}
                         >
                           Help Center
                         </Text>
