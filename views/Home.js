@@ -22,7 +22,8 @@ const Home = ({navigation}) => {
 
   const logout = async () => {
     try {
-      AsyncStorage.clear();
+      await AsyncStorage.clear();
+      setIsLoggedIn(false);
     } catch (error) {
       console.error('clearing asyncstorage failed ', error);
     }
@@ -97,9 +98,8 @@ const Home = ({navigation}) => {
                       backgroundColor: '#ccffcc',
                     }}
                     onPress={() => {
-                      logout();
                       setShowModal(false);
-                      setIsLoggedIn(false);
+                      logout();
                     }}
                   >
                     <Icon name="logout" color="black" />

@@ -74,7 +74,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
 
   const logout = async () => {
     try {
-      AsyncStorage.clear();
+      await AsyncStorage.clear();
+      setIsLoggedIn(false);
     } catch (error) {
       console.error('clearing asyncstorage failed ', error);
     }
@@ -508,9 +509,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                             marginLeft: 15,
                           }}
                           onPress={() => {
-                            logout();
                             setShowModal(false);
-                            setIsLoggedIn(false);
+                            logout();
                           }}
                         >
                           Logout

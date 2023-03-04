@@ -76,7 +76,8 @@ const OtherUserProfile = ({navigation, route}) => {
 
   const logout = async () => {
     try {
-      AsyncStorage.clear();
+      await AsyncStorage.clear();
+      setIsLoggedIn(false);
     } catch (error) {
       console.error('clearing asyncstorage failed ', error);
     }
@@ -362,9 +363,8 @@ const OtherUserProfile = ({navigation, route}) => {
                           marginLeft: 15,
                         }}
                         onPress={() => {
-                          logout();
                           setShowModal(false);
-                          setIsLoggedIn(false);
+                          logout();
                         }}
                       >
                         Logout

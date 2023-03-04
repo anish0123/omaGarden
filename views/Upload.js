@@ -72,20 +72,24 @@ const Upload = ({navigation}) => {
       };
       const tagResult = await postTag(appTag, token);
       console.log('tagResult', tagResult);
-      Alert.alert('Upload Ok', 'File id: ' + uploadResult.file_id, [
-        {
-          text: 'OK',
-          onPress: () => {
-            console.log('OK Pressed');
-            // update 'update' state in context
-            setUpdate(!update);
-            // reset form
-            resetValues();
-            // TODO: navigated to home;
-            navigation.navigate('Home');
+      Alert.alert(
+        'Upload Confirmation',
+        mediaFile.type + ' uploaded successfully',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('OK Pressed');
+              // update 'update' state in context
+              setUpdate(!update);
+              // reset form
+              resetValues();
+              // TODO: navigated to home;
+              navigation.navigate('Home');
+            },
           },
-        },
-      ]);
+        ]
+      );
     } catch (error) {
       console.error('file upload failed', error);
     } finally {
@@ -129,7 +133,6 @@ const Upload = ({navigation}) => {
       };
     }, [])
   );
-
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
@@ -161,12 +164,12 @@ const Upload = ({navigation}) => {
               colors={['#C9FFBF', '#FFAFBD']}
             >
               <Card.Divider />
-              <Card>
+              <Card containerStyle={{marginTop: 0}}>
                 {mediaFile.type === 'video' ? (
                   <Video
                     ref={video}
                     source={{uri: mediaFile.uri}}
-                    style={{width: '100%', height: 300}}
+                    style={{width: '100%', height: 250}}
                     resizeMode="contain"
                     useNativeControls
                     onError={(error) => {
@@ -175,7 +178,7 @@ const Upload = ({navigation}) => {
                   />
                 ) : (
                   <Card.Image
-                    style={{width: '100%', height: 300}}
+                    style={{width: '100%', height: 250}}
                     source={{
                       uri: mediaFile.uri || 'https://placekitten.com/g/200/300',
                     }}
@@ -203,7 +206,7 @@ const Upload = ({navigation}) => {
                         borderRadius: 7,
                         width: '100%',
                         justifyContent: 'center',
-                        marginTop: 40,
+                        marginTop: 20,
                       }}
                       placeholder="Title"
                       onBlur={onBlur}
@@ -241,7 +244,7 @@ const Upload = ({navigation}) => {
                         borderRadius: 7,
                         width: '100%',
                         justifyContent: 'center',
-                        minHeight: 110,
+                        minHeight: 100,
                       }}
                       placeholder="Description"
                       onBlur={onBlur}
@@ -295,9 +298,12 @@ const Upload = ({navigation}) => {
                 </View>
                 <Card.Divider />
                 <Button
-                  style={{
-                    marginBottom: 100,
+                  buttonStyle={{
+                    borderColor: 'black',
+                    borderRadius: 5,
                   }}
+                  type="outline"
+                  titleStyle={{color: 'black'}}
                   loading={loading}
                   disabled={
                     !mediaFile.uri || errors.title || errors.description
