@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import {
   Dimensions,
   Modal,
+  Pressable,
   SafeAreaView,
   TouchableOpacity,
   View,
@@ -25,14 +26,14 @@ const OtherUserProfile = ({navigation, route}) => {
   const {getUserById} = useUser();
   const {getFilesByTag} = useTag();
   const {getFavouritesByFileId} = useFavourite();
-  const {setIsLoggedIn, user, setUser, updateLike} = useContext(MainContext);
+  const {setIsLoggedIn, updateLike} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
   const [owner, setOwner] = useState({});
   const [files, setFiles] = useState([]);
   const [likes, totalLikes] = useState(0);
-  console.log(userDetail);
+  const [likeClicked, setLikeClicked] = useState(false);
 
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
@@ -70,6 +71,14 @@ const OtherUserProfile = ({navigation, route}) => {
       setOwner(ownerDetails);
     } catch (error) {
       // console.error('getOwner', error);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      AsyncStorage.clear();
+    } catch (error) {
+      console.error('clearing asyncstorage failed ', error);
     }
   };
 
@@ -196,7 +205,12 @@ const OtherUserProfile = ({navigation, route}) => {
                       width: 1.5,
                     }}
                   ></View>
-                  <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setLikeClicked(true);
+                      setShowModal(true);
+                    }}
+                  >
                     <Text
                       style={{
                         fontWeight: 'bold',
@@ -214,7 +228,7 @@ const OtherUserProfile = ({navigation, route}) => {
                     >
                       {likes}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </Card>
             </View>
@@ -223,6 +237,7 @@ const OtherUserProfile = ({navigation, route}) => {
             onSwipeDown={() => {
               setShowModal(false);
               setSettingClicked(false);
+              setLikeClicked(false);
             }}
           >
             <Modal
@@ -230,25 +245,99 @@ const OtherUserProfile = ({navigation, route}) => {
               transparent={true}
               visible={showModal}
               onRequestClose={() => {
-                console.log('Modal has been closed.');
+                setShowModal(false);
+                setLikeClicked(false);
+                setSettingClicked(false);
               }}
             >
               <TouchableOpacity
                 style={{
-                  height: '50%',
-                  marginTop: 'auto',
-                  backgroundColor: '#3E3C3C',
-                  borderTopRightRadius: 30,
-                  borderTopLeftRadius: 30,
+                  height: '100%',
+                  marginTop: 55,
+                  backgroundColor: 'rgba(52, 52, 52, 0.1)',
                 }}
                 activeOpacity={1}
                 onPressOut={() => {
                   setShowModal(false);
                   setSettingClicked(false);
+                  setLikeClicked(false);
                 }}
               >
+                {likeClicked && (
+                  <View
+                    style={{
+                      borderRadius: 20,
+                      backgroundColor: 'white',
+                      width: '80%',
+                      marginHorizontal: '10%',
+                      marginTop: '55%',
+                      alignItems: 'center',
+                      shadowOpacity: 0.25,
+                      elevation: 5,
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Icon
+                        raised
+                        name="heartbeat"
+                        type="font-awesome"
+                        color="#f50"
+                      />
+                      <Text
+                        style={{
+                          padding: 20,
+                          color: 'black',
+                          fontSize: 20,
+                          textAlign: 'center',
+                        }}
+                      >
+                        {userDetail.username +
+                          ` has a total of ` +
+                          likes +
+                          ` likes across all posts.`}
+                      </Text>
+                      <Pressable
+                        onPress={() => {
+                          setShowModal(false);
+                          setLikeClicked(false);
+                        }}
+                        style={({pressed}) => [
+                          {
+                            backgroundColor: pressed ? '#EFEDED' : 'white',
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            padding: 10,
+                          }}
+                        >
+                          Ok
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                )}
                 {settingClicked && (
-                  <View>
+                  <View
+                    style={{
+                      backgroundColor: 'black',
+                      height: '50%',
+                      marginTop: 'auto',
+                      borderTopRightRadius: 30,
+                      borderTopLeftRadius: 30,
+                    }}
+                  >
                     <View
                       style={{
                         width: Dimensions.get('screen').width / 3,
@@ -273,16 +362,9 @@ const OtherUserProfile = ({navigation, route}) => {
                           marginLeft: 15,
                         }}
                         onPress={() => {
+                          logout();
                           setShowModal(false);
                           setIsLoggedIn(false);
-                          try {
-                            AsyncStorage.clear();
-                          } catch (error) {
-                            console.error(
-                              'clearing asyncstorage failed ',
-                              error
-                            );
-                          }
                         }}
                       >
                         Logout

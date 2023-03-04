@@ -32,6 +32,7 @@
     "react": "18.1.0",
     "react-hook-form": "^7.42.1",
     "react-native": "0.70.5",
+    "react-native-camera": "^4.2.1",
     "react-native-fast-image": "^8.6.3",
     "react-native-feather": "^1.1.2",
     "react-native-masonry-list": "^2.16.1",

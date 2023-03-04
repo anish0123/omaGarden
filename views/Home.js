@@ -58,13 +58,15 @@ const Home = ({navigation}) => {
               setShowModal(false);
             }}
           >
-            <View
+            <TouchableOpacity
               style={{
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: 30,
               }}
+              activeOpacity={1}
+              onPress={() => setShowModal(false)}
             >
               <View
                 style={{
@@ -133,7 +135,7 @@ const Home = ({navigation}) => {
                   </Pressable>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           </Modal>
           <Icon
             name="reorder-three-outline"
