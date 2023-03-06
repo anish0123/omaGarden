@@ -1,5 +1,11 @@
-# omaGarden
+# Oma Garden
 Oma Garden is a mobile application built with React Native that allows users to upload and share pictures of their beloved plants. This app is designed to provide a seamless and user-friendly experience for plant enthusiasts.
+
+## Table Of Contents
+1. [Features](#Features)
+2. [Installation](#Installation)
+3. [Usage](#Usage)
+4. [Contributors](#Contributors)
 
 ## Features
 - Create a user account to check all uploaded plant pictures and videos.
@@ -27,3 +33,8 @@ To search for specific users, users can click on the search icon on the bottom n
 To upload a plant picture or video, users can click on the upload icon on bottom navigator. This will take user to upload page where user can open the camera or photo library on their device. Users also need to add title but the description is not mandatory. Users can reset all the input by the reset button but if everything is okay user can click upload button for the upload.
 
 To check the user profile, users can click on profile icon on bottom navigator. User profile page displays all the details about the user. It also displays all the plant pictures and videos uploaded by the user. The total number of likes that user have received through their posts are also displayed in the page. Users can also change their avatar by clicking on the camera icon on the left side of the avatar.
+
+## Contributors
+- [Anish Maharjan](https://github.com/anish0123)
+- [Asmita Shrestha](https://github.com/asmita143)
+- [Prabin Dhakal](https://github.com/Prabin1500)
