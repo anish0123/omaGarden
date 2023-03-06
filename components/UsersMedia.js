@@ -26,8 +26,8 @@ const UsersMedia = ({navigation, mediaFile, owner}) => {
                     source={{uri: uploadsUrl + item.filename}}
                     style={{
                       margin: 2,
-                      width: Dimensions.get('screen').width / 3,
-                      height: Dimensions.get('screen').width / 3,
+                      width: Dimensions.get('screen').width / 3 - 3,
+                      height: Dimensions.get('screen').width / 3 - 3,
                     }}
                   />
                 ) : (
@@ -36,8 +36,8 @@ const UsersMedia = ({navigation, mediaFile, owner}) => {
                     source={{uri: uploadsUrl + item.screenshot}}
                     style={{
                       margin: 2,
-                      width: Dimensions.get('screen').width / 3,
-                      height: Dimensions.get('screen').width / 3,
+                      width: Dimensions.get('screen').width / 3 - 3,
+                      height: Dimensions.get('screen').width / 3 - 3,
                     }}
                   />
                 )}
