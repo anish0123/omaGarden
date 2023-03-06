@@ -1,6 +1,7 @@
 import EditPostForm from '../components/EditPostForm';
 import PropTypes from 'prop-types';
 
+// This view is created for user change the details for the post/media that user has uploaded.
 const EditPost = ({route, navigation}) => {
   return (
     <EditPostForm

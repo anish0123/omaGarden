@@ -8,6 +8,7 @@ import {uploadsUrl} from '../../utils/variables';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../../contexts/MainContext';
 
+// This view is made for editing profile of the current logged in user.
 const EditProfile = ({navigation, route}) => {
   const {fileName} = route.params;
   const {putUser, checkUsername} = useUser();
@@ -28,6 +29,7 @@ const EditProfile = ({navigation, route}) => {
     mode: 'onChange',
   });
 
+  // Method for modifying the profile of the user.
   const modifyProfile = async (data) => {
     setLoading(true);
     delete data.confirmPassword;
@@ -60,6 +62,7 @@ const EditProfile = ({navigation, route}) => {
     }
   };
 
+  // Method for checking if the username is available.
   const checkUser = async (username) => {
     try {
       const userAvailable = await checkUsername(username);

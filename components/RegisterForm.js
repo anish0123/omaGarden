@@ -6,8 +6,8 @@ import {useUser} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import {Text} from '@rneui/base';
 
+// This component is used to register new users.
 const RegisterForm = ({navigation}) => {
-  // const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postUser} = useUser();
   const [loading, setLoading] = useState(false);
   const {
