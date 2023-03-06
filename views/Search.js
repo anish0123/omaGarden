@@ -6,11 +6,13 @@ import UsersList from '../components/UsersList';
 import {useUser} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 
+// This is the view where the user can search for other users
 const Search = ({navigation}) => {
   const [value, setValue] = useState('');
   const [filteredUsersList, setFilteredUsersList] = useState([]);
   const {getAllUsers} = useUser();
 
+  // Method for getting list of all the searched users.
   const getUsers = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
@@ -28,6 +30,7 @@ const Search = ({navigation}) => {
   useEffect(() => {
     getUsers();
   }, [value]);
+
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar

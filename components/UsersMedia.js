@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Dimensions, FlatList, View} from 'react-native';
 import {uploadsUrl} from '../utils/variables';
 
+// This component returns list of all the post/ media that a user has uploaded in flatlist.
 const UsersMedia = ({navigation, mediaFile, owner}) => {
   const number = mediaFile.length;
 

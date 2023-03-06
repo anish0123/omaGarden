@@ -21,6 +21,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import UsersMedia from '../../components/UsersMedia';
 import {ScrollView} from 'react-native-gesture-handler';
 
+// This view displays the user details of the current logged in user.
 const Profile = ({navigation, myFilesOnly = true}) => {
   const {mediaArray} = useMedia(myFilesOnly);
   const {getFilesByTag} = useTag();
@@ -46,10 +47,12 @@ const Profile = ({navigation, myFilesOnly = true}) => {
     }
   };
 
+  // Method for navigating user to change profile picture page
   const uploadProfile = async () => {
     navigation.navigate('ProfilePictureUpload');
   };
 
+  // Method for getting total likes that user has gotten in all his posts.
   const getLikes = async () => {
     let noOfLikes = 0;
     try {
@@ -63,6 +66,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
     totalLikes(noOfLikes);
   };
 
+  // Method for displaying the display avatar of the user.
   const showPictures = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
@@ -72,6 +76,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
     }
   };
 
+  // Method for logging out the logged in user.
   const logout = async () => {
     try {
       await AsyncStorage.clear();

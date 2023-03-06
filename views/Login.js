@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useContext, useEffect, useState} from 'react';
 import {LinearGradient} from 'expo-linear-gradient';
 
+// This view is used to log in registered user and register new users.
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserById} = useUser();
@@ -24,9 +25,11 @@ const Login = ({navigation}) => {
       console.error('checkId', error);
     }
   };
+
   useEffect(() => {
     checkId();
   }, []);
+
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
