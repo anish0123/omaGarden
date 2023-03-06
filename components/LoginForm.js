@@ -7,6 +7,7 @@ import {MainContext} from '../contexts/MainContext';
 import {useAuthentication} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 
+// This component is used to log in users.
 const LoginForm = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useAuthentication();
@@ -32,8 +33,6 @@ const LoginForm = ({navigation}) => {
       setUser(loginResult.user);
       setIsLoggedIn(true);
     } catch (error) {
-      // throw new Error('logIn', error);
-      // TODO: notify user about failed login attempt
       Alert.alert(
         'Incorrect username or password',
         'Please try with correct credentials',

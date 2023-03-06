@@ -20,6 +20,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import UsersMedia from '../../components/UsersMedia';
 import {ScrollView} from 'react-native-gesture-handler';
 
+// This view displays the details of other users that has been clicked.
 const OtherUserProfile = ({navigation, route}) => {
   const userDetail = route.params;
   const {loadAllMedia} = useMedia();
@@ -35,7 +36,7 @@ const OtherUserProfile = ({navigation, route}) => {
   const [likes, totalLikes] = useState(0);
   const [likeClicked, setLikeClicked] = useState(false);
 
-  // Loading the avatar of the owner of the post
+  // Method for loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + userDetail.user_id);
@@ -47,6 +48,7 @@ const OtherUserProfile = ({navigation, route}) => {
     }
   };
 
+  // Method for loading all the medias/posts that have been uploaded by the clicked user.
   const allMediaFiles = async () => {
     let noOfLikes = 0;
     try {
@@ -57,7 +59,6 @@ const OtherUserProfile = ({navigation, route}) => {
       }
       totalLikes(noOfLikes);
       setFiles(mediaFiles);
-      console.log('Length of all media files ' + files.length);
     } catch (error) {
       console.error('All media files fetching failed ', error.message);
     }
@@ -74,6 +75,7 @@ const OtherUserProfile = ({navigation, route}) => {
     }
   };
 
+  // Method for logging out the logged in user.
   const logout = async () => {
     try {
       await AsyncStorage.clear();

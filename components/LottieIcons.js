@@ -5,6 +5,7 @@ import SearchIcon from '../Lottie/Search.json';
 import UploadIcon from '../Lottie/Upload.json';
 import PropTypes from 'prop-types';
 
+// icons used for bottom navigation.
 const icons = {
   Home: HomeIcon,
   Profile: ProfileIcon,
@@ -12,6 +13,7 @@ const icons = {
   Search: SearchIcon,
 };
 
+// This component is used to display icons and it's animation in bottom navigation.
 const LottieIcons = ({iconName, focused}) => {
   return (
     <LottieView

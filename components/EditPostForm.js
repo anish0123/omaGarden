@@ -43,6 +43,7 @@ const EditPostForm = ({item, owner, navigation}) => {
   });
   const video = useRef(null);
 
+  // Method for editing post and updating the post.
   const editPost = async (data) => {
     setLoading(true);
     try {
@@ -72,6 +73,7 @@ const EditPostForm = ({item, owner, navigation}) => {
     }
   };
 
+  // Method for deleting the post/media.
   const mediaDelete = async () => {
     const token = await AsyncStorage.getItem('userToken');
     Alert.alert('Delete Confirmation', 'Do you want to delete this file?', [
@@ -226,6 +228,7 @@ const EditPostForm = ({item, owner, navigation}) => {
   );
 };
 
+// Prop validation for editPostForm params
 EditPostForm.propTypes = {
   item: PropTypes.object,
   navigation: PropTypes.object,
