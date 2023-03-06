@@ -296,7 +296,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
               <TouchableOpacity
                 style={{
                   height: '100%',
-                  backgroundColor: 'rgba(52, 52, 52, 0.1)',
                 }}
                 activeOpacity={1}
                 onPressOut={() => {

@@ -254,7 +254,6 @@ const OtherUserProfile = ({navigation, route}) => {
               style={{
                 height: '100%',
                 marginTop: 55,
-                backgroundColor: 'rgba(52, 52, 52, 0.1)',
               }}
               activeOpacity={1}
               onPressOut={() => {
