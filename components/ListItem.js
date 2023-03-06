@@ -79,6 +79,8 @@ const ListItem = ({singleMedia, navigation}) => {
 
   useEffect(() => {
     getOwner();
+    getLikes();
+    getComments();
   }, [item]);
 
   useEffect(() => {
