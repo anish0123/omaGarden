@@ -91,315 +91,313 @@ const OtherUserProfile = ({navigation, route}) => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <Card
-          containerStyle={{
-            margin: 0,
-            padding: 0,
+      <Card
+        containerStyle={{
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
           }}
         >
-          <View
+          <Image
+            source={require('../../assets/logo.png')}
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: 10,
+              width: 110,
+              height: 40,
+              marginBottom: 10,
+              justifyContent: 'center',
             }}
-          >
-            <Image
-              source={require('../../assets/logo.png')}
-              style={{
-                width: 110,
-                height: 40,
-                marginBottom: 10,
-                justifyContent: 'center',
-              }}
-            ></Image>
-            <Icon
-              name="settings"
-              onPress={() => {
-                setShowModal(!showModal);
-                setSettingClicked(!settingClicked);
-              }}
-            />
-          </View>
-          <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            colors={['#FFEEEE', '#DDEFBB']}
-          >
-            <Card.Divider width={1} />
-            <View style={{flexDirection: 'column', alignItems: 'center'}}>
-              {avatar ? (
-                <Card.Image
-                  source={{uri: uploadsUrl + avatar}}
-                  style={{
-                    width: 120,
-                    height: 120,
-                    borderRadius: 120 / 2,
-                    borderWidth: 1,
-                    borderColor: 'black',
-                  }}
-                />
-              ) : (
-                <Card.Image
-                  source={require('../../assets/avatar.png')}
-                  style={{
-                    width: 120,
-                    height: 120,
-                    borderRadius: 120 / 2,
-                    borderWidth: 1,
-                    borderColor: 'black',
-                  }}
-                />
-              )}
-              {owner.full_name !== 'null' ? (
-                <ListItem.Title style={{padding: 10, fontSize: 20}}>
-                  {userDetail.username}
-                </ListItem.Title>
-              ) : (
-                <ListItem.Title style={{padding: 10, fontSize: 20}}>
-                  {userDetail.full_name}
-                </ListItem.Title>
-              )}
-              <ListItem.Title style={{fontSize: 20}}>
-                {userDetail.email}
-              </ListItem.Title>
-              <Card
-                containerStyle={{
-                  width: '100%',
-                  height: 80,
-                  backgroundColor: 'white',
+          ></Image>
+          <Icon
+            name="settings"
+            onPress={() => {
+              setShowModal(!showModal);
+              setSettingClicked(!settingClicked);
+            }}
+          />
+        </View>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          colors={['#FFEEEE', '#DDEFBB']}
+        >
+          <Card.Divider width={1} />
+          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+            {avatar ? (
+              <Card.Image
+                source={{uri: uploadsUrl + avatar}}
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 120 / 2,
+                  borderWidth: 1,
+                  borderColor: 'black',
                 }}
-              >
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                  }}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        padding: 0,
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        fontSize: 20,
-                      }}
-                    >
-                      Posts
-                    </Text>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        fontSize: 20,
-                      }}
-                    >
-                      {files.length}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      height: '100%',
-                      backgroundColor: 'black',
-                      width: 1.5,
-                    }}
-                  ></View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setLikeClicked(true);
-                      setShowModal(true);
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        fontSize: 20,
-                      }}
-                    >
-                      Likes
-                    </Text>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        fontSize: 20,
-                      }}
-                    >
-                      {likes}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </Card>
-            </View>
-          </LinearGradient>
-          <GestureRecognizer
-            onSwipeDown={() => {
-              setShowModal(false);
-              setSettingClicked(false);
-              setLikeClicked(false);
-            }}
-          >
-            <Modal
-              animationType={'slide'}
-              transparent={true}
-              visible={showModal}
-              onRequestClose={() => {
-                setShowModal(false);
-                setLikeClicked(false);
-                setSettingClicked(false);
+              />
+            ) : (
+              <Card.Image
+                source={require('../../assets/avatar.png')}
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 120 / 2,
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}
+              />
+            )}
+            {owner.full_name !== 'null' ? (
+              <ListItem.Title style={{padding: 10, fontSize: 20}}>
+                {userDetail.username}
+              </ListItem.Title>
+            ) : (
+              <ListItem.Title style={{padding: 10, fontSize: 20}}>
+                {userDetail.full_name}
+              </ListItem.Title>
+            )}
+            <ListItem.Title style={{fontSize: 20}}>
+              {userDetail.email}
+            </ListItem.Title>
+            <Card
+              containerStyle={{
+                width: '100%',
+                height: 80,
+                backgroundColor: 'white',
               }}
             >
-              <TouchableOpacity
+              <View
                 style={{
-                  height: '100%',
-                  marginTop: 55,
-                  backgroundColor: 'rgba(52, 52, 52, 0.1)',
-                }}
-                activeOpacity={1}
-                onPressOut={() => {
-                  setShowModal(false);
-                  setSettingClicked(false);
-                  setLikeClicked(false);
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
                 }}
               >
-                {likeClicked && (
+                <View>
+                  <Text
+                    style={{
+                      padding: 0,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    Posts
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    {files.length}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    height: '100%',
+                    backgroundColor: 'black',
+                    width: 1.5,
+                  }}
+                ></View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setLikeClicked(true);
+                    setShowModal(true);
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    Likes
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    {likes}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Card>
+          </View>
+        </LinearGradient>
+        <GestureRecognizer
+          onSwipeDown={() => {
+            setShowModal(false);
+            setSettingClicked(false);
+            setLikeClicked(false);
+          }}
+        >
+          <Modal
+            animationType={'slide'}
+            transparent={true}
+            visible={showModal}
+            onRequestClose={() => {
+              setShowModal(false);
+              setLikeClicked(false);
+              setSettingClicked(false);
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                height: '100%',
+                marginTop: 55,
+                backgroundColor: 'rgba(52, 52, 52, 0.1)',
+              }}
+              activeOpacity={1}
+              onPressOut={() => {
+                setShowModal(false);
+                setSettingClicked(false);
+                setLikeClicked(false);
+              }}
+            >
+              {likeClicked && (
+                <View
+                  style={{
+                    borderRadius: 20,
+                    backgroundColor: 'white',
+                    width: '80%',
+                    marginHorizontal: '10%',
+                    marginTop: '55%',
+                    alignItems: 'center',
+                    shadowOpacity: 0.25,
+                    elevation: 5,
+                  }}
+                >
                   <View
                     style={{
-                      borderRadius: 20,
-                      backgroundColor: 'white',
-                      width: '80%',
-                      marginHorizontal: '10%',
-                      marginTop: '55%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-evenly',
                       alignItems: 'center',
-                      shadowOpacity: 0.25,
-                      elevation: 5,
                     }}
                   >
-                    <View
+                    <Icon
+                      raised
+                      name="heartbeat"
+                      type="font-awesome"
+                      color="#f50"
+                    />
+                    <Text
                       style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-evenly',
-                        alignItems: 'center',
+                        padding: 20,
+                        color: 'black',
+                        fontSize: 20,
+                        textAlign: 'center',
                       }}
                     >
-                      <Icon
-                        raised
-                        name="heartbeat"
-                        type="font-awesome"
-                        color="#f50"
-                      />
+                      {userDetail.username +
+                        ` has a total of ` +
+                        likes +
+                        ` likes across all posts.`}
+                    </Text>
+                    <Pressable
+                      onPress={() => {
+                        setShowModal(false);
+                        setLikeClicked(false);
+                      }}
+                      style={({pressed}) => [
+                        {
+                          backgroundColor: pressed ? '#EFEDED' : 'white',
+                        },
+                      ]}
+                    >
                       <Text
                         style={{
-                          padding: 20,
-                          color: 'black',
                           fontSize: 20,
+                          fontWeight: 'bold',
                           textAlign: 'center',
+                          padding: 10,
                         }}
                       >
-                        {userDetail.username +
-                          ` has a total of ` +
-                          likes +
-                          ` likes across all posts.`}
+                        Ok
                       </Text>
-                      <Pressable
-                        onPress={() => {
-                          setShowModal(false);
-                          setLikeClicked(false);
-                        }}
-                        style={({pressed}) => [
-                          {
-                            backgroundColor: pressed ? '#EFEDED' : 'white',
-                          },
-                        ]}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            fontWeight: 'bold',
-                            textAlign: 'center',
-                            padding: 10,
-                          }}
-                        >
-                          Ok
-                        </Text>
-                      </Pressable>
-                    </View>
+                    </Pressable>
                   </View>
-                )}
-                {settingClicked && (
+                </View>
+              )}
+              {settingClicked && (
+                <View
+                  style={{
+                    backgroundColor: 'black',
+                    height: '50%',
+                    marginTop: 'auto',
+                    borderTopRightRadius: 30,
+                    borderTopLeftRadius: 30,
+                  }}
+                >
                   <View
                     style={{
-                      backgroundColor: 'black',
-                      height: '50%',
-                      marginTop: 'auto',
-                      borderTopRightRadius: 30,
-                      borderTopLeftRadius: 30,
+                      width: Dimensions.get('screen').width / 3,
+                      marginHorizontal: Dimensions.get('screen').width / 3,
+                      borderWidth: 2,
+                      borderColor: 'white',
+                    }}
+                  ></View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      padding: 15,
+                      marginTop: 15,
                     }}
                   >
-                    <View
+                    <Icon name="logout" color="white" />
+                    <Text
                       style={{
-                        width: Dimensions.get('screen').width / 3,
-                        marginHorizontal: Dimensions.get('screen').width / 3,
-                        borderWidth: 2,
-                        borderColor: 'white',
+                        color: 'white',
+                        fontSize: 20,
+                        marginLeft: 15,
                       }}
-                    ></View>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        padding: 15,
-                        marginTop: 15,
+                      onPress={() => {
+                        setShowModal(false);
+                        logout();
                       }}
                     >
-                      <Icon name="logout" color="white" />
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 20,
-                          marginLeft: 15,
-                        }}
-                        onPress={() => {
-                          setShowModal(false);
-                          logout();
-                        }}
-                      >
-                        Logout
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        padding: 15,
-                      }}
-                    >
-                      <Icon name="help" color="white" />
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 20,
-                          marginLeft: 15,
-                        }}
-                      >
-                        Help Center
-                      </Text>
-                    </View>
+                      Logout
+                    </Text>
                   </View>
-                )}
-              </TouchableOpacity>
-            </Modal>
-          </GestureRecognizer>
-        </Card>
-        <UsersMedia
-          navigation={navigation}
-          mediaFile={files}
-          owner={userDetail}
-        />
-      </ScrollView>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      padding: 15,
+                    }}
+                  >
+                    <Icon name="help" color="white" />
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 20,
+                        marginLeft: 15,
+                      }}
+                    >
+                      Help Center
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </TouchableOpacity>
+          </Modal>
+        </GestureRecognizer>
+      </Card>
+      <UsersMedia
+        navigation={navigation}
+        mediaFile={files}
+        owner={userDetail}
+      />
     </SafeAreaView>
   );
 };
