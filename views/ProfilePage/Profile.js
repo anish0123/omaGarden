@@ -17,6 +17,7 @@ import {
 import {MainContext} from '../../contexts/MainContext';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LinearGradient} from 'expo-linear-gradient';
 
 const Profile = ({navigation, myFilesOnly = true}) => {
   getLikes;
@@ -70,6 +71,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   };
 
   useEffect(() => {
+    getLikes();
     loadAvatar();
   }, [update, updateLike]);
 
@@ -83,7 +85,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         containerStyle={{
           margin: 0,
           padding: 0,
-          backgroundColor: '#d6f5d6',
         }}
       >
         <View
@@ -113,127 +114,134 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             }}
           />
         </View>
-        <Card.Divider width={1} />
-        <View style={{flexDirection: 'column', alignItems: 'center'}}>
-          {avatar != '' ? (
-            <Card.Image
-              source={{uri: uploadsUrl + avatar}}
-              style={{
-                width: 120,
-                height: 120,
-                borderRadius: 120 / 2,
-                borderWidth: 1,
+
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          colors={['#FFEEEE', '#DDEFBB']}
+        >
+          <Card.Divider width={1} />
+          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+            {avatar != '' ? (
+              <Card.Image
+                source={{uri: uploadsUrl + avatar}}
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 120 / 2,
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}
+              />
+            ) : (
+              <Card.Image
+                source={require('../../assets/avatar.png')}
+                style={{
+                  width: 120,
+                  height: 120,
+                  margin: 15,
+                  borderRadius: 120 / 2,
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}
+              />
+            )}
+            {user.full_name !== 'null' ? (
+              <ListItem.Title style={{fontSize: 20, marginTop: 10}}>
+                {user.username}
+              </ListItem.Title>
+            ) : (
+              <ListItem.Title style={{fontSize: 20, marginTop: 10}}>
+                {user.full_name}
+              </ListItem.Title>
+            )}
+            <ListItem.Title style={{padding: 10, fontSize: 20}}>
+              {user.email}
+            </ListItem.Title>
+            <Button
+              title="Edit Profile"
+              buttonStyle={{
+                backgroundColor: '#6fdc6f',
                 borderColor: 'black',
+                borderWidth: 1,
+                borderRadius: 20,
+                margin: 5,
+                padding: 10,
+              }}
+              type="outline"
+              titleStyle={{color: 'black', fontSize: 18}}
+              containerStyle={{
+                width: Dimensions.get('screen').width / 3,
+                marginHorizontal: Dimensions.get('screen').width / 3,
+              }}
+              onPress={() => {
+                navigation.navigate('EditProfile', {
+                  userName: user.username,
+                  email: user.email,
+                  fileName: avatar,
+                });
               }}
             />
-          ) : (
-            <Card.Image
-              source={require('../../assets/avatar.png')}
-              style={{
-                width: 120,
-                height: 120,
-                margin: 15,
-                borderRadius: 120 / 2,
-                borderWidth: 1,
-                borderColor: 'black',
-              }}
-            />
-          )}
-          {user.full_name === 'null' ? (
-            <ListItem.Title style={{fontSize: 20, marginTop: 10}}>
-              {user.username}
-            </ListItem.Title>
-          ) : (
-            <ListItem.Title style={{fontSize: 20, marginTop: 10}}>
-              {user.full_name}
-            </ListItem.Title>
-          )}
-          <ListItem.Title style={{padding: 10, fontSize: 20}}>
-            {user.email}
-          </ListItem.Title>
-          <Button
-            title="Edit Profile"
-            buttonStyle={{
-              backgroundColor: '#6fdc6f',
-              borderColor: 'black',
-              borderWidth: 1,
-              borderRadius: 20,
-              margin: 5,
-              padding: 10,
-            }}
-            type="outline"
-            titleStyle={{color: 'black', fontSize: 18}}
-            containerStyle={{
-              width: Dimensions.get('screen').width / 3,
-              marginHorizontal: Dimensions.get('screen').width / 3,
-            }}
-            onPress={() => {
-              navigation.navigate('EditProfile', {
-                userName: user.username,
-                email: user.email,
-                fileName: avatar,
-              });
-            }}
-          />
-          <Card
-            containerStyle={{
-              width: '100%',
-              height: 80,
-              backgroundColor: 'white',
-            }}
-          >
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
+            <Card
+              containerStyle={{
+                width: '100%',
+                height: 80,
+                backgroundColor: 'white',
               }}
             >
-              <View>
-                <Text
-                  style={{
-                    padding: 0,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    fontSize: 20,
-                  }}
-                >
-                  Posts
-                </Text>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 20,
-                  }}
-                >
-                  {mediaArray.length}
-                </Text>
-              </View>
               <View
-                style={{height: '100%', backgroundColor: 'black', width: 1.5}}
-              ></View>
-              <View>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    fontSize: 20,
-                  }}
-                >
-                  Likes
-                </Text>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 20,
-                  }}
-                >
-                  {likes}
-                </Text>
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      padding: 0,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    Posts
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    {mediaArray.length}
+                  </Text>
+                </View>
+                <View
+                  style={{height: '100%', backgroundColor: 'black', width: 1.5}}
+                ></View>
+                <View>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    Likes
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 20,
+                    }}
+                  >
+                    {likes}
+                  </Text>
+                </View>
               </View>
-            </View>
-          </Card>
-        </View>
+            </Card>
+          </View>
+        </LinearGradient>
         <View
           style={{
             position: 'absolute',

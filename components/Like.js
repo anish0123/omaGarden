@@ -16,7 +16,6 @@ const Like = ({file}) => {
   // Getting the likes of the post
   const getLikes = async () => {
     try {
-      setUserLikesIt(false);
       const likes = await getFavouritesByFileId(file.file_id);
       setLikes(likes);
       if (likes.length > 0) {
