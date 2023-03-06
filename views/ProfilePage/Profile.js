@@ -89,11 +89,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   useEffect(() => {
     getLikes();
     loadAvatar();
-  }, [update, updateLike]);
-
-  useEffect(() => {
-    getLikes();
-  }, [mediaArray]);
+  }, [update, updateLike, mediaArray]);
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 35 : 0}}>
