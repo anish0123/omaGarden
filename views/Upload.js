@@ -97,6 +97,7 @@ const Upload = ({navigation}) => {
     }
   };
 
+  // Method for asking camera permission from the user
   const getCameraPermission = async () => {
     const {status} = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
@@ -104,6 +105,7 @@ const Upload = ({navigation}) => {
     }
   };
 
+  // Method for opening the camera and taking the pictures.
   const takePicture = async () => {
     // No permissions request is necessary for launching the image library
     try {
@@ -144,7 +146,6 @@ const Upload = ({navigation}) => {
     } catch (error) {
       console.log('pickFile', error);
     }
-    // No permissions request is necessary for launching the image library
   };
 
   // Method for reseting the values.
