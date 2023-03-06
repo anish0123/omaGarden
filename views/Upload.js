@@ -1,4 +1,4 @@
-import {Button, Card, Input} from '@rneui/themed';
+import {Button, Card, Icon, Input} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {Controller, useForm} from 'react-hook-form';
 import {
@@ -94,6 +94,34 @@ const Upload = ({navigation}) => {
       console.error('file upload failed', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getCameraPermission = async () => {
+    const {status} = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Sorry, we need camera permission');
+    }
+  };
+
+  const takePicture = async () => {
+    // No permissions request is necessary for launching the image library
+    try {
+      await getCameraPermission();
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.5,
+      });
+
+      console.log('Pick camera result', result);
+
+      if (!result.canceled) {
+        setMediaFile(result.assets[0]);
+      }
+    } catch (error) {
+      console.log('Error in taking picture', error);
     }
   };
 
@@ -268,38 +296,37 @@ const Upload = ({navigation}) => {
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      justifyContent: 'space-between',
+                      justifyContent: 'space-around',
+                      marginBottom: 10,
                     }}
                   >
-                    <Button
-                      onPress={pickFile}
-                      title="Select file"
-                      buttonStyle={{
-                        backgroundColor: '#62BD69',
-                        borderColor: 'black',
-                        borderRadius: 5,
-                      }}
-                      type="outline"
-                      titleStyle={{color: 'black'}}
-                      containerStyle={{
-                        width: '48%',
-                      }}
+                    <Icon
+                      name="photo-camera"
+                      onPress={takePicture}
+                      size={25}
+                      raised
                     />
-                    <Button
-                      onPress={resetValues}
-                      title="Reset"
-                      buttonStyle={{
-                        backgroundColor: '#62BD69',
-                        borderColor: 'black',
-                        borderRadius: 5,
-                      }}
-                      type="outline"
-                      titleStyle={{color: 'black'}}
-                      containerStyle={{
-                        width: '48%',
-                      }}
+                    <Icon
+                      name="collections"
+                      onPress={pickFile}
+                      size={25}
+                      raised
                     />
                   </View>
+                  <Button
+                    onPress={resetValues}
+                    title="Reset"
+                    buttonStyle={{
+                      backgroundColor: '#62BD69',
+                      borderColor: 'black',
+                      borderRadius: 5,
+                    }}
+                    type="outline"
+                    titleStyle={{color: 'black'}}
+                    containerStyle={{
+                      width: '100%',
+                    }}
+                  />
                   <Card.Divider />
                   <Button
                     buttonStyle={{
