@@ -12,6 +12,7 @@ import AddComment from '../components/AddComment';
 import FileInfo from '../components/FileInfo';
 import Comment from '../components/Comment';
 
+// This view displays the details of the clicked post/media.
 const Single = ({route, navigation}) => {
   const file = route.params[0];
   const owner = route.params[1];

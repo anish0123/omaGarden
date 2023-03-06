@@ -16,10 +16,12 @@ import {useContext, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
 
+// This is the main view of the app which displays all post/media that users have uploaded
 const Home = ({navigation}) => {
   const [showModal, setShowModal] = useState(false);
   const {setIsLoggedIn} = useContext(MainContext);
 
+  // Method for logging out user.
   const logout = async () => {
     try {
       await AsyncStorage.clear();

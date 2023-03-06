@@ -6,10 +6,13 @@ import {useTag} from '../../hooks/ApiHooks';
 import {useContext} from 'react';
 import {MainContext} from '../../contexts/MainContext';
 
+// This view is made up for changing the avatar of the logged in user.
 const ProfilePictures = ({navigation, route}) => {
   const {getFilesByTag} = useTag();
   const {user} = useContext(MainContext);
   console.log(route.params.length);
+
+  // Method for setting up new avatar for the user.
   const setProfilePicture = async (tagId) => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);

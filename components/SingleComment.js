@@ -6,6 +6,7 @@ import {Alert, StyleSheet, View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useComment, useUser} from '../hooks/ApiHooks';
 
+// This component is used to displaying the comment details of a post/file.
 const SingleComment = ({singleComment}) => {
   const [owner, setOwner] = useState({});
   const {getUserById} = useUser();
@@ -13,12 +14,14 @@ const SingleComment = ({singleComment}) => {
   const {deleteComment} = useComment();
   const {updateComment, setUpdateComment} = useContext(MainContext);
 
+  // Method for getting user details of comment writer.
   const getUser = async () => {
     const token = await AsyncStorage.getItem('userToken');
     const user = await getUserById(singleComment.user_id, token);
     setOwner(user);
   };
 
+  // Method for deleting a comment.
   const commentDelete = async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');

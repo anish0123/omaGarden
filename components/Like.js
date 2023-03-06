@@ -56,6 +56,8 @@ const Like = ({file}) => {
       console.log('likeFile' + error);
     }
   };
+
+  // useEffect for updating likes incase of likes state changes
   useEffect(() => {
     getLikes();
   }, [updateLike]);

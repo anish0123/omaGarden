@@ -5,6 +5,8 @@ import SingleUser from './SingleUser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect, useState} from 'react';
 
+// This component displays the list of users who have liked the post.
+
 const LikedUsersList = ({navigation, likes}) => {
   console.log('likes in likedUsersList', likes);
   const {getUserById} = useUser();
@@ -22,12 +24,14 @@ const LikedUsersList = ({navigation, likes}) => {
     setUserArray(ryArray);
   };
 
+  // Method for getting the user details who likes the post.
   const addUsersToList = async () => {
     likes.forEach((like) => {
       getOwner(like);
     });
   };
 
+  // useEffect for loading the full list of users who liked the post.
   useEffect(() => {
     addUsersToList();
   }, []);

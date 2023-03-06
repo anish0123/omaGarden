@@ -7,6 +7,7 @@ import {Dimensions, View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {uploadsUrl} from '../utils/variables';
 
+// This component returns list of all the post/ media that a user has uploaded in flatlist.
 const UsersMedia = ({navigation, mediaFile, owner}) => {
   const {user} = useContext(MainContext);
   const number = mediaFile.length;

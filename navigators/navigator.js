@@ -19,6 +19,7 @@ import EditPost from '../views/EditPost';
 import {StyleSheet} from 'react-native';
 import UsersWhoLiked from '../views/UsersWhoLiked';
 
+// This component is used to build up navigation through the app using bottom navigation and stack screen.
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
