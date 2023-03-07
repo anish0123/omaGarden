@@ -8,7 +8,7 @@ import {Text} from '@rneui/base';
 
 // This component is used to register new users.
 const RegisterForm = ({navigation}) => {
-  const {postUser} = useUser();
+  const {postUser, checkUsername} = useUser();
   const [loading, setLoading] = useState(false);
   const {
     control,
@@ -24,7 +24,17 @@ const RegisterForm = ({navigation}) => {
       email: '',
       full_name: '',
     },
+    mode: 'onChange',
   });
+
+  const checkUser = async (username) => {
+    try {
+      const userAvailable = await checkUsername(username);
+      return userAvailable || 'Username is already taken';
+    } catch (error) {
+      console.error('checkUser', error.message);
+    }
+  };
 
   // Method of registering the user according to the data received from hook form
   const register = async (registerData) => {
@@ -88,6 +98,11 @@ const RegisterForm = ({navigation}) => {
               value: true,
               message: 'Username is required',
             },
+            minLength: {
+              value: 3,
+              message: 'Username Min length is 3 characters.',
+            },
+            validate: checkUser,
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <Input
@@ -115,6 +130,11 @@ const RegisterForm = ({navigation}) => {
               value: true,
               message: 'Password is required',
             },
+            pattern: {
+              value: /(?=.*\p{Lu})(?=.*[0-9]).{5,}/u,
+              message:
+                'min 5 characters, needs one number, one uppercase letter',
+            },
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <Input
@@ -130,7 +150,7 @@ const RegisterForm = ({navigation}) => {
               value={value}
               autoCapitalize="none"
               secureTextEntry={true}
-              errorMessage={errors.username && errors.username.message}
+              errorMessage={errors.password && errors.password.message}
             />
           )}
           name="password"
@@ -187,6 +207,7 @@ const RegisterForm = ({navigation}) => {
                 borderRadius: 7,
                 width: '80%',
               }}
+              autoCapitalize="none"
               placeholder="Email"
               onBlur={onBlur}
               onChangeText={onChange}
