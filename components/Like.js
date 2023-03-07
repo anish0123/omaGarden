@@ -60,7 +60,7 @@ const Like = ({file}) => {
   // useEffect for updating likes incase of likes state changes
   useEffect(() => {
     getLikes();
-  }, [updateLike]);
+  }, [updateLike, file]);
   return (
     <>
       {userLikesIt ? (
