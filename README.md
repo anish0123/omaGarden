@@ -13,7 +13,7 @@ Oma Garden is a mobile application built with React Native that allows users to 
 - Upload plant pictures and videos and share them with other users.
 - View other users' plant pictures and videos, add it in your favourites and comment on pictures and videos.
 - Modify user account details and user avatars.
-- Modify uploaed plant pictures and videos' details.
+- Modify uploaded plant pictures and videos' details.
 - Search for users to browse their uploaded plants pictures and videos.
 
 ## Installation
