@@ -36,8 +36,8 @@ To upload a plant picture or video, users can click on the upload icon on bottom
 To check the user profile, users can click on profile icon on bottom navigator. User profile page displays all the details about the user. It also displays all the plant pictures and videos uploaded by the user. The total number of likes that user have received through their posts are also displayed in the page. Users can also change their avatar by clicking on the camera icon on the left side of the avatar.
 
 ## Related
-- [Trello Board] (https://trello.com/b/WTILLlHy/oma-garden)
-- [Figma] (https://www.figma.com/file/QtuGVpHjtlDHnEMJqyBnyh/Oma-Garden-Group-Project?node-id=7%3A356&t=srHAycuxs5o17iI2-0)
+- [Trello Board](https://trello.com/b/WTILLlHy/oma-garden)
+- [Figma](https://www.figma.com/file/QtuGVpHjtlDHnEMJqyBnyh/Oma-Garden-Group-Project?node-id=7%3A356&t=srHAycuxs5o17iI2-0)
 
 ## Contributors
 - [Anish Maharjan](https://github.com/anish0123)
