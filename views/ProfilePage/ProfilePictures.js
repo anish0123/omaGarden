@@ -1,47 +1,14 @@
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../../utils/variables';
 import {Image} from '@rneui/base';
-import {Alert, Dimensions, FlatList, View} from 'react-native';
-import {useTag} from '../../hooks/ApiHooks';
+import {Dimensions, FlatList, View} from 'react-native';
 import {useContext} from 'react';
 import {MainContext} from '../../contexts/MainContext';
 
 // This view is made up for changing the avatar of the logged in user.
 const ProfilePictures = ({navigation, route}) => {
-  const {getFilesByTag} = useTag();
   const {user} = useContext(MainContext);
   console.log(route.params.length);
-
-  // Method for setting up new avatar for the user.
-  const setProfilePicture = async (tagId) => {
-    try {
-      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
-      console.log('setProfilePicture', avatarArray);
-
-      for (let index = 0; index < avatarArray.length; index++) {
-        if (avatarArray[index].tag_id === tagId) {
-          console.log(
-            'File ID ' + avatarArray[index].file_id + ' Tag ID ' + tagId
-          );
-          Alert.alert(
-            'Alert',
-            'Do you want to set this as your Profile Picture ?',
-            [
-              {
-                text: 'Yes',
-                onPress: () => {
-                  navigation.navigate('Profile', tagId);
-                },
-              },
-            ]
-          );
-        }
-      }
-      console.log(avatarArray);
-    } catch (error) {
-      console.error('User avatar fetch failed', error.message);
-    }
-  };
 
   return (
     <FlatList
@@ -49,7 +16,10 @@ const ProfilePictures = ({navigation, route}) => {
       renderItem={({item}) => (
         <View>
           <Image
-            onPress={() => setProfilePicture(item.tag_id)}
+            onPress={() => {
+              console.log(item);
+              navigation.navigate('Single', [item, user]);
+            }}
             source={{uri: uploadsUrl + item.filename}}
             style={{
               borderWidth: 1,
