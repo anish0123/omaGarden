@@ -10,7 +10,7 @@ const Like = ({file}) => {
   const [userLikesIt, setUserLikesIt] = useState(false);
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
     useFavourite();
-  const {user, updateLike, setUpdateLike} = useContext(MainContext);
+  const {user, updateLike, setUpdateLike, update} = useContext(MainContext);
   const [likes, setLikes] = useState([]);
 
   // Getting the likes of the post
@@ -22,6 +22,8 @@ const Like = ({file}) => {
         const userLike = likes.filter((like) => like.user_id === user.user_id);
         if (userLike.length !== 0) {
           setUserLikesIt(true);
+        } else {
+          setUserLikesIt(false);
         }
       }
     } catch (error) {
@@ -60,7 +62,7 @@ const Like = ({file}) => {
   // useEffect for updating likes incase of likes state changes
   useEffect(() => {
     getLikes();
-  }, [updateLike]);
+  }, [updateLike, file, update]);
   return (
     <>
       {userLikesIt ? (
