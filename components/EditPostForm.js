@@ -43,6 +43,7 @@ const EditPostForm = ({item, owner, navigation}) => {
   });
   const video = useRef(null);
 
+  // Method for editing post and updating the post.
   const editPost = async (data) => {
     setLoading(true);
     try {
@@ -72,31 +73,28 @@ const EditPostForm = ({item, owner, navigation}) => {
     }
   };
 
+  // Method for deleting the post/media.
   const mediaDelete = async () => {
     const token = await AsyncStorage.getItem('userToken');
-    Alert.alert(
-      'Do you want to delete this file?',
-      'File id: ' + item.file_id,
-      [
-        {
-          text: 'OK',
-          onPress: async () => {
-            await deleteMedia(item.file_id, token);
-            console.log('OK Pressed');
-            // update 'update' state in context
-            setUpdate(!update);
-            // reset form
-            resetValues();
-            // TODO: navigated to home;
-            navigation.navigate('Home');
-          },
+    Alert.alert('Delete Confirmation', 'Do you want to delete this file?', [
+      {
+        text: 'OK',
+        onPress: async () => {
+          await deleteMedia(item.file_id, token);
+          console.log('OK Pressed');
+          // update 'update' state in context
+          setUpdate(!update);
+          // reset form
+          resetValues();
+          // TODO: navigated to home;
+          navigation.navigate('Home');
         },
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-      ]
-    );
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
   };
   const resetValues = () => {
     reset();
@@ -230,6 +228,7 @@ const EditPostForm = ({item, owner, navigation}) => {
   );
 };
 
+// Prop validation for editPostForm params
 EditPostForm.propTypes = {
   item: PropTypes.object,
   navigation: PropTypes.object,

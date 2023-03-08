@@ -59,10 +59,12 @@ const FileInfo = ({navigation, file, owner}) => {
     }
   };
 
+  // UseEffect for loading the avatar when the single page is loaded
   useEffect(() => {
     loadAvatar();
   }, []);
 
+  // useEffect for updating the likes incase the likes state changes.
   useEffect(() => {
     getLikes();
   }, [updateLike]);

@@ -77,8 +77,12 @@ const ListItem = ({singleMedia, navigation}) => {
     }
   };
 
+  /* useEffect is used to get owner details, likes and comments of the post and update likes and comments
+   incase the state of likes and comments changes.*/
   useEffect(() => {
     getOwner();
+    getLikes();
+    getComments();
   }, [item]);
 
   useEffect(() => {

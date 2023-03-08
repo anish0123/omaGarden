@@ -1,15 +1,14 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-unused-vars */
-import {Button, Card, Icon, Image, ListItem, Text} from '@rneui/base';
+import {Card, Icon, Image, ListItem, Text} from '@rneui/base';
 import {useContext, useEffect, useState} from 'react';
 import {useFavourite, useMedia, useTag, useUser} from '../../hooks/ApiHooks';
 import {uploadsUrl} from '../../utils/variables';
 import PropTypes from 'prop-types';
 import {
   Dimensions,
-  FlatList,
   Modal,
-  Platform,
+  Pressable,
   SafeAreaView,
   TouchableOpacity,
   View,
@@ -18,23 +17,26 @@ import {MainContext} from '../../contexts/MainContext';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LinearGradient} from 'expo-linear-gradient';
+import UsersMedia from '../../components/UsersMedia';
+import {ScrollView} from 'react-native-gesture-handler';
 
+// This view displays the details of other users that has been clicked.
 const OtherUserProfile = ({navigation, route}) => {
   const userDetail = route.params;
   const {loadAllMedia} = useMedia();
   const {getUserById} = useUser();
   const {getFilesByTag} = useTag();
   const {getFavouritesByFileId} = useFavourite();
-  const {setIsLoggedIn, user, setUser, updateLike} = useContext(MainContext);
+  const {setIsLoggedIn, updateLike} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
   const [owner, setOwner] = useState({});
   const [files, setFiles] = useState([]);
   const [likes, totalLikes] = useState(0);
-  console.log(userDetail);
+  const [likeClicked, setLikeClicked] = useState(false);
 
-  // Loading the avatar of the owner of the post
+  // Method for loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + userDetail.user_id);
@@ -46,6 +48,7 @@ const OtherUserProfile = ({navigation, route}) => {
     }
   };
 
+  // Method for loading all the medias/posts that have been uploaded by the clicked user.
   const allMediaFiles = async () => {
     let noOfLikes = 0;
     try {
@@ -56,7 +59,6 @@ const OtherUserProfile = ({navigation, route}) => {
       }
       totalLikes(noOfLikes);
       setFiles(mediaFiles);
-      console.log('Length of all media files ' + files.length);
     } catch (error) {
       console.error('All media files fetching failed ', error.message);
     }
@@ -70,6 +72,16 @@ const OtherUserProfile = ({navigation, route}) => {
       setOwner(ownerDetails);
     } catch (error) {
       // console.error('getOwner', error);
+    }
+  };
+
+  // Method for logging out the logged in user.
+  const logout = async () => {
+    try {
+      await AsyncStorage.clear();
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error('clearing asyncstorage failed ', error);
     }
   };
 
@@ -189,9 +201,18 @@ const OtherUserProfile = ({navigation, route}) => {
                   </Text>
                 </View>
                 <View
-                  style={{height: '100%', backgroundColor: 'black', width: 1.5}}
+                  style={{
+                    height: '100%',
+                    backgroundColor: 'black',
+                    width: 1.5,
+                  }}
                 ></View>
-                <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setLikeClicked(true);
+                    setShowModal(true);
+                  }}
+                >
                   <Text
                     style={{
                       fontWeight: 'bold',
@@ -209,7 +230,7 @@ const OtherUserProfile = ({navigation, route}) => {
                   >
                     {likes}
                   </Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </Card>
           </View>
@@ -218,6 +239,7 @@ const OtherUserProfile = ({navigation, route}) => {
           onSwipeDown={() => {
             setShowModal(false);
             setSettingClicked(false);
+            setLikeClicked(false);
           }}
         >
           <Modal
@@ -225,25 +247,98 @@ const OtherUserProfile = ({navigation, route}) => {
             transparent={true}
             visible={showModal}
             onRequestClose={() => {
-              console.log('Modal has been closed.');
+              setShowModal(false);
+              setLikeClicked(false);
+              setSettingClicked(false);
             }}
           >
             <TouchableOpacity
               style={{
-                height: '50%',
-                marginTop: 'auto',
-                backgroundColor: '#3E3C3C',
-                borderTopRightRadius: 30,
-                borderTopLeftRadius: 30,
+                height: '100%',
+                marginTop: 55,
               }}
               activeOpacity={1}
               onPressOut={() => {
                 setShowModal(false);
                 setSettingClicked(false);
+                setLikeClicked(false);
               }}
             >
+              {likeClicked && (
+                <View
+                  style={{
+                    borderRadius: 20,
+                    backgroundColor: 'white',
+                    width: '80%',
+                    marginHorizontal: '10%',
+                    marginTop: '55%',
+                    alignItems: 'center',
+                    shadowOpacity: 0.25,
+                    elevation: 5,
+                  }}
+                >
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-evenly',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Icon
+                      raised
+                      name="heartbeat"
+                      type="font-awesome"
+                      color="#f50"
+                    />
+                    <Text
+                      style={{
+                        padding: 20,
+                        color: 'black',
+                        fontSize: 20,
+                        textAlign: 'center',
+                      }}
+                    >
+                      {userDetail.username +
+                        ` has a total of ` +
+                        likes +
+                        ` likes across all posts.`}
+                    </Text>
+                    <Pressable
+                      onPress={() => {
+                        setShowModal(false);
+                        setLikeClicked(false);
+                      }}
+                      style={({pressed}) => [
+                        {
+                          backgroundColor: pressed ? '#EFEDED' : 'white',
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                          padding: 10,
+                        }}
+                      >
+                        Ok
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              )}
               {settingClicked && (
-                <View>
+                <View
+                  style={{
+                    backgroundColor: 'black',
+                    height: '50%',
+                    marginTop: 'auto',
+                    borderTopRightRadius: 30,
+                    borderTopLeftRadius: 30,
+                  }}
+                >
                   <View
                     style={{
                       width: Dimensions.get('screen').width / 3,
@@ -269,12 +364,7 @@ const OtherUserProfile = ({navigation, route}) => {
                       }}
                       onPress={() => {
                         setShowModal(false);
-                        setIsLoggedIn(false);
-                        try {
-                          AsyncStorage.clear();
-                        } catch (error) {
-                          console.error('clearing asyncstorage failed ', error);
-                        }
+                        logout();
                       }}
                     >
                       Logout
@@ -304,55 +394,11 @@ const OtherUserProfile = ({navigation, route}) => {
           </Modal>
         </GestureRecognizer>
       </Card>
-      {files.length !== 0 ? (
-        <FlatList
-          nestedScrollEnabled
-          data={files}
-          renderItem={({item}) => (
-            <View>
-              {item.media_type === 'image' ? (
-                <Image
-                  onPress={() =>
-                    navigation.navigate('Single', [item, userDetail])
-                  }
-                  source={{uri: uploadsUrl + item.filename}}
-                  style={{
-                    margin: 2,
-                    width: Dimensions.get('screen').width / 3,
-                    height: Dimensions.get('screen').width / 3,
-                  }}
-                />
-              ) : (
-                <Image
-                  onPress={() =>
-                    navigation.navigate('Single', [item, userDetail])
-                  }
-                  source={{uri: uploadsUrl + item.screenshot}}
-                  style={{
-                    margin: 2,
-                    width: Dimensions.get('screen').width / 3,
-                    height: Dimensions.get('screen').width / 3,
-                  }}
-                />
-              )}
-            </View>
-          )}
-          numColumns={3}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      ) : (
-        <Text
-          style={{
-            fontSize: 25,
-            textAlignVertical: 'center',
-            textAlign: 'center',
-            justifyContent: 'center',
-            marginVertical: 110,
-          }}
-        >
-          No posts yet
-        </Text>
-      )}
+      <UsersMedia
+        navigation={navigation}
+        mediaFile={files}
+        owner={userDetail}
+      />
     </SafeAreaView>
   );
 };

@@ -1,4 +1,4 @@
-import {Button, Card, Input} from '@rneui/themed';
+import {Button, Card, Icon, Input} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {Controller, useForm} from 'react-hook-form';
 import {
@@ -72,24 +72,58 @@ const Upload = ({navigation}) => {
       };
       const tagResult = await postTag(appTag, token);
       console.log('tagResult', tagResult);
-      Alert.alert('Upload Ok', 'File id: ' + uploadResult.file_id, [
-        {
-          text: 'OK',
-          onPress: () => {
-            console.log('OK Pressed');
-            // update 'update' state in context
-            setUpdate(!update);
-            // reset form
-            resetValues();
-            // TODO: navigated to home;
-            navigation.navigate('Home');
+      Alert.alert(
+        'Upload Confirmation',
+        mediaFile.type + ' uploaded successfully',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('OK Pressed');
+              // update 'update' state in context
+              setUpdate(!update);
+              // reset form
+              resetValues();
+              // TODO: navigated to home;
+              navigation.navigate('Home');
+            },
           },
-        },
-      ]);
+        ]
+      );
     } catch (error) {
       console.error('file upload failed', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Method for asking camera permission from the user
+  const getCameraPermission = async () => {
+    const {status} = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Sorry, we need camera permission');
+    }
+  };
+
+  // Method for opening the camera and taking the pictures.
+  const takePicture = async () => {
+    // No permissions request is necessary for launching the image library
+    try {
+      await getCameraPermission();
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.5,
+      });
+
+      console.log('Pick camera result', result);
+
+      if (!result.canceled) {
+        setMediaFile(result.assets[0]);
+      }
+    } catch (error) {
+      console.log('Error in taking picture', error);
     }
   };
 
@@ -112,7 +146,6 @@ const Upload = ({navigation}) => {
     } catch (error) {
       console.log('pickFile', error);
     }
-    // No permissions request is necessary for launching the image library
   };
 
   // Method for reseting the values.
@@ -129,157 +162,158 @@ const Upload = ({navigation}) => {
       };
     }, [])
   );
-
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginStart: 10,
-            }}
-          >
-            <Image
-              source={require('../assets/logo.png')}
-              style={{
-                width: 110,
-                height: 40,
-                marginBottom: 20,
-                marginTop: 30,
-                justifyContent: 'center',
-              }}
-            ></Image>
-          </View>
-          <ScrollView>
+          <View>
             <LinearGradient
               start={{x: 0, y: 0}}
               end={{x: 1, y: 1}}
               colors={['#C9FFBF', '#FFAFBD']}
+              style={{height: '100%'}}
             >
-              <Card.Divider />
-              <Card>
-                {mediaFile.type === 'video' ? (
-                  <Video
-                    ref={video}
-                    source={{uri: mediaFile.uri}}
-                    style={{width: '100%', height: 300}}
-                    resizeMode="contain"
-                    useNativeControls
-                    onError={(error) => {
-                      console.log(error);
-                    }}
-                  />
-                ) : (
-                  <Card.Image
-                    style={{width: '100%', height: 300}}
-                    source={{
-                      uri:
-                        mediaFile.uri ||
-                        'https://i0.wp.com/www.charitycomms.org.uk/wp-content/uploads/2019/02/placeholder-image-square.jpg?ssl=1',
-                    }}
-                    onPress={pickFile}
-                  />
-                )}
-
-                <Controller
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'Title is required',
-                    },
-                    minLength: {
-                      value: 3,
-                      message: 'Title Min length is 3 characters.',
-                    },
-                  }}
-                  render={({field: {onChange, onBlur, value}}) => (
-                    <Input
-                      inputContainerStyle={{
-                        borderWidth: 1,
-                        borderColor: 'green',
-                        borderRadius: 7,
-                        width: '100%',
-                        justifyContent: 'center',
-                        marginTop: 40,
-                      }}
-                      placeholder="Title"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      autoCapitalize="none"
-                      errorMessage={errors.title && errors.title.message}
-                    />
-                  )}
-                  name="title"
-                />
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 5,
-                      message: 'Description Min length is 5 characters.',
-                    },
-                  }}
-                  render={({field: {onChange, onBlur, value}}) => (
-                    <Input
-                      style={{
-                        paddingHorizontal: 5,
-                      }}
-                      containerStyle={{
-                        minHeight: 90,
-                      }}
-                      inputContainer={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                      }}
-                      inputContainerStyle={{
-                        borderWidth: 1,
-                        borderColor: 'green',
-                        borderRadius: 7,
-                        width: '100%',
-                        justifyContent: 'center',
-                        minHeight: 110,
-                      }}
-                      placeholder="Description"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      multiline={true}
-                      autoCapitalize="none"
-                      errorMessage={
-                        errors.description && errors.description.message
-                      }
-                    />
-                  )}
-                  name="description"
-                />
-
-                <View
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  backgroundColor: '#ffffff',
+                }}
+              >
+                <Image
+                  source={require('../assets/logo.png')}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    width: 110,
+                    height: 40,
+                    marginBottom: 20,
+                    marginTop: 30,
+                    marginLeft: 10,
+                    justifyContent: 'center',
                   }}
-                >
-                  <Button
-                    onPress={pickFile}
-                    title="Select file"
-                    buttonStyle={{
-                      backgroundColor: '#62BD69',
-                      borderColor: 'black',
-                      borderRadius: 5,
+                ></Image>
+              </View>
+              <ScrollView>
+                <Card.Divider />
+                <Card containerStyle={{marginTop: 0}}>
+                  {mediaFile.type === 'video' ? (
+                    <Video
+                      ref={video}
+                      source={{uri: mediaFile.uri}}
+                      style={{width: '100%', height: 250}}
+                      resizeMode="contain"
+                      useNativeControls
+                      onError={(error) => {
+                        console.log(error);
+                      }}
+                    />
+                  ) : (
+                    <Card.Image
+                      style={{width: '100%', height: 250}}
+                      source={{
+                        uri:
+                          mediaFile.uri || 'https://placekitten.com/g/200/300',
+                      }}
+                      onPress={pickFile}
+                    />
+                  )}
+
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: 'Title is required',
+                      },
+                      minLength: {
+                        value: 3,
+                        message: 'Title Min length is 3 characters.',
+                      },
                     }}
-                    type="outline"
-                    titleStyle={{color: 'black'}}
-                    containerStyle={{
-                      width: '48%',
-                    }}
+                    render={({field: {onChange, onBlur, value}}) => (
+                      <Input
+                        inputContainerStyle={{
+                          borderWidth: 1,
+                          borderColor: 'green',
+                          borderRadius: 7,
+                          width: '100%',
+                          justifyContent: 'center',
+                          marginTop: 20,
+                        }}
+                        placeholder="Title"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        autoCapitalize="none"
+                        errorMessage={errors.title && errors.title.message}
+                      />
+                    )}
+                    name="title"
                   />
+                  <Controller
+                    control={control}
+                    rules={{
+                      minLength: {
+                        value: 5,
+                        message: 'Description Min length is 5 characters.',
+                      },
+                    }}
+                    render={({field: {onChange, onBlur, value}}) => (
+                      <Input
+                        style={{
+                          paddingHorizontal: 5,
+                        }}
+                        containerStyle={{
+                          minHeight: 90,
+                        }}
+                        inputContainer={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                        }}
+                        inputContainerStyle={{
+                          borderWidth: 1,
+                          borderColor: 'green',
+                          borderRadius: 7,
+                          width: '100%',
+                          justifyContent: 'center',
+                          minHeight: 100,
+                        }}
+                        placeholder="Description"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        multiline={true}
+                        autoCapitalize="none"
+                        errorMessage={
+                          errors.description && errors.description.message
+                        }
+                      />
+                    )}
+                    name="description"
+                  />
+
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Icon
+                      name="photo-camera"
+                      onPress={takePicture}
+                      size={25}
+                      raised
+                    />
+                    <Icon
+                      name="collections"
+                      onPress={pickFile}
+                      size={25}
+                      raised
+                    />
+                  </View>
                   <Button
                     onPress={resetValues}
                     title="Reset"
@@ -291,26 +325,29 @@ const Upload = ({navigation}) => {
                     type="outline"
                     titleStyle={{color: 'black'}}
                     containerStyle={{
-                      width: '48%',
+                      width: '100%',
                     }}
                   />
-                </View>
-                <Card.Divider />
-                <Button
-                  style={{
-                    marginBottom: 100,
-                  }}
-                  loading={loading}
-                  disabled={
-                    !mediaFile.uri || errors.title || errors.description
-                  }
-                  title="Upload file"
-                  onPress={handleSubmit(uploadFile)}
-                />
-                {loading && <ActivityIndicator size="large" />}
-              </Card>
+                  <Card.Divider />
+                  <Button
+                    buttonStyle={{
+                      borderColor: 'black',
+                      borderRadius: 5,
+                    }}
+                    type="outline"
+                    titleStyle={{color: 'black'}}
+                    loading={loading}
+                    disabled={
+                      !mediaFile.uri || errors.title || errors.description
+                    }
+                    title="Upload file"
+                    onPress={handleSubmit(uploadFile)}
+                  />
+                  {loading && <ActivityIndicator size="large" />}
+                </Card>
+              </ScrollView>
             </LinearGradient>
-          </ScrollView>
+          </View>
         </KeyboardAvoidingView>
       </TouchableOpacity>
     </SafeAreaView>
@@ -320,7 +357,6 @@ const Upload = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     paddingTop: Platform.OS === 'android' ? 30 : 0,
   },
 });

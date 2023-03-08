@@ -1,6 +1,8 @@
 import {Text} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {TouchableOpacity} from 'react-native';
+
+// This component display the name of the latest user who liked the post and no other users who also like the post.
 const LikedBy = ({navigation, likes, lastLike}) => {
   if (likes.length === 0) {
     return (

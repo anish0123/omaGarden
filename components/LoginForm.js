@@ -2,11 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button, Input} from '@rneui/themed';
 import React, {useContext, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Dimensions, View} from 'react-native';
+import {Alert, Dimensions, View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useAuthentication} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 
+// This component is used to log in users.
 const LoginForm = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useAuthentication();
@@ -32,8 +33,17 @@ const LoginForm = ({navigation}) => {
       setUser(loginResult.user);
       setIsLoggedIn(true);
     } catch (error) {
-      console.error('logIn', error);
-      // TODO: notify user about failed login attempt
+      Alert.alert(
+        'Incorrect username or password',
+        'Please try with correct credentials',
+        [
+          {
+            text: 'Ok',
+          },
+        ]
+      );
+    } finally {
+      setLoading(false);
     }
   };
   return (

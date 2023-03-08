@@ -14,13 +14,13 @@ const Comment = ({file}) => {
   const getComments = async () => {
     try {
       const comments = await getCommentsByFileId(file.file_id);
-      console.log(comments);
       setComments(comments);
     } catch (error) {
       throw new Error('get comments error', error.message);
     }
   };
 
+  // Use effect for updating comment, when comment state changes.
   useEffect(() => {
     getComments();
   }, [updateComment]);
