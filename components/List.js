@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 // This component is used to handle the list of media files in home view.
 const List = ({navigation, myFilesOnly = false}) => {
-  // Media Array provides all the posts from the api and is printed in flatlist
+  // Media Array provides all the posts from the api and is printed in flatlist.
   const {mediaArray} = useMedia(myFilesOnly);
   return (
     <FlatList
@@ -17,8 +17,10 @@ const List = ({navigation, myFilesOnly = false}) => {
     />
   );
 };
+
 List.propTypes = {
   navigation: PropTypes.object,
   myFilesOnly: PropTypes.bool,
 };
+
 export default List;

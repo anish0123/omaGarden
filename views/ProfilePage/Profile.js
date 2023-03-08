@@ -1,15 +1,15 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-unused-vars */
 import {Button, Card, Icon, Image, ListItem, Text} from '@rneui/base';
-import {useCallback, useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {useFavourite, useMedia, useTag} from '../../hooks/ApiHooks';
 import {uploadsUrl} from '../../utils/variables';
 import PropTypes from 'prop-types';
 import {
   Dimensions,
-  FlatList,
   Modal,
   Platform,
+  Pressable,
   SafeAreaView,
   TouchableOpacity,
   View,
@@ -18,17 +18,19 @@ import {MainContext} from '../../contexts/MainContext';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LinearGradient} from 'expo-linear-gradient';
+import UsersMedia from '../../components/UsersMedia';
 
+// This view displays the user details of the current logged in user.
 const Profile = ({navigation, myFilesOnly = true}) => {
-  getLikes;
   const {mediaArray} = useMedia(myFilesOnly);
   const {getFilesByTag} = useTag();
-  const {setIsLoggedIn, user, setUser} = useContext(MainContext);
+  const {setIsLoggedIn, user} = useContext(MainContext);
   const {getFavouritesByFileId} = useFavourite();
   const [avatar, setAvatar] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
+  const [likeClicked, setLikeClicked] = useState(false);
   const {update, setUpdate, updateLike} = useContext(MainContext);
   const [likes, totalLikes] = useState(0);
 
@@ -44,10 +46,12 @@ const Profile = ({navigation, myFilesOnly = true}) => {
     }
   };
 
+  // Method for navigating user to change profile picture page
   const uploadProfile = async () => {
     navigation.navigate('ProfilePictureUpload');
   };
 
+  // Method for getting total likes that user has gotten in all his posts.
   const getLikes = async () => {
     let noOfLikes = 0;
     try {
@@ -61,6 +65,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
     totalLikes(noOfLikes);
   };
 
+  // Method for displaying the display avatar of the user.
   const showPictures = async () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
@@ -70,14 +75,20 @@ const Profile = ({navigation, myFilesOnly = true}) => {
     }
   };
 
-  useEffect(() => {
-    getLikes();
-    loadAvatar();
-  }, [update, updateLike]);
+  // Method for logging out the logged in user.
+  const logout = async () => {
+    try {
+      await AsyncStorage.clear();
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error('clearing asyncstorage failed ', error);
+    }
+  };
 
   useEffect(() => {
     getLikes();
-  }, [mediaArray]);
+    loadAvatar();
+  }, [update, updateLike, mediaArray]);
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 35 : 0}}>
@@ -101,8 +112,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             style={{
               width: 110,
               height: 40,
-              marginBottom: 20,
-              marginTop: 30,
+              marginBottom: 15,
+              marginTop: 15,
               justifyContent: 'center',
             }}
           ></Image>
@@ -166,7 +177,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                 borderWidth: 1,
                 borderRadius: 20,
                 margin: 5,
-                padding: 10,
               }}
               type="outline"
               titleStyle={{color: 'black', fontSize: 18}}
@@ -185,7 +195,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             <Card
               containerStyle={{
                 width: '100%',
-                height: 80,
+                height: 75,
                 backgroundColor: 'white',
               }}
             >
@@ -217,9 +227,18 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                   </Text>
                 </View>
                 <View
-                  style={{height: '100%', backgroundColor: 'black', width: 1.5}}
+                  style={{
+                    height: '100%',
+                    backgroundColor: 'black',
+                    width: 1.5,
+                  }}
                 ></View>
-                <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setLikeClicked(true);
+                    setShowModal(true);
+                  }}
+                >
                   <Text
                     style={{
                       fontWeight: 'bold',
@@ -237,7 +256,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                   >
                     {likes}
                   </Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </Card>
           </View>
@@ -245,7 +264,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         <View
           style={{
             position: 'absolute',
-            top: 185,
+            top: 155,
             marginHorizontal: Dimensions.get('screen').width / 2 - 65,
             elevation: 8,
             backgroundColor: 'white',
@@ -259,6 +278,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
               setShowModal(false);
               setEditClicked(false);
               setSettingClicked(false);
+              setLikeClicked(false);
               console.log('Model closed Edit ' + editClicked);
             }}
           >
@@ -267,27 +287,102 @@ const Profile = ({navigation, myFilesOnly = true}) => {
               transparent={true}
               visible={showModal}
               onRequestClose={() => {
+                setShowModal(false);
+                setEditClicked(false);
+                setSettingClicked(false);
+                setLikeClicked(false);
                 console.log('Modal has been closed.');
               }}
             >
               <TouchableOpacity
                 style={{
-                  height: '50%',
-                  marginTop: 'auto',
-                  backgroundColor: '#3E3C3C',
-                  borderTopRightRadius: 30,
-                  borderTopLeftRadius: 30,
+                  height: '100%',
                 }}
                 activeOpacity={1}
                 onPressOut={() => {
                   setShowModal(false);
                   setEditClicked(false);
                   setSettingClicked(false);
+                  setLikeClicked(false);
                   console.log('Model closed edit touch ' + editClicked);
                 }}
               >
+                {likeClicked && (
+                  <View
+                    style={{
+                      borderRadius: 20,
+                      backgroundColor: 'white',
+                      width: '80%',
+                      marginHorizontal: '10%',
+                      marginTop: '55%',
+                      alignItems: 'center',
+                      shadowOpacity: 0.25,
+                      elevation: 5,
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Icon
+                        raised
+                        name="heartbeat"
+                        type="font-awesome"
+                        color="#f50"
+                      />
+                      <Text
+                        style={{
+                          padding: 20,
+                          color: 'black',
+                          fontSize: 20,
+                          textAlign: 'center',
+                        }}
+                      >
+                        {user.userName ||
+                          user.full_name +
+                            ` has total of ` +
+                            likes +
+                            ` likes across all posts.`}
+                      </Text>
+                      <Pressable
+                        onPress={() => {
+                          setShowModal(false);
+                          setLikeClicked(false);
+                        }}
+                        style={({pressed}) => [
+                          {
+                            backgroundColor: pressed ? '#EFEDED' : 'white',
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            padding: 10,
+                          }}
+                        >
+                          Ok
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                )}
                 {editClicked && (
-                  <View>
+                  <View
+                    style={{
+                      backgroundColor: 'black',
+                      height: '50%',
+                      marginTop: 'auto',
+                      borderTopRightRadius: 30,
+                      borderTopLeftRadius: 30,
+                    }}
+                  >
                     <View
                       style={{
                         width: Dimensions.get('screen').width / 3,
@@ -378,7 +473,15 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                 )}
 
                 {settingClicked && (
-                  <View>
+                  <View
+                    style={{
+                      backgroundColor: 'black',
+                      height: '50%',
+                      marginTop: 'auto',
+                      borderTopRightRadius: 30,
+                      borderTopLeftRadius: 30,
+                    }}
+                  >
                     <View
                       style={{
                         width: Dimensions.get('screen').width / 3,
@@ -403,16 +506,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                           marginLeft: 15,
                         }}
                         onPress={() => {
-                          setIsLoggedIn(false);
                           setShowModal(false);
-                          try {
-                            AsyncStorage.clear();
-                          } catch (error) {
-                            console.error(
-                              'clearing asyncstorage failed ',
-                              error
-                            );
-                          }
+                          logout();
                         }}
                       >
                         Logout
@@ -432,7 +527,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                           fontSize: 20,
                           marginLeft: 15,
                         }}
-                        onPress={() => showPictures()}
                       >
                         Help Center
                       </Text>
@@ -458,51 +552,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
           />
         </View>
       </Card>
-
-      {mediaArray.length !== 0 ? (
-        <FlatList
-          data={mediaArray}
-          renderItem={({item}) => (
-            <View>
-              {item.media_type === 'image' ? (
-                <Image
-                  onPress={() => navigation.navigate('Single', [item, user])}
-                  source={{uri: uploadsUrl + item.filename}}
-                  style={{
-                    margin: 2,
-                    width: Dimensions.get('screen').width / 3,
-                    height: Dimensions.get('screen').width / 3,
-                  }}
-                />
-              ) : (
-                <Image
-                  onPress={() => navigation.navigate('Single', [item, user])}
-                  source={{uri: uploadsUrl + item.screenshot}}
-                  style={{
-                    margin: 2,
-                    width: Dimensions.get('screen').width / 3,
-                    height: Dimensions.get('screen').width / 3,
-                  }}
-                />
-              )}
-            </View>
-          )}
-          numColumns={3}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      ) : (
-        <Text
-          style={{
-            fontSize: 25,
-            textAlignVertical: 'center',
-            textAlign: 'center',
-            justifyContent: 'center',
-            marginVertical: 110,
-          }}
-        >
-          No posts yet
-        </Text>
-      )}
+      <UsersMedia navigation={navigation} mediaFile={mediaArray} owner={user} />
     </SafeAreaView>
   );
 };

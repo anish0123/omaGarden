@@ -40,6 +40,7 @@ const useMedia = (myFilesOnly) => {
     }
   };
 
+  // Method for loading all the media/post uploaded by the user.
   const loadAllMedia = async (id) => {
     try {
       let json = await useTag().getFilesByTag(appId);
@@ -77,6 +78,7 @@ const useMedia = (myFilesOnly) => {
     }
   };
 
+  // Method for editing a media/post in the api
   const putMedia = async (id, data, token) => {
     const options = {
       method: 'put',
@@ -87,7 +89,6 @@ const useMedia = (myFilesOnly) => {
       body: JSON.stringify(data),
     };
     try {
-      // TODO: use fetch to send request to media endpoint and return the result as json, handle errors with try/catch and response.ok
       const uploadResult = await doFetch(baseUrl + 'media/' + id, options);
       return uploadResult;
     } catch (error) {
@@ -96,6 +97,7 @@ const useMedia = (myFilesOnly) => {
     }
   };
 
+  // Method for deleting media/post from the api.
   const deleteMedia = async (id, token) => {
     try {
       return await doFetch(baseUrl + 'media/' + id, {
@@ -197,6 +199,7 @@ const useUser = () => {
     }
   };
 
+  // Method for getting list of all the users resgistered in the api.
   const getAllUsers = async (token) => {
     try {
       const result = await doFetch(baseUrl + 'users', {
@@ -265,7 +268,6 @@ const useUser = () => {
 const useFavourite = () => {
   // Method for adding a favourite post for the users.
   const postFavourite = async (fileId, token) => {
-    console.log('posting favourite', fileId);
     const options = {
       method: 'post',
       headers: {
@@ -277,17 +279,12 @@ const useFavourite = () => {
     console.log(options);
     try {
       // TODO: use fetch to send request to media endpoint and return the result as json, handle errors with try/catch and response.ok
-      console.log('trying to post ');
       const tagResult = await doFetch(baseUrl + 'favourites', options);
-      console.log(tagResult);
       return tagResult;
     } catch (error) {
       throw new Error('postFavourite: ' + error.message);
     }
   };
-
-  // Method for getting favourites posts of the users
-  const getFavouritesByUser = async (token) => {};
 
   // Method for getting all the favourites according to the file ID.
   const getFavouritesByFileId = async (fileId, token) => {
@@ -315,7 +312,6 @@ const useFavourite = () => {
 
   return {
     postFavourite,
-    getFavouritesByUser,
     getFavouritesByFileId,
     deleteFavourite,
   };

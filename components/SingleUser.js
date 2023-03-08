@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import {LinearGradient} from 'expo-linear-gradient';
 
+// This component is used to display user details in flatlist in search page.
 const SingleUser = ({singleUser, navigation}) => {
   const clickedUser = singleUser.item;
   const [avatar, setAvatar] = useState('');
@@ -24,6 +25,7 @@ const SingleUser = ({singleUser, navigation}) => {
       console.log('load Avatar', error);
     }
   };
+
   useEffect(() => {
     loadAvatar();
   }, [clickedUser]);
@@ -68,6 +70,8 @@ const SingleUser = ({singleUser, navigation}) => {
 
 SingleUser.propTypes = {
   singleUser: PropTypes.object,
+  navigation: PropTypes.object,
+  route: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
@@ -80,10 +84,5 @@ const styles = StyleSheet.create({
     padding: 0,
   },
 });
-
-SingleUser.propTypes = {
-  navigation: PropTypes.object,
-  route: PropTypes.object,
-};
 
 export default SingleUser;

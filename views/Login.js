@@ -7,7 +7,9 @@ import {Image, Text} from '@rneui/base';
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useContext, useEffect, useState} from 'react';
+import {LinearGradient} from 'expo-linear-gradient';
 
+// This view is used to log in registered user and register new users.
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserById} = useUser();
@@ -23,50 +25,63 @@ const Login = ({navigation}) => {
       console.error('checkId', error);
     }
   };
+
   useEffect(() => {
     checkId();
   }, []);
+
   return (
-    <View
-      style={{
-        alignItems: 'center',
-      }}
+    <LinearGradient
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
+      colors={['#FFEEEE', '#DDEFBB']}
+      style={{width: '100%', height: '100%'}}
     >
-      <Image
-        source={require('../assets/logo.png')}
+      <View
         style={{
-          width: 110,
-          height: 40,
-          marginBottom: 20,
-          marginTop: 80,
-          justifyContent: 'center',
+          alignItems: 'center',
         }}
-      ></Image>
-      <ScrollView>
-        <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-          {toggleForm ? <LoginForm /> : <RegisterForm />}
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 5,
-            }}
+      >
+        <Image
+          source={require('../assets/logo.png')}
+          style={{
+            width: 110,
+            height: 40,
+            marginBottom: 20,
+            marginTop: 80,
+            justifyContent: 'center',
+          }}
+        ></Image>
+
+        <ScrollView>
+          <TouchableOpacity
+            onPress={() => Keyboard.dismiss()}
+            activeOpacity={1}
           >
-            <Text style={{fontSize: 20, marginBottom: 30}}>
-              {toggleForm
-                ? "Don't have Account? Please "
-                : 'You have an account? Please '}
-            </Text>
-            <Text
-              style={{color: 'green', fontSize: 20}}
-              onPress={() => setToggleForm(!toggleForm)}
+            {toggleForm ? <LoginForm /> : <RegisterForm />}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: 5,
+              }}
             >
-              {toggleForm ? 'register' : 'log in'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+              <Text style={{fontSize: 20, marginBottom: 30}}>
+                {toggleForm
+                  ? "Don't have Account? Please "
+                  : 'You have an account? Please '}
+              </Text>
+              <Text
+                style={{color: 'green', fontSize: 20}}
+                onPress={() => setToggleForm(!toggleForm)}
+              >
+                {toggleForm ? 'register' : 'log in'}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    </LinearGradient>
   );
 };
 

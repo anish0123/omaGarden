@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
+// This a main context for the app.
 const MainContext = React.createContext({});
 
 const MainProvider = (props) => {

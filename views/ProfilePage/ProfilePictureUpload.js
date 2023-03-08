@@ -10,6 +10,7 @@ import {Video} from 'expo-av';
 import {MainContext} from '../../contexts/MainContext';
 import {useFocusEffect} from '@react-navigation/native';
 
+// This component is used for uploading the new avatar for the user.
 const ProfilePictureUpload = ({navigation}) => {
   const {postMedia} = useMedia();
   const [mediaFile, setMediaFile] = useState({});
@@ -21,6 +22,7 @@ const ProfilePictureUpload = ({navigation}) => {
     mode: 'onChange',
   });
 
+  // Method for uploading the new avatar of the user.
   const uploadFile = async (data) => {
     setLoading(true);
     const formData = new FormData();
@@ -68,6 +70,7 @@ const ProfilePictureUpload = ({navigation}) => {
     console.log('Upload a file');
   };
 
+  // Method for picking up new avatar from the gallery.
   const pickFile = async () => {
     try {
       // No permissions request is necessary for launching the image library
