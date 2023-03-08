@@ -31,7 +31,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   const [editClicked, setEditClicked] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
-  const {update, setUpdate, updateLike} = useContext(MainContext);
+  const {updateLike} = useContext(MainContext);
   const [likes, totalLikes] = useState(0);
 
   // Loading the avatar of the owner of the post
@@ -88,7 +88,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   useEffect(() => {
     getLikes();
     loadAvatar();
-  }, [update, updateLike, mediaArray]);
+  }, [updateLike, mediaArray]);
 
   return (
     <SafeAreaView style={{paddingTop: Platform.OS === 'android' ? 35 : 0}}>
@@ -264,8 +264,8 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         <View
           style={{
             position: 'absolute',
-            top: 155,
-            marginHorizontal: Dimensions.get('screen').width / 2 - 65,
+            top: 156,
+            marginHorizontal: Dimensions.get('screen').width / 2 - 70,
             elevation: 8,
             backgroundColor: 'white',
             borderColor: 'black',
@@ -279,7 +279,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
               setEditClicked(false);
               setSettingClicked(false);
               setLikeClicked(false);
-              console.log('Model closed Edit ' + editClicked);
             }}
           >
             <Modal
@@ -291,7 +290,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                 setEditClicked(false);
                 setSettingClicked(false);
                 setLikeClicked(false);
-                console.log('Modal has been closed.');
               }}
             >
               <TouchableOpacity
@@ -304,7 +302,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                   setEditClicked(false);
                   setSettingClicked(false);
                   setLikeClicked(false);
-                  console.log('Model closed edit touch ' + editClicked);
                 }}
               >
                 {likeClicked && (
@@ -417,56 +414,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                         }}
                       >
                         Add Profile Picture
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        padding: 15,
-                      }}
-                    >
-                      <Icon
-                        name="images-outline"
-                        type="ionicon"
-                        color="white"
-                      />
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 20,
-                          marginLeft: 15,
-                        }}
-                        onPress={() => {
-                          showPictures();
-                          setShowModal(false);
-                          setEditClicked(false);
-                        }}
-                      >
-                        Select Existing Pictures
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        padding: 15,
-                      }}
-                    >
-                      <Icon name="person" type="ionicon" color="white" />
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 20,
-                          marginLeft: 15,
-                        }}
-                        onPress={() => {
-                          showPictures();
-                          setShowModal(false);
-                          setEditClicked(false);
-                        }}
-                      >
-                        View profile Picture
                       </Text>
                     </View>
                   </View>
