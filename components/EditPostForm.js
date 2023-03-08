@@ -28,7 +28,7 @@ const EditPostForm = ({item, owner, navigation}) => {
   const [loading, setLoading] = useState(false);
   const {update, setUpdate} = useContext(MainContext);
   const {putMedia, deleteMedia} = useMedia();
-  console.log(item.title);
+  console.log('edit post form', item.title);
   const {
     control,
     handleSubmit,

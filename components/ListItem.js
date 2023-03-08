@@ -39,7 +39,7 @@ const ListItem = ({singleMedia, navigation}) => {
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
     try {
-      const avatarArray = await getFilesByTag('avatar_' + owner.user_id);
+      const avatarArray = await getFilesByTag('avatar_' + item.user_id);
       if (avatarArray.length > 0) {
         setAvatar(avatarArray.pop().filename);
       }
@@ -81,121 +81,118 @@ const ListItem = ({singleMedia, navigation}) => {
    incase the state of likes and comments changes.*/
   useEffect(() => {
     getOwner();
-    getLikes();
-    getComments();
+    loadAvatar();
   }, [item]);
 
   useEffect(() => {
-    loadAvatar();
-  }, [owner]);
-
-  useEffect(() => {
     getComments();
-  }, [updateComment]);
+  }, [updateComment, item]);
 
   useEffect(() => {
     getLikes();
-  }, [updateLike]);
+  }, [updateLike, item]);
 
   return (
     <View styles={styles.main}>
-      <Card styles={styles.post}>
-        <RNEListItem
-          containerStyle={styles.avatar}
-          onPress={() => {
-            owner.user_id !== user.user_id
-              ? navigation.navigate('OtherUserProfile', owner)
-              : navigation.navigate('Profile', owner);
-          }}
-        >
-          {avatar ? (
-            <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
-          ) : (
-            <Avatar
-              source={require('../assets/avatar.png')}
-              size={40}
-              rounded
-            />
-          )}
+      {owner.username && (
+        <Card styles={styles.post}>
+          <RNEListItem
+            containerStyle={styles.avatar}
+            onPress={() => {
+              owner.user_id !== user.user_id
+                ? navigation.navigate('OtherUserProfile', owner)
+                : navigation.navigate('Profile', owner);
+            }}
+          >
+            {avatar ? (
+              <Avatar source={{uri: uploadsUrl + avatar}} size={40} rounded />
+            ) : (
+              <Avatar
+                source={require('../assets/avatar.png')}
+                size={40}
+                rounded
+              />
+            )}
 
-          <RNEListItem.Content>
-            <RNEListItem.Title
+            <RNEListItem.Content>
+              <RNEListItem.Title
+                onPress={() => {
+                  user.user_id === owner.user_id
+                    ? navigation.navigate('Profile', owner)
+                    : navigation.navigate('OtherUserProfile', owner);
+                }}
+              >
+                {' '}
+                {owner.username}
+              </RNEListItem.Title>
+            </RNEListItem.Content>
+          </RNEListItem>
+          <Card.Divider color="#ffff" />
+          {item.media_type === 'image' ? (
+            <TouchableOpacity
               onPress={() => {
-                user.user_id === owner.user_id
-                  ? navigation.navigate('Profile', owner)
-                  : navigation.navigate('OtherUserProfile', owner);
+                navigation.navigate('Single', [item, owner]);
               }}
             >
-              {' '}
-              {owner.username}
-            </RNEListItem.Title>
-          </RNEListItem.Content>
-        </RNEListItem>
-        <Card.Divider color="#ffff" />
-        {item.media_type === 'image' ? (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Single', [item, owner]);
-            }}
-          >
-            <Image
-              source={{uri: uploadsUrl + item.thumbnails?.w640}}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-        ) : (
-          <Video
-            ref={video}
-            source={{uri: uploadsUrl + item.filename}}
-            style={{width: '100%', height: 500}}
-            resizeMode="cover"
-            useNativeControls
-            onError={(error) => {
-              console.log(error);
-            }}
-            isLooping
-          />
-        )}
-
-        <RNEListItem containerStyle={styles.iconList}>
-          <Like file={item} />
-          <Icon
-            name="comment"
-            onPress={() => {
-              navigation.navigate('Single', [item, owner]);
-            }}
-            style={{marginTop: 0}}
-          />
-          <Text
-            style={{
-              fontSize: 20,
-            }}
-          >
-            {comments.length}
-          </Text>
-
-          {item.user_id === user.user_id && (
-            <Icon
-              name="edit"
-              onPress={() => {
-                navigation.navigate('EditPost', [item, owner]);
+              <Image
+                source={{uri: uploadsUrl + item.thumbnails?.w640}}
+                style={styles.image}
+              />
+            </TouchableOpacity>
+          ) : (
+            <Video
+              ref={video}
+              source={{uri: uploadsUrl + item.filename}}
+              style={{width: '100%', height: 500}}
+              resizeMode="cover"
+              useNativeControls
+              onError={(error) => {
+                console.log(error);
               }}
+              isLooping
             />
           )}
-        </RNEListItem>
-        <LikedBy navigation={navigation} likes={likes} lastLike={lastLike} />
 
-        <Card.Divider style={{marginBottom: 0}} />
-        <RNEListItem>
-          <RNEListItem.Content>
-            <RNEListItem.Title style={{fontSize: 20, fontWeight: '500'}}>
-              {item.title}
-            </RNEListItem.Title>
-            <Card.Divider width={1} />
-            <RNEListItem.Subtitle>{item.description}</RNEListItem.Subtitle>
-          </RNEListItem.Content>
-        </RNEListItem>
-      </Card>
+          <RNEListItem containerStyle={styles.iconList}>
+            <Like file={item} />
+            <Icon
+              name="comment"
+              onPress={() => {
+                navigation.navigate('Single', [item, owner]);
+              }}
+              style={{marginTop: 0}}
+            />
+            <Text
+              style={{
+                fontSize: 20,
+              }}
+            >
+              {comments.length}
+            </Text>
+
+            {item.user_id === user.user_id && (
+              <Icon
+                name="edit"
+                onPress={() => {
+                  navigation.navigate('EditPost', [item, owner]);
+                }}
+              />
+            )}
+          </RNEListItem>
+          <LikedBy navigation={navigation} likes={likes} lastLike={lastLike} />
+
+          <Card.Divider style={{marginBottom: 0}} />
+          <RNEListItem>
+            <RNEListItem.Content>
+              <RNEListItem.Title style={{fontSize: 20, fontWeight: '500'}}>
+                {item.title}
+              </RNEListItem.Title>
+              <Card.Divider width={1} />
+              <RNEListItem.Subtitle>{item.description}</RNEListItem.Subtitle>
+            </RNEListItem.Content>
+          </RNEListItem>
+        </Card>
+      )}
     </View>
   );
 };
