@@ -70,7 +70,7 @@ const UsersMedia = ({navigation, mediaFile, owner}) => {
         <View
           style={{
             width: Dimensions.get('screen').width,
-            height: Dimensions.get('screen').height - 570,
+            height: Dimensions.get('screen').height - 600,
           }}
         >
           <Images />
@@ -79,7 +79,7 @@ const UsersMedia = ({navigation, mediaFile, owner}) => {
         <View
           style={{
             width: Dimensions.get('screen').width,
-            height: Dimensions.get('screen').height - 520,
+            height: Dimensions.get('screen').height - 570,
           }}
         >
           <Images />

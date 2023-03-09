@@ -317,6 +317,52 @@ const useFavourite = () => {
   };
 };
 
+const useRating = () => {
+  const postRating = async (fileId, ratingVal, token) => {
+    const options = {
+      method: 'post',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({file_id: fileId, rating: ratingVal}),
+    };
+    try {
+      const ratingResult = await doFetch(baseUrl + 'ratings', options);
+      return ratingResult;
+    } catch (error) {
+      throw new Error('Post rating error, ' + error.message);
+    }
+  };
+
+  const getRatingByFileId = async (fileId) => {
+    try {
+      return await doFetch(baseUrl + 'ratings/file/' + fileId);
+    } catch (error) {
+      throw new Error('getRatingsByFileId error, ' + error.message);
+    }
+  };
+
+  const deleteRating = async (fileId, token) => {
+    const options = {
+      method: 'delete',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      const deleteResult = await doFetch(
+        baseUrl + 'ratings/file/' + fileId,
+        options
+      );
+      return deleteResult;
+    } catch (error) {
+      throw new Error('delete rating error, ' + error.message);
+    }
+  };
+  return {postRating, getRatingByFileId, deleteRating};
+};
+
 // Method for comments.
 const useComment = () => {
   // Method for getting comments according to the file id
@@ -380,4 +426,12 @@ const useComment = () => {
   return {getCommentsByFileId, getAllComments, postComment, deleteComment};
 };
 
-export {useMedia, useTag, useUser, useAuthentication, useFavourite, useComment};
+export {
+  useMedia,
+  useTag,
+  useUser,
+  useAuthentication,
+  useFavourite,
+  useComment,
+  useRating,
+};
