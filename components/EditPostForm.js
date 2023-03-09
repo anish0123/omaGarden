@@ -6,10 +6,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {
   ActivityIndicator,
   Alert,
-  Keyboard,
-  ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
   Dimensions,
 } from 'react-native';
@@ -28,7 +25,6 @@ const EditPostForm = ({item, owner, navigation}) => {
   const [loading, setLoading] = useState(false);
   const {update, setUpdate} = useContext(MainContext);
   const {putMedia, deleteMedia} = useMedia();
-  console.log('edit post form', item.title);
   const {
     control,
     handleSubmit,
@@ -100,131 +96,127 @@ const EditPostForm = ({item, owner, navigation}) => {
     reset();
   };
   return (
-    <ScrollView>
-      <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-        <Card containerStyle={{margin: 0}}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Icon
-              raised
-              name="refresh-outline"
-              type="ionicon"
-              onPress={resetValues}
-            />
-            <Icon
-              raised
-              name="trash-outline"
-              type="ionicon"
-              color="red"
-              onPress={mediaDelete}
-            />
-          </View>
-          {item.media_type === 'image' ? (
-            <Image
-              source={{uri: uploadsUrl + item.thumbnails?.w640}}
-              style={styles.image}
-            />
-          ) : (
-            <Video
-              ref={video}
-              source={{uri: uploadsUrl + item.filename}}
-              style={{width: '100%', height: 500}}
-              resizeMode="cover"
-              useNativeControls
-              onError={(error) => {
-                console.log(error);
-              }}
-              isLooping
-            />
-          )}
+    <Card containerStyle={{margin: 0}}>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Icon
+          raised
+          name="refresh-outline"
+          type="ionicon"
+          onPress={resetValues}
+        />
+        <Icon
+          raised
+          name="trash-outline"
+          type="ionicon"
+          color="red"
+          onPress={mediaDelete}
+        />
+      </View>
+      {item.media_type === 'image' ? (
+        <Image
+          source={{uri: uploadsUrl + item.thumbnails?.w640}}
+          style={styles.image}
+        />
+      ) : (
+        <Video
+          ref={video}
+          source={{uri: uploadsUrl + item.filename}}
+          style={{width: '100%', height: 500}}
+          resizeMode="cover"
+          useNativeControls
+          onError={(error) => {
+            console.log(error);
+          }}
+          isLooping
+        />
+      )}
 
-          <Controller
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: 'Title is required',
-              },
-              minLength: {
-                value: 3,
-                message: 'Title Min length is 3 characters.',
-              },
+      <Controller
+        control={control}
+        rules={{
+          required: {
+            value: true,
+            message: 'Title is required',
+          },
+          minLength: {
+            value: 3,
+            message: 'Title Min length is 3 characters.',
+          },
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <Input
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 7,
+              width: '100%',
+              justifyContent: 'center',
+              marginTop: 20,
+              padding: 5,
             }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                inputContainerStyle={{
-                  borderWidth: 1,
-                  borderColor: 'green',
-                  borderRadius: 7,
-                  width: '100%',
-                  justifyContent: 'center',
-                  marginTop: 20,
-                  padding: 5,
-                }}
-                placeholder="Title"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                errorMessage={errors.title && errors.title.message}
-              />
-            )}
-            name="title"
+            placeholder="Title"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            autoCapitalize="none"
+            errorMessage={errors.title && errors.title.message}
           />
-          <Controller
-            control={control}
-            rules={{
-              minLength: {
-                value: 5,
-                message: 'Description Min length is 5 characters.',
-              },
+        )}
+        name="title"
+      />
+      <Controller
+        control={control}
+        rules={{
+          minLength: {
+            value: 5,
+            message: 'Description Min length is 5 characters.',
+          },
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <Input
+            multiline
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              borderRadius: 7,
+              width: '100%',
+              justifyContent: 'center',
+              padding: 5,
             }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                multiline
-                inputContainerStyle={{
-                  borderWidth: 1,
-                  borderColor: 'green',
-                  borderRadius: 7,
-                  width: '100%',
-                  justifyContent: 'center',
-                  padding: 5,
-                }}
-                placeholder="Description"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                errorMessage={errors.description && errors.description.message}
-              />
-            )}
-            name="description"
+            placeholder="Description"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            autoCapitalize="none"
+            errorMessage={errors.description && errors.description.message}
           />
-          <Button
-            onPress={handleSubmit(editPost)}
-            title="Save Changes"
-            disabled={errors.title || errors.description}
-            buttonStyle={{
-              backgroundColor: '#62BD69',
-              borderColor: 'black',
-              borderRadius: 20,
-            }}
-            type="outline"
-            titleStyle={{color: 'black'}}
-            containerStyle={{
-              width: Dimensions.get('screen').width / 3,
-              marginHorizontal: Dimensions.get('screen').width / 4,
-            }}
-          />
-          {loading && <ActivityIndicator size="large" />}
-        </Card>
-      </TouchableOpacity>
-    </ScrollView>
+        )}
+        name="description"
+      />
+      <Button
+        onPress={handleSubmit(editPost)}
+        title="Save Changes"
+        disabled={errors.title || errors.description}
+        buttonStyle={{
+          backgroundColor: '#62BD69',
+          borderColor: 'black',
+          borderRadius: 20,
+        }}
+        type="outline"
+        titleStyle={{color: 'black'}}
+        containerStyle={{
+          width: Dimensions.get('screen').width / 3,
+          marginHorizontal: Dimensions.get('screen').width / 4,
+        }}
+      />
+      {loading && <ActivityIndicator size="large" />}
+    </Card>
   );
 };
 
