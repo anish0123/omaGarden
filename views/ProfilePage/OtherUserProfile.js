@@ -219,11 +219,8 @@ const OtherUserProfile = ({navigation, route}) => {
     getOwner();
     loadAvatar();
     getProfileRating();
-  }, [avatar, updateLike, update]);
-
-  useEffect(() => {
     allMediaFiles();
-  }, [owner.user_id]);
+  }, [avatar, update, owner.user_id, updateLike]);
 
   return (
     <SafeAreaView>
