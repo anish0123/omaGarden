@@ -5,10 +5,8 @@ import {useContext, useEffect, useState} from 'react';
 import {useFavourite, useMedia, useRating, useTag} from '../../hooks/ApiHooks';
 import {uploadsUrl} from '../../utils/variables';
 import PropTypes from 'prop-types';
-import {MaterialIcons} from '@expo/vector-icons';
 import Stars from 'react-native-stars';
 import {
-  Alert,
   Dimensions,
   Modal,
   Platform,
@@ -92,7 +90,7 @@ const Profile = ({navigation, myFilesOnly = true}) => {
         let ratingNum = totalRating / reviewCount;
         const ratingNumCeiling = Math.ceil(ratingNum);
         if (ratingNumCeiling - ratingNum < 0.5) {
-          ratingNum = ratingNumCeiling;
+          ratingNum = Math.ceil(ratingNum);
         } else {
           ratingNum = Math.floor(ratingNum) + 0.5;
         }
@@ -210,6 +208,9 @@ const Profile = ({navigation, myFilesOnly = true}) => {
                 starSize={20}
                 disabled={true}
                 fullStar={<Icon name={'star'} style={[styles.myStarStyle]} />}
+                halfStar={
+                  <Icon name={'star-half'} style={[styles.myStarStyle]} />
+                }
                 emptyStar={
                   <Icon
                     name={'star-outline'}
