@@ -16,7 +16,7 @@ import Comment from '../components/Comment';
 const Single = ({route, navigation}) => {
   const file = route.params[0];
   const owner = route.params[1];
-
+  console.log(file);
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
