@@ -76,7 +76,7 @@ const RegisterForm = ({navigation}) => {
       <Text
         h2
         h2Style={{
-          fontWeight: '300',
+          fontSize: 30,
           flexDirection: 'row',
           justifyContent: 'center',
         }}
@@ -88,7 +88,7 @@ const RegisterForm = ({navigation}) => {
           marginTop: 30,
           marginBottom: 30,
           flexDirection: 'column',
-          justifyContent: 'centre',
+          justifyContent: 'center',
         }}
       >
         <Controller
@@ -111,7 +111,7 @@ const RegisterForm = ({navigation}) => {
                 borderColor: 'green',
                 borderRadius: 7,
                 width: '80%',
-                justifyContent: 'centre',
+                justifyContent: 'center',
               }}
               placeholder="Username"
               onBlur={onBlur}
