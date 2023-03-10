@@ -5,10 +5,8 @@ import {useContext, useEffect, useState} from 'react';
 import {useFavourite, useMedia, useRating, useTag} from '../../hooks/ApiHooks';
 import {uploadsUrl} from '../../utils/variables';
 import PropTypes from 'prop-types';
-import {MaterialIcons} from '@expo/vector-icons';
 import Stars from 'react-native-stars';
 import {
-  Alert,
   Dimensions,
   Modal,
   Platform,
@@ -30,16 +28,13 @@ const Profile = ({navigation, myFilesOnly = true}) => {
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn, user} = useContext(MainContext);
   const {getFavouritesByFileId} = useFavourite();
-  const {getRatingByFileId} = useRating();
   const [avatar, setAvatar] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editClicked, setEditClicked] = useState(false);
   const [settingClicked, setSettingClicked] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
   const {updateLike} = useContext(MainContext);
-  const [showStarRating, setShowStarRating] = useState(0);
   const [likes, totalLikes] = useState(0);
-  const [totalReviewCount, setTotalReviewCount] = useState(0);
 
   // Loading the avatar of the owner of the post
   const loadAvatar = async () => {
@@ -72,37 +67,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
     totalLikes(noOfLikes);
   };
 
-  const getProfileRating = async () => {
-    let totalRating = 0;
-    let reviewCount = 0;
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
-      for (let i = 0; i < avatarArray.length; i++) {
-        const ratingValue = await getRatingByFileId(avatarArray[i].file_id);
-        reviewCount += Number(ratingValue.length);
-        for (let j = 0; j < ratingValue.length; j++) {
-          totalRating += Number(ratingValue[j].rating);
-        }
-      }
-      setTotalReviewCount(reviewCount);
-      if (reviewCount === 0) {
-        setShowStarRating(0);
-      } else {
-        let ratingNum = totalRating / reviewCount;
-        const ratingNumCeiling = Math.ceil(ratingNum);
-        if (ratingNumCeiling - ratingNum < 0.5) {
-          ratingNum = ratingNumCeiling;
-        } else {
-          ratingNum = Math.floor(ratingNum) + 0.5;
-        }
-        setShowStarRating(ratingNum);
-      }
-    } catch (error) {
-      console.error('getProfileRating', error);
-    }
-  };
-
   // Method for logging out the logged in user.
   const logout = async () => {
     try {
@@ -112,10 +76,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
       console.error('clearing asyncstorage failed ', error);
     }
   };
-
-  useEffect(() => {
-    getProfileRating();
-  }, []);
 
   useEffect(() => {
     getLikes();
@@ -201,24 +161,6 @@ const Profile = ({navigation, myFilesOnly = true}) => {
             <ListItem.Title style={{padding: 10, fontSize: 20}}>
               {user.email}
             </ListItem.Title>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-              <Stars
-                half={true}
-                default={showStarRating}
-                count={5}
-                spacing={1}
-                starSize={20}
-                disabled={true}
-                fullStar={<Icon name={'star'} style={[styles.myStarStyle]} />}
-                emptyStar={
-                  <Icon
-                    name={'star-outline'}
-                    style={[styles.myStarStyle, styles.myEmptyStarStyle]}
-                  />
-                }
-              />
-              <Text>({totalReviewCount + ` vote`})</Text>
-            </View>
             <Button
               title="Edit Profile"
               buttonStyle={{
