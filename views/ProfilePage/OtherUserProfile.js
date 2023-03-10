@@ -26,8 +26,6 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LinearGradient} from 'expo-linear-gradient';
 import UsersMedia from '../../components/UsersMedia';
-import Stars from 'react-native-stars';
-import {Button} from '@rneui/themed';
 
 // This view displays the details of other users that has been clicked.
 const OtherUserProfile = ({navigation, route}) => {
@@ -35,7 +33,6 @@ const OtherUserProfile = ({navigation, route}) => {
   const {loadAllMedia} = useMedia();
   const {getUserById} = useUser();
   const {getFilesByTag} = useTag();
-  const {postRating, getRatingByFileId, deleteRating} = useRating();
   const {getFavouritesByFileId} = useFavourite();
   const {setIsLoggedIn, updateLike, user, update, setUpdate} =
     useContext(MainContext);
@@ -46,11 +43,7 @@ const OtherUserProfile = ({navigation, route}) => {
   const [files, setFiles] = useState([]);
   const [likes, totalLikes] = useState(0);
   const [likeClicked, setLikeClicked] = useState(false);
-  const [starRating, setStarRating] = useState(0);
-  const [avatarId, setAvatarId] = useState();
-  const [showStarRating, setShowStarRating] = useState(0);
   const [ratingClicked, setRatingClicked] = useState(false);
-  const [totalReviewCount, setTotalReviewCount] = useState(0);
 
   // Method for loading the avatar of the owner of the post
   const loadAvatar = async () => {
@@ -59,10 +52,8 @@ const OtherUserProfile = ({navigation, route}) => {
 
       if (avatarArray.length > 1) {
         setAvatar(avatarArray.pop().filename);
-        setAvatarId(avatarArray.pop().file_id);
       } else {
         setAvatar(avatarArray[0].filename);
-        setAvatarId(avatarArray[0].file_id);
       }
     } catch (error) {
       console.log('load Avatar', error);
@@ -85,54 +76,6 @@ const OtherUserProfile = ({navigation, route}) => {
     }
   };
 
-  // Method for uploading the rating for the user
-  const uploadRating = async () => {
-    setUpdate(false);
-    const token = await AsyncStorage.getItem('userToken');
-    try {
-      const rating = await postRating(avatarId, starRating, token);
-      Alert.alert('Rading added', 'Thank you for rating this profile');
-      setUpdate(true);
-      setShowModal(false);
-      setRatingClicked(false);
-    } catch (error) {
-      console.error('Post rating failed', error.message);
-    }
-  };
-
-  // gets total review count of the profile
-  const getProfileRating = async () => {
-    let totalRating = 0;
-    let reviewCount = 0;
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const avatarArray = await getFilesByTag('avatar_' + userDetail.user_id);
-      for (let i = 0; i < avatarArray.length; i++) {
-        const ratingValue = await getRatingByFileId(avatarArray[i].file_id);
-        console.log(ratingValue);
-        reviewCount += Number(ratingValue.length);
-        for (let j = 0; j < ratingValue.length; j++) {
-          totalRating += Number(ratingValue[j].rating);
-        }
-      }
-      setTotalReviewCount(reviewCount);
-      if (reviewCount === 0) {
-        setShowStarRating(0);
-      } else {
-        let ratingNum = totalRating / reviewCount;
-        const ratingNumCeiling = Math.ceil(ratingNum);
-        if (ratingNumCeiling - ratingNum < 0.5) {
-          ratingNum = ratingNumCeiling;
-        } else {
-          ratingNum = Math.floor(ratingNum) + 0.5;
-        }
-        setShowStarRating(ratingNum);
-      }
-    } catch (error) {
-      console.error('getProfileRating', error);
-    }
-  };
-
   // Method for getting the owner of the specific post or file.
   const getOwner = async () => {
     try {
@@ -141,67 +84,6 @@ const OtherUserProfile = ({navigation, route}) => {
       setOwner(ownerDetails);
     } catch (error) {
       console.error('getOwner', error);
-    }
-  };
-
-  // Checks if this profile is already rated or not
-  const checkRatingAuth = async () => {
-    setUpdate(false);
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const avatarArray = await getFilesByTag('avatar_' + userDetail.user_id);
-
-      // Users profile without any pictures cannot be rated.
-      if (avatarArray.length === 0) {
-        Alert.alert(
-          'Profile rating failed',
-          userDetail.username + ' has not uploaded any pictures yet. ',
-          [
-            {
-              text: 'Ok',
-            },
-          ]
-        );
-        return;
-      }
-      for (let i = 0; i < avatarArray.length; i++) {
-        const ratingValue = await getRatingByFileId(avatarArray[i].file_id);
-        for (let j = 0; j < ratingValue.length; j++) {
-          if (user.user_id === ratingValue[j].user_id) {
-            setRatingClicked(false);
-            Alert.alert(
-              'Rating already added',
-              'You have already rated this profile.' +
-                `\n` +
-                'Do you want to delete the previous rating?',
-              [
-                {
-                  text: 'Delete',
-                  onPress: async () => {
-                    const result = await deleteRating(
-                      ratingValue[j].file_id,
-                      token
-                    );
-                    Alert.alert(
-                      'Rating deleted',
-                      'You can again rate this profile'
-                    );
-                    setUpdate(true);
-                  },
-                },
-                {
-                  text: 'Cancel',
-                },
-              ]
-            );
-            return;
-          }
-        }
-        setShowModal(true);
-        setRatingClicked(true);
-      }
-    } catch (error) {
-      console.error('getProfileRating', error);
     }
   };
 
@@ -218,12 +100,8 @@ const OtherUserProfile = ({navigation, route}) => {
   useEffect(() => {
     getOwner();
     loadAvatar();
-    getProfileRating();
-  }, [avatar, updateLike, update]);
-
-  useEffect(() => {
     allMediaFiles();
-  }, [owner.user_id]);
+  }, [avatar, update, owner.user_id, updateLike]);
 
   return (
     <SafeAreaView>
@@ -300,31 +178,6 @@ const OtherUserProfile = ({navigation, route}) => {
             <ListItem.Title style={{fontSize: 20}}>
               {userDetail.email}
             </ListItem.Title>
-            <TouchableOpacity
-              style={{display: 'flex', flexDirection: 'row', marginTop: 10}}
-              onPress={() => {
-                checkRatingAuth();
-              }}
-            >
-              <Stars
-                half={true}
-                default={showStarRating}
-                count={5}
-                spacing={1}
-                disabled={true}
-                fullStar={<Icon name={'star'} style={[styles.myStarStyle]} />}
-                halfStar={
-                  <Icon name={'star-half'} style={[styles.myStarStyle]} />
-                }
-                emptyStar={
-                  <Icon
-                    name={'star-outline'}
-                    style={[styles.myStarStyle, styles.myEmptyStarStyle]}
-                  />
-                }
-              />
-              <Text>({totalReviewCount + ` vote`})</Text>
-            </TouchableOpacity>
             <Card
               containerStyle={{
                 width: '100%',
@@ -488,73 +341,6 @@ const OtherUserProfile = ({navigation, route}) => {
                         Ok
                       </Text>
                     </Pressable>
-                  </View>
-                </View>
-              )}
-              {ratingClicked && (
-                <View
-                  style={{
-                    backgroundColor: 'gray',
-                    height: '50%',
-                    marginTop: 'auto',
-                    borderTopRightRadius: 30,
-                    borderTopLeftRadius: 30,
-                  }}
-                >
-                  <View
-                    style={{
-                      width: Dimensions.get('screen').width / 3,
-                      marginHorizontal: Dimensions.get('screen').width / 3,
-                      borderWidth: 2,
-                      borderColor: 'white',
-                    }}
-                  ></View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      padding: 15,
-                      marginTop: 15,
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontSize: 30,
-                        marginBottom: 30,
-                      }}
-                    >
-                      Rate this Profile
-                    </Text>
-
-                    <Stars
-                      half={false}
-                      default={0}
-                      count={5}
-                      spacing={8}
-                      update={(val) => {
-                        setStarRating(val);
-                      }}
-                      starSize={50}
-                    />
-
-                    <Button
-                      title="Submit"
-                      buttonStyle={{
-                        borderColor: 'black',
-                        borderWidth: 1,
-                        borderRadius: 20,
-                        marginTop: 50,
-                      }}
-                      type="outline"
-                      titleStyle={{color: 'white', fontSize: 18}}
-                      containerStyle={{
-                        width: Dimensions.get('screen').width / 3,
-                        marginHorizontal: Dimensions.get('screen').width / 3,
-                      }}
-                      onPress={() => uploadRating()}
-                    />
                   </View>
                 </View>
               )}
