@@ -60,7 +60,21 @@ const RegisterForm = ({navigation}) => {
         },
       ]);
     } catch (error) {
-      console.error('register', error);
+      Alert.alert(
+        'User Registeration Failed',
+        'Please try again with valid credentials',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              reset({
+                password: '',
+                confirmPassword: '',
+              });
+            },
+          },
+        ]
+      );
     } finally {
       setLoading(false);
     }
@@ -264,6 +278,8 @@ const RegisterForm = ({navigation}) => {
     </ScrollView>
   );
 };
-RegisterForm.propTypes = {navigation: PropTypes.object};
+RegisterForm.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default RegisterForm;

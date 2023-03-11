@@ -162,6 +162,7 @@ const ListItem = ({singleMedia, navigation}) => {
               }}
               style={{marginTop: 0}}
             />
+
             <Text
               style={{
                 fontSize: 20,

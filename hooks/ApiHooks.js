@@ -245,6 +245,19 @@ const useUser = () => {
     }
   };
 
+  const getUserByToken = async (token) => {
+    const options = {
+      method: 'GET',
+      headers: {'x-access-token': token},
+    };
+    try {
+      const userData = await doFetch(baseUrl + 'users/user', options);
+      return userData;
+    } catch (error) {
+      throw new Error('checkUser: ' + error.message);
+    }
+  };
+
   // Method for checking the username if it's available
   const checkUsername = async (username) => {
     try {
@@ -254,6 +267,9 @@ const useUser = () => {
       throw new Error('Check username ' + error.message);
     }
   };
+
+  // Method for getting a user by token
+
   return {
     getUserById,
     getCurrentUser,
@@ -261,6 +277,7 @@ const useUser = () => {
     putUser,
     checkUsername,
     postUser,
+    getUserByToken,
   };
 };
 

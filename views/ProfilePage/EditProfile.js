@@ -13,7 +13,7 @@ const EditProfile = ({navigation, route}) => {
   const {fileName} = route.params;
   const {putUser, checkUsername} = useUser();
   const [loading, setLoading] = useState(false);
-  const {update, setUpdate, setIsLoggedIn} = useContext(MainContext);
+  const {update, setUpdate, user, setUser} = useContext(MainContext);
   const {
     control,
     handleSubmit,
@@ -39,24 +39,24 @@ const EditProfile = ({navigation, route}) => {
     try {
       const token = await AsyncStorage.getItem('userToken');
       const result = await putUser(data, token);
+      data.user_id = user.user_id;
+      setUser(data);
       console.log('Result ' + result);
-
-      Alert.alert('Personal Info Updated', 'You will be logged out.', [
+      Alert.alert('Personal Info Updated', '', [
         {
           text: 'ok',
           onPress: () => {
             setUpdate(!update);
-            setIsLoggedIn(false);
-            try {
-              AsyncStorage.clear();
-            } catch (error) {
-              console.error('clearing asyncstorage failed ', error);
-            }
+            navigation.navigate('Profile');
           },
         },
       ]);
     } catch (error) {
-      console.error('Profile Modify error', error);
+      Alert.alert('User Info could not be updated!', 'Please try again later', [
+        {
+          text: 'ok',
+        },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -65,9 +65,11 @@ const EditProfile = ({navigation, route}) => {
   // Method for checking if the username is available.
   const checkUser = async (username) => {
     try {
-      const userAvailable = await checkUsername(username);
-      console.log('checkuser' + userAvailable);
-      return userAvailable || 'Username is already taken';
+      if (username !== user.username) {
+        const userAvailable = await checkUsername(username);
+        console.log('checkuser' + userAvailable);
+        return userAvailable || 'Username is already taken';
+      }
     } catch (error) {
       console.error('checkuser ' + error.message);
     }
@@ -143,6 +145,7 @@ const EditProfile = ({navigation, route}) => {
             onBlur={onBlur}
             onChangeText={onChange}
             defaultValue={value}
+            autoCapitalize="none"
             errorMessage={errors.email && errors.email.message}
           />
         )}
@@ -171,6 +174,7 @@ const EditProfile = ({navigation, route}) => {
             onBlur={onBlur}
             onChangeText={onChange}
             defaultValue={value}
+            autoCapitalize="none"
             errorMessage={errors.password && errors.password.message}
           />
         )}
@@ -203,6 +207,7 @@ const EditProfile = ({navigation, route}) => {
             onChangeText={onChange}
             value={value}
             secureTextEntry={true}
+            autoCapitalize="none"
             errorMessage={
               errors.confirmPassword && errors.confirmPassword.message
             }
