@@ -9,8 +9,9 @@ Oma Garden is a mobile application built with React Native that allows users to 
 3. [Usage](#Usage)
 4. [Related](#Related)
 5. [Video links](#video-links)
-6. [Contributors](#Contributors)
-7. [Changes based on feedback](#Changes-based-on-feedback)
+6. [App UI Screenshots](#App-UI-Screenshots)
+7. [Contributors](#Contributors)
+8. [Changes based on feedback](#Changes-based-on-feedback)
 
 ## Features
 
