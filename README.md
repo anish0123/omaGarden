@@ -54,16 +54,16 @@ To check the user profile, users can click on profile icon on bottom navigator. 
 
 ## App UI Screenshots
 <img src= "https://user-images.githubusercontent.com/87969471/224488330-0412d2fb-d092-4de2-a1a0-4d7800567a8b.png" width="200" height="400" />
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 45 24](https://user-images.githubusercontent.com/87969471/224488522-6e182d92-615c-4015-bb38-6f1d5d4d6a06.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 45 49](https://user-images.githubusercontent.com/87969471/224488538-5d81d0fb-201c-43c2-aaa3-0df06813db94.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 46 10](https://user-images.githubusercontent.com/87969471/224488550-19aa6b4b-6e08-40be-861e-fe7715f5c27c.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 54 47](https://user-images.githubusercontent.com/87969471/224488651-b4454288-2029-449d-aeb1-e8a434af5677.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 55 20](https://user-images.githubusercontent.com/87969471/224488671-2cab92bc-bb33-41b0-bb1b-163ac9dc6119.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 46 16](https://user-images.githubusercontent.com/87969471/224488561-196dad7c-7ab6-457e-adae-8e4baeebe4b6.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 46 35](https://user-images.githubusercontent.com/87969471/224488573-813a6339-4b86-4f03-9932-32f936c5b1e5.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 46 42](https://user-images.githubusercontent.com/87969471/224488587-172f4916-3678-43a1-bb25-39f4453d73cd.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 46 46](https://user-images.githubusercontent.com/87969471/224488602-b9ed9346-e1df-4fee-ae7c-ce8e0bdbf60f.png)
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 54 19](https://user-images.githubusercontent.com/87969471/224488628-4ff620b9-fac2-46e7-9eda-24484900e9b2.png)
+<img src="https://user-images.githubusercontent.com/87969471/224488522-6e182d92-615c-4015-bb38-6f1d5d4d6a06.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488538-5d81d0fb-201c-43c2-aaa3-0df06813db94.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488550-19aa6b4b-6e08-40be-861e-fe7715f5c27c.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488651-b4454288-2029-449d-aeb1-e8a434af5677.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488671-2cab92bc-bb33-41b0-bb1b-163ac9dc6119.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488561-196dad7c-7ab6-457e-adae-8e4baeebe4b6.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488573-813a6339-4b86-4f03-9932-32f936c5b1e5.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488587-172f4916-3678-43a1-bb25-39f4453d73cd.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488602-b9ed9346-e1df-4fee-ae7c-ce8e0bdbf60f.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/87969471/224488628-4ff620b9-fac2-46e7-9eda-24484900e9b2.png" width="200" height="400" />
 
 
 ## Contributors
