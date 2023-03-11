@@ -50,10 +50,8 @@ const OtherUserProfile = ({navigation, route}) => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + userDetail.user_id);
 
-      if (avatarArray.length > 1) {
+      if (avatarArray.length > 0) {
         setAvatar(avatarArray.pop().filename);
-      } else {
-        setAvatar(avatarArray[0].filename);
       }
     } catch (error) {
       console.log('load Avatar', error);
