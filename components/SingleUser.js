@@ -20,6 +20,8 @@ const SingleUser = ({singleUser, navigation}) => {
       const avatarArray = await getFilesByTag('avatar_' + clickedUser.user_id);
       if (avatarArray.length > 0) {
         setAvatar(avatarArray.pop().filename);
+      } else {
+        setAvatar('');
       }
     } catch (error) {
       console.log('load Avatar', error);
@@ -28,7 +30,7 @@ const SingleUser = ({singleUser, navigation}) => {
 
   useEffect(() => {
     loadAvatar();
-  }, [clickedUser]);
+  }, [singleUser]);
 
   return (
     <LinearGradient
