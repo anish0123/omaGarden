@@ -78,6 +78,6 @@ To check the user profile, users can click on profile icon on bottom navigator. 
 
 ## Changes based on feedback
 - Bigger Hamburger Menu
-- Fixed the positioning of media in home page so it does not go being bottom navigator.
-- Better warnings if some tasks(for example: upload image, register user) failed.
-- No error prompt to user of user wants to change other info but keep the same username while editing user profile.
+- Fixed the positioning of media in home page so it does not go behind the bottom navigator.
+- Better error handlers are implemented using alert, if some tasks(for example: upload image, register user) failed.
+- No error prompt to user if user wants to change other info but keeps the same username while editing user profile.
