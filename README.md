@@ -9,8 +9,9 @@ Oma Garden is a mobile application built with React Native that allows users to 
 3. [Usage](#Usage)
 4. [Related](#Related)
 5. [Video links](#video-links)
-6. [Contributors](#Contributors)
-7. [Changes based on feedback](#Changes-based-on-feedback)
+6. [App UI Screenshots](#App-UI-Screenshots)
+7. [Contributors](#Contributors)
+8. [Changes based on feedback](#Changes-based-on-feedback)
 
 ## Features
 
@@ -53,6 +54,7 @@ To check the user profile, users can click on profile icon on bottom navigator. 
 - [Promotional Video](https://youtube.com/shorts/jl9GDpnDF6A)
 
 ## App UI Screenshots
+<p>
 <img src= "https://user-images.githubusercontent.com/87969471/224488330-0412d2fb-d092-4de2-a1a0-4d7800567a8b.png" width="200" height="400" />
 <img src="https://user-images.githubusercontent.com/87969471/224488522-6e182d92-615c-4015-bb38-6f1d5d4d6a06.png" width="200" height="400" />
 <img src="https://user-images.githubusercontent.com/87969471/224488538-5d81d0fb-201c-43c2-aaa3-0df06813db94.png" width="200" height="400" />
@@ -64,6 +66,7 @@ To check the user profile, users can click on profile icon on bottom navigator. 
 <img src="https://user-images.githubusercontent.com/87969471/224488587-172f4916-3678-43a1-bb25-39f4453d73cd.png" width="200" height="400" />
 <img src="https://user-images.githubusercontent.com/87969471/224488602-b9ed9346-e1df-4fee-ae7c-ce8e0bdbf60f.png" width="200" height="400" />
 <img src="https://user-images.githubusercontent.com/87969471/224488628-4ff620b9-fac2-46e7-9eda-24484900e9b2.png" width="200" height="400" />
+  </p>
 
 
 ## Contributors
@@ -75,6 +78,6 @@ To check the user profile, users can click on profile icon on bottom navigator. 
 
 ## Changes based on feedback
 - Bigger Hamburger Menu
-- Fixed the positioning of media in home page so it does not go being bottom navigator.
-- Better warnings if some tasks(for example: upload image, register user) failed.
-- No error prompt to user of user wants to change other info but keep the same username while editing user profile.
+- Fixed the positioning of media in home page so it does not go behind the bottom navigator.
+- Better error handlers are implemented using alert, if some tasks(for example: upload image, register user) failed.
+- No error prompt to user if user wants to change other info but keeps the same username while editing user profile.
