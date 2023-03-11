@@ -53,7 +53,7 @@ To check the user profile, users can click on profile icon on bottom navigator. 
 - [Promotional Video](https://youtube.com/shorts/jl9GDpnDF6A)
 
 ## App UI Screenshots
-![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 45 17](https://user-images.githubusercontent.com/87969471/224488330-0412d2fb-d092-4de2-a1a0-4d7800567a8b.png)
+<img src= "https://user-images.githubusercontent.com/87969471/224488330-0412d2fb-d092-4de2-a1a0-4d7800567a8b.png" width="200" height="400" />
 ![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 45 24](https://user-images.githubusercontent.com/87969471/224488522-6e182d92-615c-4015-bb38-6f1d5d4d6a06.png)
 ![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 45 49](https://user-images.githubusercontent.com/87969471/224488538-5d81d0fb-201c-43c2-aaa3-0df06813db94.png)
 ![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 46 10](https://user-images.githubusercontent.com/87969471/224488550-19aa6b4b-6e08-40be-861e-fe7715f5c27c.png)
