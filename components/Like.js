@@ -25,6 +25,8 @@ const Like = ({file}) => {
         } else {
           setUserLikesIt(false);
         }
+      } else {
+        setUserLikesIt(false);
       }
     } catch (error) {
       console.log('getLikes' + error);
@@ -63,6 +65,7 @@ const Like = ({file}) => {
   useEffect(() => {
     getLikes();
   }, [updateLike, file, update]);
+
   return (
     <>
       {userLikesIt ? (
