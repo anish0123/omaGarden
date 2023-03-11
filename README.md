@@ -7,9 +7,10 @@ Oma Garden is a mobile application built with React Native that allows users to 
 1. [Features](#Features)
 2. [Installation](#Installation)
 3. [Usage](#Usage)
-4. [Contributors](#Contributors)
-5. [Related](#Related)
-6. [Video links](#video-links)
+4. [Related](#Related)
+5. [Video links](#video-links)
+6. [Contributors](#Contributors)
+7. [Changes based on feedback](#Changes-based-on-feedback)
 
 ## Features
 
@@ -45,13 +46,21 @@ To check the user profile, users can click on profile icon on bottom navigator. 
 - [Trello Board](https://trello.com/b/WTILLlHy/oma-garden)
 - [Figma](https://www.figma.com/file/QtuGVpHjtlDHnEMJqyBnyh/Oma-Garden-Group-Project?node-id=7%3A356&t=srHAycuxs5o17iI2-0)
 
+
+## Video links
+
+- [App Demo](https://youtu.be/vYvVIv3UzAw)
+- [Promotional Video](https://youtube.com/shorts/jl9GDpnDF6A)
+
 ## Contributors
 
 - [Anish Maharjan](https://github.com/anish0123)
 - [Asmita Shrestha](https://github.com/asmita143)
 - [Prabin Dhakal](https://github.com/Prabin1500)
 
-## Video links
 
-- [App Demo](https://youtu.be/vYvVIv3UzAw)
-- [Promotional Video](https://youtube.com/shorts/jl9GDpnDF6A)
+## Changes based on feedback
+- Bigger Hamburger Menu
+- Fixed the positioning of media in home page so it does not go being bottom navigator.
+- Better warnings if some tasks(for example: upload image, register user) failed.
+- No error prompt to user of user wants to change other info but keep the same username while editing user profile.
