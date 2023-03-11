@@ -52,6 +52,9 @@ To check the user profile, users can click on profile icon on bottom navigator. 
 - [App Demo](https://youtu.be/vYvVIv3UzAw)
 - [Promotional Video](https://youtube.com/shorts/jl9GDpnDF6A)
 
+## App UI Screenshots
+![Simulator Screen Shot - iPhone 14 Pro Max - 2023-03-11 at 15 45 17](https://user-images.githubusercontent.com/87969471/224488330-0412d2fb-d092-4de2-a1a0-4d7800567a8b.png)
+
 ## Contributors
 
 - [Anish Maharjan](https://github.com/anish0123)
