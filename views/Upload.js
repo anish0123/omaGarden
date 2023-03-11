@@ -91,7 +91,15 @@ const Upload = ({navigation}) => {
         ]
       );
     } catch (error) {
-      console.error('file upload failed', error);
+      Alert.alert(
+        'Upload Failed!',
+        'Please try again with correct credentials',
+        [
+          {
+            text: 'Ok',
+          },
+        ]
+      );
     } finally {
       setLoading(false);
     }

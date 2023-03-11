@@ -142,6 +142,7 @@ const Home = ({navigation}) => {
           <Icon
             name="reorder-three-outline"
             type="ionicon"
+            size={30}
             onPress={() => {
               setShowModal(true);
             }}
@@ -154,8 +155,10 @@ const Home = ({navigation}) => {
         end={{x: 1, y: 1}}
         colors={['#C9FFBF', '#FFAFBD']}
       >
-        <Card.Divider />
-        <List navigation={navigation} />
+        <Card.Divider style={{marginBottom: 0}} />
+        <View style={{marginBottom: 100, marginTop: 0}}>
+          <List navigation={navigation} />
+        </View>
       </LinearGradient>
     </SafeAreaView>
   );

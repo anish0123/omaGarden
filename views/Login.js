@@ -4,13 +4,12 @@ import RegisterForm from '../components/RegisterForm';
 import {MainContext} from '../contexts/MainContext';
 import {useUser} from '../hooks/ApiHooks';
 import {Image, Text} from '@rneui/base';
-import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useContext, useEffect, useState} from 'react';
 import {LinearGradient} from 'expo-linear-gradient';
 
 // This view is used to log in registered user and register new users.
-const Login = ({navigation}) => {
+const Login = () => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserById} = useUser();
   const [toggleForm, setToggleForm] = useState(true);
@@ -84,9 +83,4 @@ const Login = ({navigation}) => {
     </LinearGradient>
   );
 };
-
-Login.propTypes = {
-  navigation: PropTypes.object,
-};
-
 export default Login;
