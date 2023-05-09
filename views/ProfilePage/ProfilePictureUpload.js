@@ -66,7 +66,7 @@ const ProfilePictureUpload = ({navigation}) => {
       console.error('File upload error', error);
     } finally {
       setLoading(false);
-      setUpdate(!update);
+      setUpdate(!update); 
     }
     console.log('Upload a file');
   };
